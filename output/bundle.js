@@ -12295,7 +12295,7 @@
     }
   });
 
-  // src/index.jsx
+  // src/index.tsx
   var React = __toESM(require_react(), 1);
   var Server = __toESM(require_server_browser(), 1);
   var Greet = () => /* @__PURE__ */ React.createElement("h1", null, "Hello, world!");
