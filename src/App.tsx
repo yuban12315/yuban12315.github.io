@@ -12,6 +12,5 @@ export default function App() {
 const Page = styled.div`
   width: 100vw;
   height: 100vh;
-  /* background-color: oldlace; */
   user-select: none;
 `;
