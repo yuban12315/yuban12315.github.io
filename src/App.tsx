@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 export default function App() {
   useEffect(() => {
-    new HutaoProject().launch();
+    new HutaoProject().render();
   }, []);
   return <Page id="three" />;
 }

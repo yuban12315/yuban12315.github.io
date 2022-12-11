@@ -18,9 +18,8 @@ export class Camera {
       0.1,
       1000
     );
-    this._camera.position.set(30, 5, 70);
+    this._camera.position.set(1, 11, 10);
 
-    console.log("scene.getScene().position", scene.getScene().position);
     this._camera.lookAt(scene.getScene().position);
   }
 }

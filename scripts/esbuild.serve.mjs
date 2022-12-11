@@ -9,6 +9,8 @@ esbuild
     {
       entryPoints: ["src/index.tsx"],
       outfile: "output/bundle.js",
+      external: ["/public/*"],
+
       bundle: true,
     }
   )

@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/yuban12315/hutao#readme",
   "devDependencies": {
+    "@types/dat.gui": "^0.7.7",
     "@types/react": "^18.0.26",
     "@types/react-dom": "^18.0.9",
     "@types/styled-components": "^5.1.26",
@@ -30,6 +31,7 @@
     "esbuild": "^0.16.4"
   },
   "dependencies": {
+    "dat.gui": "^0.7.9",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "styled-components": "^5.3.6",
