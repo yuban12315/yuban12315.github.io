@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import camera from "./camera";
-import loader from "./loader";
+import loader, { helper } from "./loader";
 import renderer from "./renderer";
 import scene from "./scene";
 import { GUI } from "dat.gui";
@@ -9,20 +9,23 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 export default class ThreeProject {
   private frameId: number;
   controls: OrbitControls;
+  clock: THREE.Clock;
 
   constructor() {
     const container = document.getElementById("three");
     if (!container) {
       return;
     }
+    this.clock = new THREE.Clock();
+
     scene.init(container);
     camera.init(container);
     renderer.init(container);
   }
 
   render() {
-    loader.loadHutaoModel();
-    this.initControls();
+    loader.loadModels();
+    // this.initControls();
     this.initLight();
 
     this.callRenderer();
@@ -47,7 +50,9 @@ export default class ThreeProject {
 
   callRenderer() {
     this.frameId = requestAnimationFrame(() => {
-      this.controls.update();
+      // this.controls.update();
+      const time = this.clock.getDelta();
+      helper.update(time);
       renderer.getRenderer().render(scene.getScene(), camera.getCamera());
       this.callRenderer();
     });

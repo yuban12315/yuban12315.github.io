@@ -2,31 +2,34 @@ import scene from "./scene";
 import * as THREE from "three";
 import { MMDLoader } from "three/examples/jsm/loaders/MMDLoader.js";
 import { MMDAnimationHelper } from "three/examples/jsm/animation/MMDAnimationHelper.js";
+import camera from "./camera";
 
-let helper = new MMDAnimationHelper();
+export const helper = new MMDAnimationHelper();
 
 export class Loader {
-  loadHutaoModel() {
+  loadModels() {
     const loader = new MMDLoader();
 
     loader.loadWithAnimation(
       "/public/hutao/胡桃.pmx", // called when the resource is loaded
-      "/public/move/荧-嚣张.vmd",
+      "./public/move/ayaka-dance.vmd",
       function onLoad(mmd) {
+        const { mesh } = mmd;
         helper.add(mmd.mesh, {
           animation: mmd.animation,
-          physics: true,
         });
 
         scene.getScene().add(mmd.mesh);
-      },
-      // called when loading is in progresses
-      function onProgress(xhr) {
-        // console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
-      },
-      // called when loading has errors
-      function onError(error) {
-        console.log("An error happened");
+      }
+    );
+
+    loader.loadAnimation(
+      "./public/move/ayaka-camera.vmd",
+      camera.getCamera(),
+      function (cameraAnimation) {
+        helper.add(camera.getCamera(), {
+          animation: cameraAnimation as THREE.AnimationClip,
+        });
       }
     );
   }
