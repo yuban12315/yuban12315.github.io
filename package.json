@@ -31,6 +31,7 @@
     "esbuild": "^0.16.4"
   },
   "dependencies": {
+    "ammo.js": "^0.0.10",
     "dat.gui": "^0.7.9",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

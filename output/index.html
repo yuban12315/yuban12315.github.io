@@ -5,6 +5,13 @@
   </head>
   <body>
     <div id="root" />
+    <script src="./public/ammo.js">
+      Ammo().then(function(AmmoLib)
+  {
+    Ammo=AmmoLib;
+    init();
+  })
+   </script>
     <script src="http://localhost:8080/bundle.js"></script>
   </body>
 </html>

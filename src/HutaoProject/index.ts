@@ -17,29 +17,39 @@ export default class ThreeProject {
     }
     scene.init(container);
     camera.init(container);
-    loader.loadHutaoModel();
-
     renderer.init(container);
+  }
 
-    const ambientlight = new THREE.AmbientLight(0xffffff);
-    scene.getScene().add(ambientlight);
+  render() {
+    loader.loadHutaoModel();
+    this.initControls();
+    this.initLight();
 
+    this.callRenderer();
+  }
+
+  initLight() {
+    const ambientLight = new THREE.AmbientLight(0xffffff);
+    scene.getScene().add(ambientLight);
+  }
+
+  initControls() {
     const controls = new OrbitControls(
       camera.getCamera(),
       renderer.getRenderer().domElement
     );
+
+    // 使用了 OrbitControls，camera 对象的 lookAt 方法失效
+    // 这里通过调整  controls.target 控制初始摄像机的位置
+    controls.target = new THREE.Vector3(1.6, 14, -4);
     this.controls = controls;
   }
 
-  render() {
-    this.launch();
-  }
-
-  launch() {
+  callRenderer() {
     this.frameId = requestAnimationFrame(() => {
       this.controls.update();
       renderer.getRenderer().render(scene.getScene(), camera.getCamera());
-      this.launch();
+      this.callRenderer();
     });
   }
 }

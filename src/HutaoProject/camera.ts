@@ -18,9 +18,13 @@ export class Camera {
       0.1,
       1000
     );
-    this._camera.position.set(1, 11, 10);
-
-    this._camera.lookAt(scene.getScene().position);
+    // 预设的位置
+    const position = {
+      x: -2,
+      y: 16,
+      z: 6,
+    };
+    this._camera.position.set(position.x, position.y, position.z);
   }
 }
 
