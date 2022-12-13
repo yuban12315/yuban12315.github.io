@@ -51,8 +51,12 @@ export default class ThreeProject {
   callRenderer() {
     this.frameId = requestAnimationFrame(() => {
       // this.controls.update();
-      const time = this.clock.getDelta();
-      helper.update(time);
+      // 等所有模型加载完成之后再开始动画
+      if (loader.loaded()) {
+        const time = this.clock.getDelta();
+        helper.update(time);
+      }
+
       renderer.getRenderer().render(scene.getScene(), camera.getCamera());
       this.callRenderer();
     });

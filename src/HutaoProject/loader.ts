@@ -7,23 +7,41 @@ import camera from "./camera";
 export const helper = new MMDAnimationHelper();
 
 export class Loader {
+  loadingCount: number;
+  constructor() {
+    this.loadingCount = 0;
+  }
+
+  startLoading() {
+    this.loadingCount++;
+  }
+
+  finishLoading() {
+    setTimeout(() => this.loadingCount--, 1000);
+  }
+
+  loaded() {
+    return this.loadingCount === 0;
+  }
+
   loadModels() {
     const mmdLoader = new MMDLoader();
 
     // 加载场景
-    mmdLoader.load("/public/梨园华灯/梨园.pmx", function onLoad(mesh) {
-      console.log("mmd", mesh);
-
+    this.startLoading();
+    mmdLoader.load("/public/梨园华灯/梨园.pmx", (mesh) => {
+      this.finishLoading();
       scene.getScene().add(mesh);
     });
 
     // 加载人物模型
+    this.startLoading();
     mmdLoader.loadWithAnimation(
       "/public/hutao/胡桃.pmx",
       "/public/move/ayaka-dance.vmd",
-      function onLoad(mmd) {
-        // called when the resource is loaded
-        const { mesh } = mmd;
+      (mmd) => {
+        this.finishLoading();
+
         helper.add(mmd.mesh, {
           animation: mmd.animation,
         });
@@ -33,10 +51,13 @@ export class Loader {
     );
 
     // 加载相机动画
+    this.startLoading();
     mmdLoader.loadAnimation(
       "./public/move/ayaka-camera.vmd",
       camera.getCamera(),
-      function (cameraAnimation) {
+      (cameraAnimation) => {
+        this.finishLoading();
+
         helper.add(camera.getCamera(), {
           animation: cameraAnimation as THREE.AnimationClip,
         });
