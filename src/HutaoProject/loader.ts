@@ -8,12 +8,21 @@ export const helper = new MMDAnimationHelper();
 
 export class Loader {
   loadModels() {
-    const loader = new MMDLoader();
+    const mmdLoader = new MMDLoader();
 
-    loader.loadWithAnimation(
-      "/public/hutao/胡桃.pmx", // called when the resource is loaded
-      "./public/move/ayaka-dance.vmd",
+    // 加载场景
+    mmdLoader.load("/public/梨园华灯/梨园.pmx", function onLoad(mesh) {
+      console.log("mmd", mesh);
+
+      scene.getScene().add(mesh);
+    });
+
+    // 加载人物模型
+    mmdLoader.loadWithAnimation(
+      "/public/hutao/胡桃.pmx",
+      "/public/move/ayaka-dance.vmd",
       function onLoad(mmd) {
+        // called when the resource is loaded
         const { mesh } = mmd;
         helper.add(mmd.mesh, {
           animation: mmd.animation,
@@ -23,7 +32,8 @@ export class Loader {
       }
     );
 
-    loader.loadAnimation(
+    // 加载相机动画
+    mmdLoader.loadAnimation(
       "./public/move/ayaka-camera.vmd",
       camera.getCamera(),
       function (cameraAnimation) {

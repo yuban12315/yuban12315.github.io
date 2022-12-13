@@ -4,7 +4,7 @@ esbuild
   .serve(
     {
       servedir: "output",
-      port: 8080,
+      port: 8090,
     },
     {
       entryPoints: ["src/index.tsx"],
@@ -17,4 +17,5 @@ esbuild
   .then((server) => {
     // Call "stop" on the web server to stop serving
     // server.stop();
+    console.log("dev server running at http://localhost:8090");
   });
