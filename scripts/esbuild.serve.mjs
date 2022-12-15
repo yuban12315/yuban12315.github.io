@@ -3,12 +3,12 @@ import esbuild from "esbuild";
 esbuild
   .serve(
     {
-      servedir: "output",
+      servedir: "docs",
       port: 8090,
     },
     {
       entryPoints: ["src/index.tsx"],
-      outfile: "output/bundle.js",
+      outfile: "docs/bundle.js",
       external: ["/public/*"],
 
       bundle: true,

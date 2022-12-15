@@ -25,7 +25,7 @@ const getPaths = () => {
   return {
     keyPath: path.resolve(certDir, "./localhost-key.pem"),
     certPath: path.resolve(certDir, "./localhost.pem"),
-    serverRootPath: "../output",
+    serverRootPath: "./docs",
   };
 };
 
