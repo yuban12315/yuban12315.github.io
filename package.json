@@ -5,8 +5,8 @@
   "description": "personal three.js demo project",
   "main": "index.js",
   "scripts": {
-    "dev": "node scripts/esbuild.serve.mjs",
-    "build": "node scripts/esbuild.build.mjs"
+    "build": "node scripts/esbuild.build.mjs",
+    "serve": "node ./server/index.mjs"
   },
   "repository": {
     "type": "git",
@@ -33,6 +33,7 @@
   "dependencies": {
     "ammo.js": "^0.0.10",
     "dat.gui": "^0.7.9",
+    "mime-types": "^2.1.35",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "styled-components": "^5.3.6",

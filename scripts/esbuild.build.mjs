@@ -6,5 +6,6 @@ esbuild
     bundle: true,
     outfile: "output/bundle.js",
     external: ["/public/*"],
+    watch: true,
   })
   .catch(() => process.exit(1));

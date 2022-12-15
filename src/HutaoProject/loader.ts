@@ -8,8 +8,11 @@ export const helper = new MMDAnimationHelper();
 
 export class Loader {
   loadingCount: number;
+  mmdLoader: MMDLoader;
+
   constructor() {
     this.loadingCount = 0;
+    this.mmdLoader = new MMDLoader();
   }
 
   startLoading() {
@@ -24,20 +27,11 @@ export class Loader {
     return this.loadingCount === 0;
   }
 
-  loadModels() {
-    const mmdLoader = new MMDLoader();
-
-    // 加载场景
-    this.startLoading();
-    mmdLoader.load("/public/梨园华灯/梨园.pmx", (mesh) => {
-      this.finishLoading();
-      scene.getScene().add(mesh);
-    });
-
+  loadHutao() {
     // 加载人物模型
     this.startLoading();
-    mmdLoader.loadWithAnimation(
-      "/public/hutao/胡桃.pmx",
+    this.mmdLoader.loadWithAnimation(
+      "/public/hutao/hutao.pmx",
       "/public/move/ayaka-dance.vmd",
       (mmd) => {
         this.finishLoading();
@@ -49,10 +43,21 @@ export class Loader {
         scene.getScene().add(mmd.mesh);
       }
     );
+  }
 
+  loadScene() {
+    // 加载场景
+    this.startLoading();
+    this.mmdLoader.load("/public/梨园华灯/梨园.pmx", (mesh) => {
+      this.finishLoading();
+      scene.getScene().add(mesh);
+    });
+  }
+
+  loadCamera() {
     // 加载相机动画
     this.startLoading();
-    mmdLoader.loadAnimation(
+    this.mmdLoader.loadAnimation(
       "./public/move/ayaka-camera.vmd",
       camera.getCamera(),
       (cameraAnimation) => {
@@ -63,6 +68,12 @@ export class Loader {
         });
       }
     );
+  }
+
+  loadModels() {
+    this.loadHutao();
+    this.loadCamera();
+    this.loadScene();
   }
 }
 

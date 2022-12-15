@@ -5730,7 +5730,7 @@
           var cancelCallback = Scheduler.unstable_cancelCallback;
           var shouldYield = Scheduler.unstable_shouldYield;
           var requestPaint = Scheduler.unstable_requestPaint;
-          var now = Scheduler.unstable_now;
+          var now2 = Scheduler.unstable_now;
           var getCurrentPriorityLevel = Scheduler.unstable_getCurrentPriorityLevel;
           var ImmediatePriority = Scheduler.unstable_ImmediatePriority;
           var UserBlockingPriority = Scheduler.unstable_UserBlockingPriority;
@@ -17781,7 +17781,7 @@
                         row = row.sibling;
                       }
                     }
-                    if (renderState.tail !== null && now() > getRenderTargetTime()) {
+                    if (renderState.tail !== null && now2() > getRenderTargetTime()) {
                       workInProgress2.flags |= DidCapture;
                       didSuspendAlready = true;
                       cutOffTailIfNeeded(renderState, false);
@@ -17806,7 +17806,7 @@
                         bubbleProperties(workInProgress2);
                         return null;
                       }
-                    } else if (now() * 2 - renderState.renderingStartTime > getRenderTargetTime() && renderLanes2 !== OffscreenLane) {
+                    } else if (now2() * 2 - renderState.renderingStartTime > getRenderTargetTime() && renderLanes2 !== OffscreenLane) {
                       workInProgress2.flags |= DidCapture;
                       didSuspendAlready = true;
                       cutOffTailIfNeeded(renderState, false);
@@ -17830,7 +17830,7 @@
                   var next = renderState.tail;
                   renderState.rendering = next;
                   renderState.tail = next.sibling;
-                  renderState.renderingStartTime = now();
+                  renderState.renderingStartTime = now2();
                   next.sibling = null;
                   var suspenseContext = suspenseStackCursor.current;
                   if (didSuspendAlready) {
@@ -19781,7 +19781,7 @@
           var RENDER_TIMEOUT_MS = 500;
           var workInProgressTransitions = null;
           function resetRenderTimer() {
-            workInProgressRootRenderTargetTime = now() + RENDER_TIMEOUT_MS;
+            workInProgressRootRenderTargetTime = now2() + RENDER_TIMEOUT_MS;
           }
           function getRenderTargetTime() {
             return workInProgressRootRenderTargetTime;
@@ -19810,12 +19810,12 @@
           }
           function requestEventTime() {
             if ((executionContext & (RenderContext | CommitContext)) !== NoContext) {
-              return now();
+              return now2();
             }
             if (currentEventTime !== NoTimestamp) {
               return currentEventTime;
             }
-            currentEventTime = now();
+            currentEventTime = now2();
             return currentEventTime;
           }
           function requestUpdateLane(fiber) {
@@ -20004,7 +20004,7 @@
                 var fatalError = workInProgressRootFatalError;
                 prepareFreshStack(root2, NoLanes);
                 markRootSuspended$1(root2, lanes);
-                ensureRootIsScheduled(root2, now());
+                ensureRootIsScheduled(root2, now2());
                 throw fatalError;
               }
               if (exitStatus === RootDidNotComplete) {
@@ -20025,7 +20025,7 @@
                     var _fatalError = workInProgressRootFatalError;
                     prepareFreshStack(root2, NoLanes);
                     markRootSuspended$1(root2, lanes);
-                    ensureRootIsScheduled(root2, now());
+                    ensureRootIsScheduled(root2, now2());
                     throw _fatalError;
                   }
                 }
@@ -20034,7 +20034,7 @@
                 finishConcurrentRender(root2, exitStatus, lanes);
               }
             }
-            ensureRootIsScheduled(root2, now());
+            ensureRootIsScheduled(root2, now2());
             if (root2.callbackNode === originalCallbackNode) {
               return performConcurrentWorkOnRoot.bind(null, root2);
             }
@@ -20079,7 +20079,7 @@
               case RootSuspended: {
                 markRootSuspended$1(root2, lanes);
                 if (includesOnlyRetries(lanes) && !shouldForceFlushFallbacksInDEV()) {
-                  var msUntilTimeout = globalMostRecentFallbackTime + FALLBACK_THROTTLE_MS - now();
+                  var msUntilTimeout = globalMostRecentFallbackTime + FALLBACK_THROTTLE_MS - now2();
                   if (msUntilTimeout > 10) {
                     var nextLanes = getNextLanes(root2, NoLanes);
                     if (nextLanes !== NoLanes) {
@@ -20106,7 +20106,7 @@
                 if (!shouldForceFlushFallbacksInDEV()) {
                   var mostRecentEventTime = getMostRecentEventTime(root2, lanes);
                   var eventTimeMs = mostRecentEventTime;
-                  var timeElapsedMs = now() - eventTimeMs;
+                  var timeElapsedMs = now2() - eventTimeMs;
                   var _msUntilTimeout = jnd(timeElapsedMs) - timeElapsedMs;
                   if (_msUntilTimeout > 10) {
                     root2.timeoutHandle = scheduleTimeout(commitRoot.bind(null, root2, workInProgressRootRecoverableErrors, workInProgressTransitions), _msUntilTimeout);
@@ -20183,7 +20183,7 @@
             flushPassiveEffects();
             var lanes = getNextLanes(root2, NoLanes);
             if (!includesSomeLane(lanes, SyncLane)) {
-              ensureRootIsScheduled(root2, now());
+              ensureRootIsScheduled(root2, now2());
               return null;
             }
             var exitStatus = renderRootSync(root2, lanes);
@@ -20198,7 +20198,7 @@
               var fatalError = workInProgressRootFatalError;
               prepareFreshStack(root2, NoLanes);
               markRootSuspended$1(root2, lanes);
-              ensureRootIsScheduled(root2, now());
+              ensureRootIsScheduled(root2, now2());
               throw fatalError;
             }
             if (exitStatus === RootDidNotComplete) {
@@ -20208,13 +20208,13 @@
             root2.finishedWork = finishedWork;
             root2.finishedLanes = lanes;
             commitRoot(root2, workInProgressRootRecoverableErrors, workInProgressTransitions);
-            ensureRootIsScheduled(root2, now());
+            ensureRootIsScheduled(root2, now2());
             return null;
           }
           function flushRoot(root2, lanes) {
             if (lanes !== NoLanes) {
               markRootEntangled(root2, mergeLanes(lanes, SyncLane));
-              ensureRootIsScheduled(root2, now());
+              ensureRootIsScheduled(root2, now2());
               if ((executionContext & (RenderContext | CommitContext)) === NoContext) {
                 resetRenderTimer();
                 flushSyncCallbacks();
@@ -20373,7 +20373,7 @@
             ReactCurrentDispatcher$2.current = prevDispatcher;
           }
           function markCommitTimeOfFallback() {
-            globalMostRecentFallbackTime = now();
+            globalMostRecentFallbackTime = now2();
           }
           function markSkippedUpdateLanes(lane) {
             workInProgressRootSkippedLanes = mergeLanes(lane, workInProgressRootSkippedLanes);
@@ -20707,7 +20707,7 @@
             {
               onCommitRoot$1();
             }
-            ensureRootIsScheduled(root2, now());
+            ensureRootIsScheduled(root2, now2());
             if (recoverableErrors !== null) {
               var onRecoverableError = root2.onRecoverableError;
               for (var i2 = 0; i2 < recoverableErrors.length; i2++) {
@@ -20914,7 +20914,7 @@
             markRootPinged(root2, pingedLanes);
             warnIfSuspenseResolutionNotWrappedWithActDEV(root2);
             if (workInProgressRoot === root2 && isSubsetOfLanes(workInProgressRootRenderLanes, pingedLanes)) {
-              if (workInProgressRootExitStatus === RootSuspendedWithDelay || workInProgressRootExitStatus === RootSuspended && includesOnlyRetries(workInProgressRootRenderLanes) && now() - globalMostRecentFallbackTime < FALLBACK_THROTTLE_MS) {
+              if (workInProgressRootExitStatus === RootSuspendedWithDelay || workInProgressRootExitStatus === RootSuspended && includesOnlyRetries(workInProgressRootRenderLanes) && now2() - globalMostRecentFallbackTime < FALLBACK_THROTTLE_MS) {
                 prepareFreshStack(root2, NoLanes);
               } else {
                 workInProgressRootPingedLanes = mergeLanes(workInProgressRootPingedLanes, pingedLanes);
@@ -23196,6 +23196,8 @@
 
   // node_modules/three/build/three.module.js
   var REVISION = "147";
+  var MOUSE = { LEFT: 0, MIDDLE: 1, RIGHT: 2, ROTATE: 0, DOLLY: 1, PAN: 2 };
+  var TOUCH = { ROTATE: 0, PAN: 1, DOLLY_PAN: 2, DOLLY_ROTATE: 3 };
   var CullFaceNone = 0;
   var CullFaceBack = 1;
   var CullFaceFront = 2;
@@ -23308,6 +23310,9 @@
   var RGBA_ASTC_12x10_Format = 37820;
   var RGBA_ASTC_12x12_Format = 37821;
   var RGBA_BPTC_Format = 36492;
+  var LoopOnce = 2200;
+  var LoopRepeat = 2201;
+  var LoopPingPong = 2202;
   var InterpolateDiscrete = 2300;
   var InterpolateLinear = 2301;
   var InterpolateSmooth = 2302;
@@ -23315,6 +23320,7 @@
   var ZeroSlopeEnding = 2401;
   var WrapAroundEnding = 2402;
   var NormalAnimationBlendMode = 2500;
+  var AdditiveAnimationBlendMode = 2501;
   var LinearEncoding = 3e3;
   var sRGBEncoding = 3001;
   var BasicDepthPacking = 3200;
@@ -23830,17 +23836,17 @@
       return this;
     }
     transpose() {
-      let tmp;
+      let tmp2;
       const m = this.elements;
-      tmp = m[1];
+      tmp2 = m[1];
       m[1] = m[3];
-      m[3] = tmp;
-      tmp = m[2];
+      m[3] = tmp2;
+      tmp2 = m[2];
       m[2] = m[6];
-      m[6] = tmp;
-      tmp = m[5];
+      m[6] = tmp2;
+      tmp2 = m[5];
       m[5] = m[7];
-      m[7] = tmp;
+      m[7] = tmp2;
       return this;
     }
     getNormalMatrix(matrix4) {
@@ -27101,25 +27107,25 @@
     }
     transpose() {
       const te2 = this.elements;
-      let tmp;
-      tmp = te2[1];
+      let tmp2;
+      tmp2 = te2[1];
       te2[1] = te2[4];
-      te2[4] = tmp;
-      tmp = te2[2];
+      te2[4] = tmp2;
+      tmp2 = te2[2];
       te2[2] = te2[8];
-      te2[8] = tmp;
-      tmp = te2[6];
+      te2[8] = tmp2;
+      tmp2 = te2[6];
       te2[6] = te2[9];
-      te2[9] = tmp;
-      tmp = te2[3];
+      te2[9] = tmp2;
+      tmp2 = te2[3];
       te2[3] = te2[12];
-      te2[12] = tmp;
-      tmp = te2[7];
+      te2[12] = tmp2;
+      tmp2 = te2[7];
       te2[7] = te2[13];
-      te2[13] = tmp;
-      tmp = te2[11];
+      te2[13] = tmp2;
+      tmp2 = te2[11];
       te2[11] = te2[14];
-      te2[14] = tmp;
+      te2[14] = tmp2;
       return this;
     }
     setPosition(x2, y2, z2) {
@@ -29329,20 +29335,20 @@
           );
         }
       }
-      const tmp = new Vector3(), tmp2 = new Vector3();
+      const tmp2 = new Vector3(), tmp22 = new Vector3();
       const n2 = new Vector3(), n22 = new Vector3();
       function handleVertex(v2) {
         n2.fromArray(normals, v2 * 3);
         n22.copy(n2);
         const t2 = tan1[v2];
-        tmp.copy(t2);
-        tmp.sub(n2.multiplyScalar(n2.dot(t2))).normalize();
-        tmp2.crossVectors(n22, t2);
-        const test = tmp2.dot(tan2[v2]);
+        tmp2.copy(t2);
+        tmp2.sub(n2.multiplyScalar(n2.dot(t2))).normalize();
+        tmp22.crossVectors(n22, t2);
+        const test = tmp22.dot(tan2[v2]);
         const w2 = test < 0 ? -1 : 1;
-        tangents[v2 * 4] = tmp.x;
-        tangents[v2 * 4 + 1] = tmp.y;
-        tangents[v2 * 4 + 2] = tmp.z;
+        tangents[v2 * 4] = tmp2.x;
+        tangents[v2 * 4 + 1] = tmp2.y;
+        tangents[v2 * 4 + 2] = tmp2.z;
         tangents[v2 * 4 + 3] = w2;
       }
       for (let i2 = 0, il = groups.length; i2 < il; ++i2) {
@@ -29926,9 +29932,9 @@
   function mergeUniforms(uniforms) {
     const merged = {};
     for (let u2 = 0; u2 < uniforms.length; u2++) {
-      const tmp = cloneUniforms(uniforms[u2]);
-      for (const p in tmp) {
-        merged[p] = tmp[p];
+      const tmp2 = cloneUniforms(uniforms[u2]);
+      for (const p in tmp2) {
+        merged[p] = tmp2[p];
       }
     }
     return merged;
@@ -40413,6 +40419,1324 @@
       return data;
     }
   };
+  var LineBasicMaterial = class extends Material {
+    constructor(parameters) {
+      super();
+      this.isLineBasicMaterial = true;
+      this.type = "LineBasicMaterial";
+      this.color = new Color(16777215);
+      this.linewidth = 1;
+      this.linecap = "round";
+      this.linejoin = "round";
+      this.fog = true;
+      this.setValues(parameters);
+    }
+    copy(source) {
+      super.copy(source);
+      this.color.copy(source.color);
+      this.linewidth = source.linewidth;
+      this.linecap = source.linecap;
+      this.linejoin = source.linejoin;
+      this.fog = source.fog;
+      return this;
+    }
+  };
+  var _start$1 = /* @__PURE__ */ new Vector3();
+  var _end$1 = /* @__PURE__ */ new Vector3();
+  var _inverseMatrix$1 = /* @__PURE__ */ new Matrix4();
+  var _ray$1 = /* @__PURE__ */ new Ray();
+  var _sphere$1 = /* @__PURE__ */ new Sphere();
+  var Line = class extends Object3D {
+    constructor(geometry = new BufferGeometry(), material = new LineBasicMaterial()) {
+      super();
+      this.isLine = true;
+      this.type = "Line";
+      this.geometry = geometry;
+      this.material = material;
+      this.updateMorphTargets();
+    }
+    copy(source, recursive) {
+      super.copy(source, recursive);
+      this.material = source.material;
+      this.geometry = source.geometry;
+      return this;
+    }
+    computeLineDistances() {
+      const geometry = this.geometry;
+      if (geometry.index === null) {
+        const positionAttribute = geometry.attributes.position;
+        const lineDistances = [0];
+        for (let i2 = 1, l2 = positionAttribute.count; i2 < l2; i2++) {
+          _start$1.fromBufferAttribute(positionAttribute, i2 - 1);
+          _end$1.fromBufferAttribute(positionAttribute, i2);
+          lineDistances[i2] = lineDistances[i2 - 1];
+          lineDistances[i2] += _start$1.distanceTo(_end$1);
+        }
+        geometry.setAttribute("lineDistance", new Float32BufferAttribute(lineDistances, 1));
+      } else {
+        console.warn("THREE.Line.computeLineDistances(): Computation only possible with non-indexed BufferGeometry.");
+      }
+      return this;
+    }
+    raycast(raycaster, intersects) {
+      const geometry = this.geometry;
+      const matrixWorld = this.matrixWorld;
+      const threshold = raycaster.params.Line.threshold;
+      const drawRange = geometry.drawRange;
+      if (geometry.boundingSphere === null)
+        geometry.computeBoundingSphere();
+      _sphere$1.copy(geometry.boundingSphere);
+      _sphere$1.applyMatrix4(matrixWorld);
+      _sphere$1.radius += threshold;
+      if (raycaster.ray.intersectsSphere(_sphere$1) === false)
+        return;
+      _inverseMatrix$1.copy(matrixWorld).invert();
+      _ray$1.copy(raycaster.ray).applyMatrix4(_inverseMatrix$1);
+      const localThreshold = threshold / ((this.scale.x + this.scale.y + this.scale.z) / 3);
+      const localThresholdSq = localThreshold * localThreshold;
+      const vStart = new Vector3();
+      const vEnd = new Vector3();
+      const interSegment = new Vector3();
+      const interRay = new Vector3();
+      const step = this.isLineSegments ? 2 : 1;
+      const index = geometry.index;
+      const attributes = geometry.attributes;
+      const positionAttribute = attributes.position;
+      if (index !== null) {
+        const start = Math.max(0, drawRange.start);
+        const end = Math.min(index.count, drawRange.start + drawRange.count);
+        for (let i2 = start, l2 = end - 1; i2 < l2; i2 += step) {
+          const a2 = index.getX(i2);
+          const b2 = index.getX(i2 + 1);
+          vStart.fromBufferAttribute(positionAttribute, a2);
+          vEnd.fromBufferAttribute(positionAttribute, b2);
+          const distSq = _ray$1.distanceSqToSegment(vStart, vEnd, interRay, interSegment);
+          if (distSq > localThresholdSq)
+            continue;
+          interRay.applyMatrix4(this.matrixWorld);
+          const distance = raycaster.ray.origin.distanceTo(interRay);
+          if (distance < raycaster.near || distance > raycaster.far)
+            continue;
+          intersects.push({
+            distance,
+            point: interSegment.clone().applyMatrix4(this.matrixWorld),
+            index: i2,
+            face: null,
+            faceIndex: null,
+            object: this
+          });
+        }
+      } else {
+        const start = Math.max(0, drawRange.start);
+        const end = Math.min(positionAttribute.count, drawRange.start + drawRange.count);
+        for (let i2 = start, l2 = end - 1; i2 < l2; i2 += step) {
+          vStart.fromBufferAttribute(positionAttribute, i2);
+          vEnd.fromBufferAttribute(positionAttribute, i2 + 1);
+          const distSq = _ray$1.distanceSqToSegment(vStart, vEnd, interRay, interSegment);
+          if (distSq > localThresholdSq)
+            continue;
+          interRay.applyMatrix4(this.matrixWorld);
+          const distance = raycaster.ray.origin.distanceTo(interRay);
+          if (distance < raycaster.near || distance > raycaster.far)
+            continue;
+          intersects.push({
+            distance,
+            point: interSegment.clone().applyMatrix4(this.matrixWorld),
+            index: i2,
+            face: null,
+            faceIndex: null,
+            object: this
+          });
+        }
+      }
+    }
+    updateMorphTargets() {
+      const geometry = this.geometry;
+      const morphAttributes = geometry.morphAttributes;
+      const keys = Object.keys(morphAttributes);
+      if (keys.length > 0) {
+        const morphAttribute = morphAttributes[keys[0]];
+        if (morphAttribute !== void 0) {
+          this.morphTargetInfluences = [];
+          this.morphTargetDictionary = {};
+          for (let m = 0, ml = morphAttribute.length; m < ml; m++) {
+            const name = morphAttribute[m].name || String(m);
+            this.morphTargetInfluences.push(0);
+            this.morphTargetDictionary[name] = m;
+          }
+        }
+      }
+    }
+  };
+  var Curve = class {
+    constructor() {
+      this.type = "Curve";
+      this.arcLengthDivisions = 200;
+    }
+    getPoint() {
+      console.warn("THREE.Curve: .getPoint() not implemented.");
+      return null;
+    }
+    getPointAt(u2, optionalTarget) {
+      const t2 = this.getUtoTmapping(u2);
+      return this.getPoint(t2, optionalTarget);
+    }
+    getPoints(divisions = 5) {
+      const points = [];
+      for (let d2 = 0; d2 <= divisions; d2++) {
+        points.push(this.getPoint(d2 / divisions));
+      }
+      return points;
+    }
+    getSpacedPoints(divisions = 5) {
+      const points = [];
+      for (let d2 = 0; d2 <= divisions; d2++) {
+        points.push(this.getPointAt(d2 / divisions));
+      }
+      return points;
+    }
+    getLength() {
+      const lengths = this.getLengths();
+      return lengths[lengths.length - 1];
+    }
+    getLengths(divisions = this.arcLengthDivisions) {
+      if (this.cacheArcLengths && this.cacheArcLengths.length === divisions + 1 && !this.needsUpdate) {
+        return this.cacheArcLengths;
+      }
+      this.needsUpdate = false;
+      const cache = [];
+      let current, last = this.getPoint(0);
+      let sum = 0;
+      cache.push(0);
+      for (let p = 1; p <= divisions; p++) {
+        current = this.getPoint(p / divisions);
+        sum += current.distanceTo(last);
+        cache.push(sum);
+        last = current;
+      }
+      this.cacheArcLengths = cache;
+      return cache;
+    }
+    updateArcLengths() {
+      this.needsUpdate = true;
+      this.getLengths();
+    }
+    getUtoTmapping(u2, distance) {
+      const arcLengths = this.getLengths();
+      let i2 = 0;
+      const il = arcLengths.length;
+      let targetArcLength;
+      if (distance) {
+        targetArcLength = distance;
+      } else {
+        targetArcLength = u2 * arcLengths[il - 1];
+      }
+      let low = 0, high = il - 1, comparison;
+      while (low <= high) {
+        i2 = Math.floor(low + (high - low) / 2);
+        comparison = arcLengths[i2] - targetArcLength;
+        if (comparison < 0) {
+          low = i2 + 1;
+        } else if (comparison > 0) {
+          high = i2 - 1;
+        } else {
+          high = i2;
+          break;
+        }
+      }
+      i2 = high;
+      if (arcLengths[i2] === targetArcLength) {
+        return i2 / (il - 1);
+      }
+      const lengthBefore = arcLengths[i2];
+      const lengthAfter = arcLengths[i2 + 1];
+      const segmentLength = lengthAfter - lengthBefore;
+      const segmentFraction = (targetArcLength - lengthBefore) / segmentLength;
+      const t2 = (i2 + segmentFraction) / (il - 1);
+      return t2;
+    }
+    getTangent(t2, optionalTarget) {
+      const delta = 1e-4;
+      let t1 = t2 - delta;
+      let t22 = t2 + delta;
+      if (t1 < 0)
+        t1 = 0;
+      if (t22 > 1)
+        t22 = 1;
+      const pt1 = this.getPoint(t1);
+      const pt2 = this.getPoint(t22);
+      const tangent = optionalTarget || (pt1.isVector2 ? new Vector2() : new Vector3());
+      tangent.copy(pt2).sub(pt1).normalize();
+      return tangent;
+    }
+    getTangentAt(u2, optionalTarget) {
+      const t2 = this.getUtoTmapping(u2);
+      return this.getTangent(t2, optionalTarget);
+    }
+    computeFrenetFrames(segments, closed) {
+      const normal = new Vector3();
+      const tangents = [];
+      const normals = [];
+      const binormals = [];
+      const vec = new Vector3();
+      const mat = new Matrix4();
+      for (let i2 = 0; i2 <= segments; i2++) {
+        const u2 = i2 / segments;
+        tangents[i2] = this.getTangentAt(u2, new Vector3());
+      }
+      normals[0] = new Vector3();
+      binormals[0] = new Vector3();
+      let min = Number.MAX_VALUE;
+      const tx = Math.abs(tangents[0].x);
+      const ty = Math.abs(tangents[0].y);
+      const tz = Math.abs(tangents[0].z);
+      if (tx <= min) {
+        min = tx;
+        normal.set(1, 0, 0);
+      }
+      if (ty <= min) {
+        min = ty;
+        normal.set(0, 1, 0);
+      }
+      if (tz <= min) {
+        normal.set(0, 0, 1);
+      }
+      vec.crossVectors(tangents[0], normal).normalize();
+      normals[0].crossVectors(tangents[0], vec);
+      binormals[0].crossVectors(tangents[0], normals[0]);
+      for (let i2 = 1; i2 <= segments; i2++) {
+        normals[i2] = normals[i2 - 1].clone();
+        binormals[i2] = binormals[i2 - 1].clone();
+        vec.crossVectors(tangents[i2 - 1], tangents[i2]);
+        if (vec.length() > Number.EPSILON) {
+          vec.normalize();
+          const theta = Math.acos(clamp(tangents[i2 - 1].dot(tangents[i2]), -1, 1));
+          normals[i2].applyMatrix4(mat.makeRotationAxis(vec, theta));
+        }
+        binormals[i2].crossVectors(tangents[i2], normals[i2]);
+      }
+      if (closed === true) {
+        let theta = Math.acos(clamp(normals[0].dot(normals[segments]), -1, 1));
+        theta /= segments;
+        if (tangents[0].dot(vec.crossVectors(normals[0], normals[segments])) > 0) {
+          theta = -theta;
+        }
+        for (let i2 = 1; i2 <= segments; i2++) {
+          normals[i2].applyMatrix4(mat.makeRotationAxis(tangents[i2], theta * i2));
+          binormals[i2].crossVectors(tangents[i2], normals[i2]);
+        }
+      }
+      return {
+        tangents,
+        normals,
+        binormals
+      };
+    }
+    clone() {
+      return new this.constructor().copy(this);
+    }
+    copy(source) {
+      this.arcLengthDivisions = source.arcLengthDivisions;
+      return this;
+    }
+    toJSON() {
+      const data = {
+        metadata: {
+          version: 4.5,
+          type: "Curve",
+          generator: "Curve.toJSON"
+        }
+      };
+      data.arcLengthDivisions = this.arcLengthDivisions;
+      data.type = this.type;
+      return data;
+    }
+    fromJSON(json) {
+      this.arcLengthDivisions = json.arcLengthDivisions;
+      return this;
+    }
+  };
+  var EllipseCurve = class extends Curve {
+    constructor(aX = 0, aY = 0, xRadius = 1, yRadius = 1, aStartAngle = 0, aEndAngle = Math.PI * 2, aClockwise = false, aRotation = 0) {
+      super();
+      this.isEllipseCurve = true;
+      this.type = "EllipseCurve";
+      this.aX = aX;
+      this.aY = aY;
+      this.xRadius = xRadius;
+      this.yRadius = yRadius;
+      this.aStartAngle = aStartAngle;
+      this.aEndAngle = aEndAngle;
+      this.aClockwise = aClockwise;
+      this.aRotation = aRotation;
+    }
+    getPoint(t2, optionalTarget) {
+      const point = optionalTarget || new Vector2();
+      const twoPi = Math.PI * 2;
+      let deltaAngle = this.aEndAngle - this.aStartAngle;
+      const samePoints = Math.abs(deltaAngle) < Number.EPSILON;
+      while (deltaAngle < 0)
+        deltaAngle += twoPi;
+      while (deltaAngle > twoPi)
+        deltaAngle -= twoPi;
+      if (deltaAngle < Number.EPSILON) {
+        if (samePoints) {
+          deltaAngle = 0;
+        } else {
+          deltaAngle = twoPi;
+        }
+      }
+      if (this.aClockwise === true && !samePoints) {
+        if (deltaAngle === twoPi) {
+          deltaAngle = -twoPi;
+        } else {
+          deltaAngle = deltaAngle - twoPi;
+        }
+      }
+      const angle = this.aStartAngle + t2 * deltaAngle;
+      let x2 = this.aX + this.xRadius * Math.cos(angle);
+      let y2 = this.aY + this.yRadius * Math.sin(angle);
+      if (this.aRotation !== 0) {
+        const cos = Math.cos(this.aRotation);
+        const sin = Math.sin(this.aRotation);
+        const tx = x2 - this.aX;
+        const ty = y2 - this.aY;
+        x2 = tx * cos - ty * sin + this.aX;
+        y2 = tx * sin + ty * cos + this.aY;
+      }
+      return point.set(x2, y2);
+    }
+    copy(source) {
+      super.copy(source);
+      this.aX = source.aX;
+      this.aY = source.aY;
+      this.xRadius = source.xRadius;
+      this.yRadius = source.yRadius;
+      this.aStartAngle = source.aStartAngle;
+      this.aEndAngle = source.aEndAngle;
+      this.aClockwise = source.aClockwise;
+      this.aRotation = source.aRotation;
+      return this;
+    }
+    toJSON() {
+      const data = super.toJSON();
+      data.aX = this.aX;
+      data.aY = this.aY;
+      data.xRadius = this.xRadius;
+      data.yRadius = this.yRadius;
+      data.aStartAngle = this.aStartAngle;
+      data.aEndAngle = this.aEndAngle;
+      data.aClockwise = this.aClockwise;
+      data.aRotation = this.aRotation;
+      return data;
+    }
+    fromJSON(json) {
+      super.fromJSON(json);
+      this.aX = json.aX;
+      this.aY = json.aY;
+      this.xRadius = json.xRadius;
+      this.yRadius = json.yRadius;
+      this.aStartAngle = json.aStartAngle;
+      this.aEndAngle = json.aEndAngle;
+      this.aClockwise = json.aClockwise;
+      this.aRotation = json.aRotation;
+      return this;
+    }
+  };
+  var ArcCurve = class extends EllipseCurve {
+    constructor(aX, aY, aRadius, aStartAngle, aEndAngle, aClockwise) {
+      super(aX, aY, aRadius, aRadius, aStartAngle, aEndAngle, aClockwise);
+      this.isArcCurve = true;
+      this.type = "ArcCurve";
+    }
+  };
+  function CubicPoly() {
+    let c0 = 0, c1 = 0, c2 = 0, c3 = 0;
+    function init(x0, x1, t0, t1) {
+      c0 = x0;
+      c1 = t0;
+      c2 = -3 * x0 + 3 * x1 - 2 * t0 - t1;
+      c3 = 2 * x0 - 2 * x1 + t0 + t1;
+    }
+    return {
+      initCatmullRom: function(x0, x1, x2, x3, tension) {
+        init(x1, x2, tension * (x2 - x0), tension * (x3 - x1));
+      },
+      initNonuniformCatmullRom: function(x0, x1, x2, x3, dt0, dt1, dt2) {
+        let t1 = (x1 - x0) / dt0 - (x2 - x0) / (dt0 + dt1) + (x2 - x1) / dt1;
+        let t2 = (x2 - x1) / dt1 - (x3 - x1) / (dt1 + dt2) + (x3 - x2) / dt2;
+        t1 *= dt1;
+        t2 *= dt1;
+        init(x1, x2, t1, t2);
+      },
+      calc: function(t2) {
+        const t22 = t2 * t2;
+        const t3 = t22 * t2;
+        return c0 + c1 * t2 + c2 * t22 + c3 * t3;
+      }
+    };
+  }
+  var tmp = /* @__PURE__ */ new Vector3();
+  var px = /* @__PURE__ */ new CubicPoly();
+  var py = /* @__PURE__ */ new CubicPoly();
+  var pz = /* @__PURE__ */ new CubicPoly();
+  var CatmullRomCurve3 = class extends Curve {
+    constructor(points = [], closed = false, curveType = "centripetal", tension = 0.5) {
+      super();
+      this.isCatmullRomCurve3 = true;
+      this.type = "CatmullRomCurve3";
+      this.points = points;
+      this.closed = closed;
+      this.curveType = curveType;
+      this.tension = tension;
+    }
+    getPoint(t2, optionalTarget = new Vector3()) {
+      const point = optionalTarget;
+      const points = this.points;
+      const l2 = points.length;
+      const p = (l2 - (this.closed ? 0 : 1)) * t2;
+      let intPoint = Math.floor(p);
+      let weight = p - intPoint;
+      if (this.closed) {
+        intPoint += intPoint > 0 ? 0 : (Math.floor(Math.abs(intPoint) / l2) + 1) * l2;
+      } else if (weight === 0 && intPoint === l2 - 1) {
+        intPoint = l2 - 2;
+        weight = 1;
+      }
+      let p0, p3;
+      if (this.closed || intPoint > 0) {
+        p0 = points[(intPoint - 1) % l2];
+      } else {
+        tmp.subVectors(points[0], points[1]).add(points[0]);
+        p0 = tmp;
+      }
+      const p1 = points[intPoint % l2];
+      const p2 = points[(intPoint + 1) % l2];
+      if (this.closed || intPoint + 2 < l2) {
+        p3 = points[(intPoint + 2) % l2];
+      } else {
+        tmp.subVectors(points[l2 - 1], points[l2 - 2]).add(points[l2 - 1]);
+        p3 = tmp;
+      }
+      if (this.curveType === "centripetal" || this.curveType === "chordal") {
+        const pow = this.curveType === "chordal" ? 0.5 : 0.25;
+        let dt0 = Math.pow(p0.distanceToSquared(p1), pow);
+        let dt1 = Math.pow(p1.distanceToSquared(p2), pow);
+        let dt2 = Math.pow(p2.distanceToSquared(p3), pow);
+        if (dt1 < 1e-4)
+          dt1 = 1;
+        if (dt0 < 1e-4)
+          dt0 = dt1;
+        if (dt2 < 1e-4)
+          dt2 = dt1;
+        px.initNonuniformCatmullRom(p0.x, p1.x, p2.x, p3.x, dt0, dt1, dt2);
+        py.initNonuniformCatmullRom(p0.y, p1.y, p2.y, p3.y, dt0, dt1, dt2);
+        pz.initNonuniformCatmullRom(p0.z, p1.z, p2.z, p3.z, dt0, dt1, dt2);
+      } else if (this.curveType === "catmullrom") {
+        px.initCatmullRom(p0.x, p1.x, p2.x, p3.x, this.tension);
+        py.initCatmullRom(p0.y, p1.y, p2.y, p3.y, this.tension);
+        pz.initCatmullRom(p0.z, p1.z, p2.z, p3.z, this.tension);
+      }
+      point.set(
+        px.calc(weight),
+        py.calc(weight),
+        pz.calc(weight)
+      );
+      return point;
+    }
+    copy(source) {
+      super.copy(source);
+      this.points = [];
+      for (let i2 = 0, l2 = source.points.length; i2 < l2; i2++) {
+        const point = source.points[i2];
+        this.points.push(point.clone());
+      }
+      this.closed = source.closed;
+      this.curveType = source.curveType;
+      this.tension = source.tension;
+      return this;
+    }
+    toJSON() {
+      const data = super.toJSON();
+      data.points = [];
+      for (let i2 = 0, l2 = this.points.length; i2 < l2; i2++) {
+        const point = this.points[i2];
+        data.points.push(point.toArray());
+      }
+      data.closed = this.closed;
+      data.curveType = this.curveType;
+      data.tension = this.tension;
+      return data;
+    }
+    fromJSON(json) {
+      super.fromJSON(json);
+      this.points = [];
+      for (let i2 = 0, l2 = json.points.length; i2 < l2; i2++) {
+        const point = json.points[i2];
+        this.points.push(new Vector3().fromArray(point));
+      }
+      this.closed = json.closed;
+      this.curveType = json.curveType;
+      this.tension = json.tension;
+      return this;
+    }
+  };
+  function CatmullRom(t2, p0, p1, p2, p3) {
+    const v0 = (p2 - p0) * 0.5;
+    const v1 = (p3 - p1) * 0.5;
+    const t22 = t2 * t2;
+    const t3 = t2 * t22;
+    return (2 * p1 - 2 * p2 + v0 + v1) * t3 + (-3 * p1 + 3 * p2 - 2 * v0 - v1) * t22 + v0 * t2 + p1;
+  }
+  function QuadraticBezierP0(t2, p) {
+    const k2 = 1 - t2;
+    return k2 * k2 * p;
+  }
+  function QuadraticBezierP1(t2, p) {
+    return 2 * (1 - t2) * t2 * p;
+  }
+  function QuadraticBezierP2(t2, p) {
+    return t2 * t2 * p;
+  }
+  function QuadraticBezier(t2, p0, p1, p2) {
+    return QuadraticBezierP0(t2, p0) + QuadraticBezierP1(t2, p1) + QuadraticBezierP2(t2, p2);
+  }
+  function CubicBezierP0(t2, p) {
+    const k2 = 1 - t2;
+    return k2 * k2 * k2 * p;
+  }
+  function CubicBezierP1(t2, p) {
+    const k2 = 1 - t2;
+    return 3 * k2 * k2 * t2 * p;
+  }
+  function CubicBezierP2(t2, p) {
+    return 3 * (1 - t2) * t2 * t2 * p;
+  }
+  function CubicBezierP3(t2, p) {
+    return t2 * t2 * t2 * p;
+  }
+  function CubicBezier(t2, p0, p1, p2, p3) {
+    return CubicBezierP0(t2, p0) + CubicBezierP1(t2, p1) + CubicBezierP2(t2, p2) + CubicBezierP3(t2, p3);
+  }
+  var CubicBezierCurve = class extends Curve {
+    constructor(v0 = new Vector2(), v1 = new Vector2(), v2 = new Vector2(), v3 = new Vector2()) {
+      super();
+      this.isCubicBezierCurve = true;
+      this.type = "CubicBezierCurve";
+      this.v0 = v0;
+      this.v1 = v1;
+      this.v2 = v2;
+      this.v3 = v3;
+    }
+    getPoint(t2, optionalTarget = new Vector2()) {
+      const point = optionalTarget;
+      const v0 = this.v0, v1 = this.v1, v2 = this.v2, v3 = this.v3;
+      point.set(
+        CubicBezier(t2, v0.x, v1.x, v2.x, v3.x),
+        CubicBezier(t2, v0.y, v1.y, v2.y, v3.y)
+      );
+      return point;
+    }
+    copy(source) {
+      super.copy(source);
+      this.v0.copy(source.v0);
+      this.v1.copy(source.v1);
+      this.v2.copy(source.v2);
+      this.v3.copy(source.v3);
+      return this;
+    }
+    toJSON() {
+      const data = super.toJSON();
+      data.v0 = this.v0.toArray();
+      data.v1 = this.v1.toArray();
+      data.v2 = this.v2.toArray();
+      data.v3 = this.v3.toArray();
+      return data;
+    }
+    fromJSON(json) {
+      super.fromJSON(json);
+      this.v0.fromArray(json.v0);
+      this.v1.fromArray(json.v1);
+      this.v2.fromArray(json.v2);
+      this.v3.fromArray(json.v3);
+      return this;
+    }
+  };
+  var CubicBezierCurve3 = class extends Curve {
+    constructor(v0 = new Vector3(), v1 = new Vector3(), v2 = new Vector3(), v3 = new Vector3()) {
+      super();
+      this.isCubicBezierCurve3 = true;
+      this.type = "CubicBezierCurve3";
+      this.v0 = v0;
+      this.v1 = v1;
+      this.v2 = v2;
+      this.v3 = v3;
+    }
+    getPoint(t2, optionalTarget = new Vector3()) {
+      const point = optionalTarget;
+      const v0 = this.v0, v1 = this.v1, v2 = this.v2, v3 = this.v3;
+      point.set(
+        CubicBezier(t2, v0.x, v1.x, v2.x, v3.x),
+        CubicBezier(t2, v0.y, v1.y, v2.y, v3.y),
+        CubicBezier(t2, v0.z, v1.z, v2.z, v3.z)
+      );
+      return point;
+    }
+    copy(source) {
+      super.copy(source);
+      this.v0.copy(source.v0);
+      this.v1.copy(source.v1);
+      this.v2.copy(source.v2);
+      this.v3.copy(source.v3);
+      return this;
+    }
+    toJSON() {
+      const data = super.toJSON();
+      data.v0 = this.v0.toArray();
+      data.v1 = this.v1.toArray();
+      data.v2 = this.v2.toArray();
+      data.v3 = this.v3.toArray();
+      return data;
+    }
+    fromJSON(json) {
+      super.fromJSON(json);
+      this.v0.fromArray(json.v0);
+      this.v1.fromArray(json.v1);
+      this.v2.fromArray(json.v2);
+      this.v3.fromArray(json.v3);
+      return this;
+    }
+  };
+  var LineCurve = class extends Curve {
+    constructor(v1 = new Vector2(), v2 = new Vector2()) {
+      super();
+      this.isLineCurve = true;
+      this.type = "LineCurve";
+      this.v1 = v1;
+      this.v2 = v2;
+    }
+    getPoint(t2, optionalTarget = new Vector2()) {
+      const point = optionalTarget;
+      if (t2 === 1) {
+        point.copy(this.v2);
+      } else {
+        point.copy(this.v2).sub(this.v1);
+        point.multiplyScalar(t2).add(this.v1);
+      }
+      return point;
+    }
+    getPointAt(u2, optionalTarget) {
+      return this.getPoint(u2, optionalTarget);
+    }
+    getTangent(t2, optionalTarget) {
+      const tangent = optionalTarget || new Vector2();
+      tangent.copy(this.v2).sub(this.v1).normalize();
+      return tangent;
+    }
+    copy(source) {
+      super.copy(source);
+      this.v1.copy(source.v1);
+      this.v2.copy(source.v2);
+      return this;
+    }
+    toJSON() {
+      const data = super.toJSON();
+      data.v1 = this.v1.toArray();
+      data.v2 = this.v2.toArray();
+      return data;
+    }
+    fromJSON(json) {
+      super.fromJSON(json);
+      this.v1.fromArray(json.v1);
+      this.v2.fromArray(json.v2);
+      return this;
+    }
+  };
+  var LineCurve3 = class extends Curve {
+    constructor(v1 = new Vector3(), v2 = new Vector3()) {
+      super();
+      this.isLineCurve3 = true;
+      this.type = "LineCurve3";
+      this.v1 = v1;
+      this.v2 = v2;
+    }
+    getPoint(t2, optionalTarget = new Vector3()) {
+      const point = optionalTarget;
+      if (t2 === 1) {
+        point.copy(this.v2);
+      } else {
+        point.copy(this.v2).sub(this.v1);
+        point.multiplyScalar(t2).add(this.v1);
+      }
+      return point;
+    }
+    getPointAt(u2, optionalTarget) {
+      return this.getPoint(u2, optionalTarget);
+    }
+    copy(source) {
+      super.copy(source);
+      this.v1.copy(source.v1);
+      this.v2.copy(source.v2);
+      return this;
+    }
+    toJSON() {
+      const data = super.toJSON();
+      data.v1 = this.v1.toArray();
+      data.v2 = this.v2.toArray();
+      return data;
+    }
+    fromJSON(json) {
+      super.fromJSON(json);
+      this.v1.fromArray(json.v1);
+      this.v2.fromArray(json.v2);
+      return this;
+    }
+  };
+  var QuadraticBezierCurve = class extends Curve {
+    constructor(v0 = new Vector2(), v1 = new Vector2(), v2 = new Vector2()) {
+      super();
+      this.isQuadraticBezierCurve = true;
+      this.type = "QuadraticBezierCurve";
+      this.v0 = v0;
+      this.v1 = v1;
+      this.v2 = v2;
+    }
+    getPoint(t2, optionalTarget = new Vector2()) {
+      const point = optionalTarget;
+      const v0 = this.v0, v1 = this.v1, v2 = this.v2;
+      point.set(
+        QuadraticBezier(t2, v0.x, v1.x, v2.x),
+        QuadraticBezier(t2, v0.y, v1.y, v2.y)
+      );
+      return point;
+    }
+    copy(source) {
+      super.copy(source);
+      this.v0.copy(source.v0);
+      this.v1.copy(source.v1);
+      this.v2.copy(source.v2);
+      return this;
+    }
+    toJSON() {
+      const data = super.toJSON();
+      data.v0 = this.v0.toArray();
+      data.v1 = this.v1.toArray();
+      data.v2 = this.v2.toArray();
+      return data;
+    }
+    fromJSON(json) {
+      super.fromJSON(json);
+      this.v0.fromArray(json.v0);
+      this.v1.fromArray(json.v1);
+      this.v2.fromArray(json.v2);
+      return this;
+    }
+  };
+  var QuadraticBezierCurve3 = class extends Curve {
+    constructor(v0 = new Vector3(), v1 = new Vector3(), v2 = new Vector3()) {
+      super();
+      this.isQuadraticBezierCurve3 = true;
+      this.type = "QuadraticBezierCurve3";
+      this.v0 = v0;
+      this.v1 = v1;
+      this.v2 = v2;
+    }
+    getPoint(t2, optionalTarget = new Vector3()) {
+      const point = optionalTarget;
+      const v0 = this.v0, v1 = this.v1, v2 = this.v2;
+      point.set(
+        QuadraticBezier(t2, v0.x, v1.x, v2.x),
+        QuadraticBezier(t2, v0.y, v1.y, v2.y),
+        QuadraticBezier(t2, v0.z, v1.z, v2.z)
+      );
+      return point;
+    }
+    copy(source) {
+      super.copy(source);
+      this.v0.copy(source.v0);
+      this.v1.copy(source.v1);
+      this.v2.copy(source.v2);
+      return this;
+    }
+    toJSON() {
+      const data = super.toJSON();
+      data.v0 = this.v0.toArray();
+      data.v1 = this.v1.toArray();
+      data.v2 = this.v2.toArray();
+      return data;
+    }
+    fromJSON(json) {
+      super.fromJSON(json);
+      this.v0.fromArray(json.v0);
+      this.v1.fromArray(json.v1);
+      this.v2.fromArray(json.v2);
+      return this;
+    }
+  };
+  var SplineCurve = class extends Curve {
+    constructor(points = []) {
+      super();
+      this.isSplineCurve = true;
+      this.type = "SplineCurve";
+      this.points = points;
+    }
+    getPoint(t2, optionalTarget = new Vector2()) {
+      const point = optionalTarget;
+      const points = this.points;
+      const p = (points.length - 1) * t2;
+      const intPoint = Math.floor(p);
+      const weight = p - intPoint;
+      const p0 = points[intPoint === 0 ? intPoint : intPoint - 1];
+      const p1 = points[intPoint];
+      const p2 = points[intPoint > points.length - 2 ? points.length - 1 : intPoint + 1];
+      const p3 = points[intPoint > points.length - 3 ? points.length - 1 : intPoint + 2];
+      point.set(
+        CatmullRom(weight, p0.x, p1.x, p2.x, p3.x),
+        CatmullRom(weight, p0.y, p1.y, p2.y, p3.y)
+      );
+      return point;
+    }
+    copy(source) {
+      super.copy(source);
+      this.points = [];
+      for (let i2 = 0, l2 = source.points.length; i2 < l2; i2++) {
+        const point = source.points[i2];
+        this.points.push(point.clone());
+      }
+      return this;
+    }
+    toJSON() {
+      const data = super.toJSON();
+      data.points = [];
+      for (let i2 = 0, l2 = this.points.length; i2 < l2; i2++) {
+        const point = this.points[i2];
+        data.points.push(point.toArray());
+      }
+      return data;
+    }
+    fromJSON(json) {
+      super.fromJSON(json);
+      this.points = [];
+      for (let i2 = 0, l2 = json.points.length; i2 < l2; i2++) {
+        const point = json.points[i2];
+        this.points.push(new Vector2().fromArray(point));
+      }
+      return this;
+    }
+  };
+  var Curves = /* @__PURE__ */ Object.freeze({
+    __proto__: null,
+    ArcCurve,
+    CatmullRomCurve3,
+    CubicBezierCurve,
+    CubicBezierCurve3,
+    EllipseCurve,
+    LineCurve,
+    LineCurve3,
+    QuadraticBezierCurve,
+    QuadraticBezierCurve3,
+    SplineCurve
+  });
+  var CurvePath = class extends Curve {
+    constructor() {
+      super();
+      this.type = "CurvePath";
+      this.curves = [];
+      this.autoClose = false;
+    }
+    add(curve) {
+      this.curves.push(curve);
+    }
+    closePath() {
+      const startPoint = this.curves[0].getPoint(0);
+      const endPoint = this.curves[this.curves.length - 1].getPoint(1);
+      if (!startPoint.equals(endPoint)) {
+        this.curves.push(new LineCurve(endPoint, startPoint));
+      }
+    }
+    getPoint(t2, optionalTarget) {
+      const d2 = t2 * this.getLength();
+      const curveLengths = this.getCurveLengths();
+      let i2 = 0;
+      while (i2 < curveLengths.length) {
+        if (curveLengths[i2] >= d2) {
+          const diff = curveLengths[i2] - d2;
+          const curve = this.curves[i2];
+          const segmentLength = curve.getLength();
+          const u2 = segmentLength === 0 ? 0 : 1 - diff / segmentLength;
+          return curve.getPointAt(u2, optionalTarget);
+        }
+        i2++;
+      }
+      return null;
+    }
+    getLength() {
+      const lens = this.getCurveLengths();
+      return lens[lens.length - 1];
+    }
+    updateArcLengths() {
+      this.needsUpdate = true;
+      this.cacheLengths = null;
+      this.getCurveLengths();
+    }
+    getCurveLengths() {
+      if (this.cacheLengths && this.cacheLengths.length === this.curves.length) {
+        return this.cacheLengths;
+      }
+      const lengths = [];
+      let sums = 0;
+      for (let i2 = 0, l2 = this.curves.length; i2 < l2; i2++) {
+        sums += this.curves[i2].getLength();
+        lengths.push(sums);
+      }
+      this.cacheLengths = lengths;
+      return lengths;
+    }
+    getSpacedPoints(divisions = 40) {
+      const points = [];
+      for (let i2 = 0; i2 <= divisions; i2++) {
+        points.push(this.getPoint(i2 / divisions));
+      }
+      if (this.autoClose) {
+        points.push(points[0]);
+      }
+      return points;
+    }
+    getPoints(divisions = 12) {
+      const points = [];
+      let last;
+      for (let i2 = 0, curves = this.curves; i2 < curves.length; i2++) {
+        const curve = curves[i2];
+        const resolution = curve.isEllipseCurve ? divisions * 2 : curve.isLineCurve || curve.isLineCurve3 ? 1 : curve.isSplineCurve ? divisions * curve.points.length : divisions;
+        const pts = curve.getPoints(resolution);
+        for (let j2 = 0; j2 < pts.length; j2++) {
+          const point = pts[j2];
+          if (last && last.equals(point))
+            continue;
+          points.push(point);
+          last = point;
+        }
+      }
+      if (this.autoClose && points.length > 1 && !points[points.length - 1].equals(points[0])) {
+        points.push(points[0]);
+      }
+      return points;
+    }
+    copy(source) {
+      super.copy(source);
+      this.curves = [];
+      for (let i2 = 0, l2 = source.curves.length; i2 < l2; i2++) {
+        const curve = source.curves[i2];
+        this.curves.push(curve.clone());
+      }
+      this.autoClose = source.autoClose;
+      return this;
+    }
+    toJSON() {
+      const data = super.toJSON();
+      data.autoClose = this.autoClose;
+      data.curves = [];
+      for (let i2 = 0, l2 = this.curves.length; i2 < l2; i2++) {
+        const curve = this.curves[i2];
+        data.curves.push(curve.toJSON());
+      }
+      return data;
+    }
+    fromJSON(json) {
+      super.fromJSON(json);
+      this.autoClose = json.autoClose;
+      this.curves = [];
+      for (let i2 = 0, l2 = json.curves.length; i2 < l2; i2++) {
+        const curve = json.curves[i2];
+        this.curves.push(new Curves[curve.type]().fromJSON(curve));
+      }
+      return this;
+    }
+  };
+  var Path = class extends CurvePath {
+    constructor(points) {
+      super();
+      this.type = "Path";
+      this.currentPoint = new Vector2();
+      if (points) {
+        this.setFromPoints(points);
+      }
+    }
+    setFromPoints(points) {
+      this.moveTo(points[0].x, points[0].y);
+      for (let i2 = 1, l2 = points.length; i2 < l2; i2++) {
+        this.lineTo(points[i2].x, points[i2].y);
+      }
+      return this;
+    }
+    moveTo(x2, y2) {
+      this.currentPoint.set(x2, y2);
+      return this;
+    }
+    lineTo(x2, y2) {
+      const curve = new LineCurve(this.currentPoint.clone(), new Vector2(x2, y2));
+      this.curves.push(curve);
+      this.currentPoint.set(x2, y2);
+      return this;
+    }
+    quadraticCurveTo(aCPx, aCPy, aX, aY) {
+      const curve = new QuadraticBezierCurve(
+        this.currentPoint.clone(),
+        new Vector2(aCPx, aCPy),
+        new Vector2(aX, aY)
+      );
+      this.curves.push(curve);
+      this.currentPoint.set(aX, aY);
+      return this;
+    }
+    bezierCurveTo(aCP1x, aCP1y, aCP2x, aCP2y, aX, aY) {
+      const curve = new CubicBezierCurve(
+        this.currentPoint.clone(),
+        new Vector2(aCP1x, aCP1y),
+        new Vector2(aCP2x, aCP2y),
+        new Vector2(aX, aY)
+      );
+      this.curves.push(curve);
+      this.currentPoint.set(aX, aY);
+      return this;
+    }
+    splineThru(pts) {
+      const npts = [this.currentPoint.clone()].concat(pts);
+      const curve = new SplineCurve(npts);
+      this.curves.push(curve);
+      this.currentPoint.copy(pts[pts.length - 1]);
+      return this;
+    }
+    arc(aX, aY, aRadius, aStartAngle, aEndAngle, aClockwise) {
+      const x0 = this.currentPoint.x;
+      const y0 = this.currentPoint.y;
+      this.absarc(
+        aX + x0,
+        aY + y0,
+        aRadius,
+        aStartAngle,
+        aEndAngle,
+        aClockwise
+      );
+      return this;
+    }
+    absarc(aX, aY, aRadius, aStartAngle, aEndAngle, aClockwise) {
+      this.absellipse(aX, aY, aRadius, aRadius, aStartAngle, aEndAngle, aClockwise);
+      return this;
+    }
+    ellipse(aX, aY, xRadius, yRadius, aStartAngle, aEndAngle, aClockwise, aRotation) {
+      const x0 = this.currentPoint.x;
+      const y0 = this.currentPoint.y;
+      this.absellipse(aX + x0, aY + y0, xRadius, yRadius, aStartAngle, aEndAngle, aClockwise, aRotation);
+      return this;
+    }
+    absellipse(aX, aY, xRadius, yRadius, aStartAngle, aEndAngle, aClockwise, aRotation) {
+      const curve = new EllipseCurve(aX, aY, xRadius, yRadius, aStartAngle, aEndAngle, aClockwise, aRotation);
+      if (this.curves.length > 0) {
+        const firstPoint = curve.getPoint(0);
+        if (!firstPoint.equals(this.currentPoint)) {
+          this.lineTo(firstPoint.x, firstPoint.y);
+        }
+      }
+      this.curves.push(curve);
+      const lastPoint = curve.getPoint(1);
+      this.currentPoint.copy(lastPoint);
+      return this;
+    }
+    copy(source) {
+      super.copy(source);
+      this.currentPoint.copy(source.currentPoint);
+      return this;
+    }
+    toJSON() {
+      const data = super.toJSON();
+      data.currentPoint = this.currentPoint.toArray();
+      return data;
+    }
+    fromJSON(json) {
+      super.fromJSON(json);
+      this.currentPoint.fromArray(json.currentPoint);
+      return this;
+    }
+  };
+  var LatheGeometry = class extends BufferGeometry {
+    constructor(points = [new Vector2(0, -0.5), new Vector2(0.5, 0), new Vector2(0, 0.5)], segments = 12, phiStart = 0, phiLength = Math.PI * 2) {
+      super();
+      this.type = "LatheGeometry";
+      this.parameters = {
+        points,
+        segments,
+        phiStart,
+        phiLength
+      };
+      segments = Math.floor(segments);
+      phiLength = clamp(phiLength, 0, Math.PI * 2);
+      const indices = [];
+      const vertices = [];
+      const uvs = [];
+      const initNormals = [];
+      const normals = [];
+      const inverseSegments = 1 / segments;
+      const vertex2 = new Vector3();
+      const uv = new Vector2();
+      const normal = new Vector3();
+      const curNormal = new Vector3();
+      const prevNormal = new Vector3();
+      let dx = 0;
+      let dy = 0;
+      for (let j2 = 0; j2 <= points.length - 1; j2++) {
+        switch (j2) {
+          case 0:
+            dx = points[j2 + 1].x - points[j2].x;
+            dy = points[j2 + 1].y - points[j2].y;
+            normal.x = dy * 1;
+            normal.y = -dx;
+            normal.z = dy * 0;
+            prevNormal.copy(normal);
+            normal.normalize();
+            initNormals.push(normal.x, normal.y, normal.z);
+            break;
+          case points.length - 1:
+            initNormals.push(prevNormal.x, prevNormal.y, prevNormal.z);
+            break;
+          default:
+            dx = points[j2 + 1].x - points[j2].x;
+            dy = points[j2 + 1].y - points[j2].y;
+            normal.x = dy * 1;
+            normal.y = -dx;
+            normal.z = dy * 0;
+            curNormal.copy(normal);
+            normal.x += prevNormal.x;
+            normal.y += prevNormal.y;
+            normal.z += prevNormal.z;
+            normal.normalize();
+            initNormals.push(normal.x, normal.y, normal.z);
+            prevNormal.copy(curNormal);
+        }
+      }
+      for (let i2 = 0; i2 <= segments; i2++) {
+        const phi = phiStart + i2 * inverseSegments * phiLength;
+        const sin = Math.sin(phi);
+        const cos = Math.cos(phi);
+        for (let j2 = 0; j2 <= points.length - 1; j2++) {
+          vertex2.x = points[j2].x * sin;
+          vertex2.y = points[j2].y;
+          vertex2.z = points[j2].x * cos;
+          vertices.push(vertex2.x, vertex2.y, vertex2.z);
+          uv.x = i2 / segments;
+          uv.y = j2 / (points.length - 1);
+          uvs.push(uv.x, uv.y);
+          const x2 = initNormals[3 * j2 + 0] * sin;
+          const y2 = initNormals[3 * j2 + 1];
+          const z2 = initNormals[3 * j2 + 0] * cos;
+          normals.push(x2, y2, z2);
+        }
+      }
+      for (let i2 = 0; i2 < segments; i2++) {
+        for (let j2 = 0; j2 < points.length - 1; j2++) {
+          const base = j2 + i2 * points.length;
+          const a2 = base;
+          const b2 = base + points.length;
+          const c2 = base + points.length + 1;
+          const d2 = base + 1;
+          indices.push(a2, b2, d2);
+          indices.push(c2, d2, b2);
+        }
+      }
+      this.setIndex(indices);
+      this.setAttribute("position", new Float32BufferAttribute(vertices, 3));
+      this.setAttribute("uv", new Float32BufferAttribute(uvs, 2));
+      this.setAttribute("normal", new Float32BufferAttribute(normals, 3));
+    }
+    static fromJSON(data) {
+      return new LatheGeometry(data.points, data.segments, data.phiStart, data.phiLength);
+    }
+  };
+  var CapsuleGeometry = class extends LatheGeometry {
+    constructor(radius = 1, length = 1, capSegments = 4, radialSegments = 8) {
+      const path = new Path();
+      path.absarc(0, -length / 2, radius, Math.PI * 1.5, 0);
+      path.absarc(0, length / 2, radius, 0, Math.PI * 0.5);
+      super(path.getPoints(capSegments), radialSegments);
+      this.type = "CapsuleGeometry";
+      this.parameters = {
+        radius,
+        height: length,
+        capSegments,
+        radialSegments
+      };
+    }
+    static fromJSON(data) {
+      return new CapsuleGeometry(data.radius, data.length, data.capSegments, data.radialSegments);
+    }
+  };
+  var SphereGeometry = class extends BufferGeometry {
+    constructor(radius = 1, widthSegments = 32, heightSegments = 16, phiStart = 0, phiLength = Math.PI * 2, thetaStart = 0, thetaLength = Math.PI) {
+      super();
+      this.type = "SphereGeometry";
+      this.parameters = {
+        radius,
+        widthSegments,
+        heightSegments,
+        phiStart,
+        phiLength,
+        thetaStart,
+        thetaLength
+      };
+      widthSegments = Math.max(3, Math.floor(widthSegments));
+      heightSegments = Math.max(2, Math.floor(heightSegments));
+      const thetaEnd = Math.min(thetaStart + thetaLength, Math.PI);
+      let index = 0;
+      const grid = [];
+      const vertex2 = new Vector3();
+      const normal = new Vector3();
+      const indices = [];
+      const vertices = [];
+      const normals = [];
+      const uvs = [];
+      for (let iy = 0; iy <= heightSegments; iy++) {
+        const verticesRow = [];
+        const v2 = iy / heightSegments;
+        let uOffset = 0;
+        if (iy == 0 && thetaStart == 0) {
+          uOffset = 0.5 / widthSegments;
+        } else if (iy == heightSegments && thetaEnd == Math.PI) {
+          uOffset = -0.5 / widthSegments;
+        }
+        for (let ix = 0; ix <= widthSegments; ix++) {
+          const u2 = ix / widthSegments;
+          vertex2.x = -radius * Math.cos(phiStart + u2 * phiLength) * Math.sin(thetaStart + v2 * thetaLength);
+          vertex2.y = radius * Math.cos(thetaStart + v2 * thetaLength);
+          vertex2.z = radius * Math.sin(phiStart + u2 * phiLength) * Math.sin(thetaStart + v2 * thetaLength);
+          vertices.push(vertex2.x, vertex2.y, vertex2.z);
+          normal.copy(vertex2).normalize();
+          normals.push(normal.x, normal.y, normal.z);
+          uvs.push(u2 + uOffset, 1 - v2);
+          verticesRow.push(index++);
+        }
+        grid.push(verticesRow);
+      }
+      for (let iy = 0; iy < heightSegments; iy++) {
+        for (let ix = 0; ix < widthSegments; ix++) {
+          const a2 = grid[iy][ix + 1];
+          const b2 = grid[iy][ix];
+          const c2 = grid[iy + 1][ix];
+          const d2 = grid[iy + 1][ix + 1];
+          if (iy !== 0 || thetaStart > 0)
+            indices.push(a2, b2, d2);
+          if (iy !== heightSegments - 1 || thetaEnd < Math.PI)
+            indices.push(b2, c2, d2);
+        }
+      }
+      this.setIndex(indices);
+      this.setAttribute("position", new Float32BufferAttribute(vertices, 3));
+      this.setAttribute("normal", new Float32BufferAttribute(normals, 3));
+      this.setAttribute("uv", new Float32BufferAttribute(uvs, 2));
+    }
+    static fromJSON(data) {
+      return new SphereGeometry(data.radius, data.widthSegments, data.heightSegments, data.phiStart, data.phiLength, data.thetaStart, data.thetaLength);
+    }
+  };
   function arraySlice(array, from, to) {
     if (isTypedArray(array)) {
       return new array.constructor(array.subarray(from, to !== void 0 ? to : array.length));
@@ -41604,6 +42928,48 @@
       return texture;
     }
   };
+  var Light = class extends Object3D {
+    constructor(color, intensity = 1) {
+      super();
+      this.isLight = true;
+      this.type = "Light";
+      this.color = new Color(color);
+      this.intensity = intensity;
+    }
+    dispose() {
+    }
+    copy(source, recursive) {
+      super.copy(source, recursive);
+      this.color.copy(source.color);
+      this.intensity = source.intensity;
+      return this;
+    }
+    toJSON(meta) {
+      const data = super.toJSON(meta);
+      data.object.color = this.color.getHex();
+      data.object.intensity = this.intensity;
+      if (this.groundColor !== void 0)
+        data.object.groundColor = this.groundColor.getHex();
+      if (this.distance !== void 0)
+        data.object.distance = this.distance;
+      if (this.angle !== void 0)
+        data.object.angle = this.angle;
+      if (this.decay !== void 0)
+        data.object.decay = this.decay;
+      if (this.penumbra !== void 0)
+        data.object.penumbra = this.penumbra;
+      if (this.shadow !== void 0)
+        data.object.shadow = this.shadow.toJSON();
+      return data;
+    }
+  };
+  var AmbientLight = class extends Light {
+    constructor(color, intensity) {
+      super(color, intensity);
+      this.isAmbientLight = true;
+      this.type = "AmbientLight";
+    }
+  };
   var LoaderUtils = class {
     static decodeText(array) {
       if (typeof TextDecoder !== "undefined") {
@@ -41638,6 +43004,192 @@
       if (/^blob:.*$/i.test(url))
         return url;
       return path + url;
+    }
+  };
+  var Clock = class {
+    constructor(autoStart = true) {
+      this.autoStart = autoStart;
+      this.startTime = 0;
+      this.oldTime = 0;
+      this.elapsedTime = 0;
+      this.running = false;
+    }
+    start() {
+      this.startTime = now();
+      this.oldTime = this.startTime;
+      this.elapsedTime = 0;
+      this.running = true;
+    }
+    stop() {
+      this.getElapsedTime();
+      this.running = false;
+      this.autoStart = false;
+    }
+    getElapsedTime() {
+      this.getDelta();
+      return this.elapsedTime;
+    }
+    getDelta() {
+      let diff = 0;
+      if (this.autoStart && !this.running) {
+        this.start();
+        return 0;
+      }
+      if (this.running) {
+        const newTime = now();
+        diff = (newTime - this.oldTime) / 1e3;
+        this.oldTime = newTime;
+        this.elapsedTime += diff;
+      }
+      return diff;
+    }
+  };
+  function now() {
+    return (typeof performance === "undefined" ? Date : performance).now();
+  }
+  var PropertyMixer = class {
+    constructor(binding, typeName, valueSize) {
+      this.binding = binding;
+      this.valueSize = valueSize;
+      let mixFunction, mixFunctionAdditive, setIdentity;
+      switch (typeName) {
+        case "quaternion":
+          mixFunction = this._slerp;
+          mixFunctionAdditive = this._slerpAdditive;
+          setIdentity = this._setAdditiveIdentityQuaternion;
+          this.buffer = new Float64Array(valueSize * 6);
+          this._workIndex = 5;
+          break;
+        case "string":
+        case "bool":
+          mixFunction = this._select;
+          mixFunctionAdditive = this._select;
+          setIdentity = this._setAdditiveIdentityOther;
+          this.buffer = new Array(valueSize * 5);
+          break;
+        default:
+          mixFunction = this._lerp;
+          mixFunctionAdditive = this._lerpAdditive;
+          setIdentity = this._setAdditiveIdentityNumeric;
+          this.buffer = new Float64Array(valueSize * 5);
+      }
+      this._mixBufferRegion = mixFunction;
+      this._mixBufferRegionAdditive = mixFunctionAdditive;
+      this._setIdentity = setIdentity;
+      this._origIndex = 3;
+      this._addIndex = 4;
+      this.cumulativeWeight = 0;
+      this.cumulativeWeightAdditive = 0;
+      this.useCount = 0;
+      this.referenceCount = 0;
+    }
+    accumulate(accuIndex, weight) {
+      const buffer = this.buffer, stride = this.valueSize, offset = accuIndex * stride + stride;
+      let currentWeight = this.cumulativeWeight;
+      if (currentWeight === 0) {
+        for (let i2 = 0; i2 !== stride; ++i2) {
+          buffer[offset + i2] = buffer[i2];
+        }
+        currentWeight = weight;
+      } else {
+        currentWeight += weight;
+        const mix = weight / currentWeight;
+        this._mixBufferRegion(buffer, offset, 0, mix, stride);
+      }
+      this.cumulativeWeight = currentWeight;
+    }
+    accumulateAdditive(weight) {
+      const buffer = this.buffer, stride = this.valueSize, offset = stride * this._addIndex;
+      if (this.cumulativeWeightAdditive === 0) {
+        this._setIdentity();
+      }
+      this._mixBufferRegionAdditive(buffer, offset, 0, weight, stride);
+      this.cumulativeWeightAdditive += weight;
+    }
+    apply(accuIndex) {
+      const stride = this.valueSize, buffer = this.buffer, offset = accuIndex * stride + stride, weight = this.cumulativeWeight, weightAdditive = this.cumulativeWeightAdditive, binding = this.binding;
+      this.cumulativeWeight = 0;
+      this.cumulativeWeightAdditive = 0;
+      if (weight < 1) {
+        const originalValueOffset = stride * this._origIndex;
+        this._mixBufferRegion(
+          buffer,
+          offset,
+          originalValueOffset,
+          1 - weight,
+          stride
+        );
+      }
+      if (weightAdditive > 0) {
+        this._mixBufferRegionAdditive(buffer, offset, this._addIndex * stride, 1, stride);
+      }
+      for (let i2 = stride, e2 = stride + stride; i2 !== e2; ++i2) {
+        if (buffer[i2] !== buffer[i2 + stride]) {
+          binding.setValue(buffer, offset);
+          break;
+        }
+      }
+    }
+    saveOriginalState() {
+      const binding = this.binding;
+      const buffer = this.buffer, stride = this.valueSize, originalValueOffset = stride * this._origIndex;
+      binding.getValue(buffer, originalValueOffset);
+      for (let i2 = stride, e2 = originalValueOffset; i2 !== e2; ++i2) {
+        buffer[i2] = buffer[originalValueOffset + i2 % stride];
+      }
+      this._setIdentity();
+      this.cumulativeWeight = 0;
+      this.cumulativeWeightAdditive = 0;
+    }
+    restoreOriginalState() {
+      const originalValueOffset = this.valueSize * 3;
+      this.binding.setValue(this.buffer, originalValueOffset);
+    }
+    _setAdditiveIdentityNumeric() {
+      const startIndex = this._addIndex * this.valueSize;
+      const endIndex = startIndex + this.valueSize;
+      for (let i2 = startIndex; i2 < endIndex; i2++) {
+        this.buffer[i2] = 0;
+      }
+    }
+    _setAdditiveIdentityQuaternion() {
+      this._setAdditiveIdentityNumeric();
+      this.buffer[this._addIndex * this.valueSize + 3] = 1;
+    }
+    _setAdditiveIdentityOther() {
+      const startIndex = this._origIndex * this.valueSize;
+      const targetIndex = this._addIndex * this.valueSize;
+      for (let i2 = 0; i2 < this.valueSize; i2++) {
+        this.buffer[targetIndex + i2] = this.buffer[startIndex + i2];
+      }
+    }
+    _select(buffer, dstOffset, srcOffset, t2, stride) {
+      if (t2 >= 0.5) {
+        for (let i2 = 0; i2 !== stride; ++i2) {
+          buffer[dstOffset + i2] = buffer[srcOffset + i2];
+        }
+      }
+    }
+    _slerp(buffer, dstOffset, srcOffset, t2) {
+      Quaternion.slerpFlat(buffer, dstOffset, buffer, dstOffset, buffer, srcOffset, t2);
+    }
+    _slerpAdditive(buffer, dstOffset, srcOffset, t2, stride) {
+      const workOffset = this._workIndex * stride;
+      Quaternion.multiplyQuaternionsFlat(buffer, workOffset, buffer, dstOffset, buffer, srcOffset);
+      Quaternion.slerpFlat(buffer, dstOffset, buffer, dstOffset, buffer, workOffset, t2);
+    }
+    _lerp(buffer, dstOffset, srcOffset, t2, stride) {
+      const s2 = 1 - t2;
+      for (let i2 = 0; i2 !== stride; ++i2) {
+        const j2 = dstOffset + i2;
+        buffer[j2] = buffer[j2] * s2 + buffer[srcOffset + i2] * t2;
+      }
+    }
+    _lerpAdditive(buffer, dstOffset, srcOffset, t2, stride) {
+      for (let i2 = 0; i2 !== stride; ++i2) {
+        const j2 = dstOffset + i2;
+        buffer[j2] = buffer[j2] + buffer[srcOffset + i2] * t2;
+      }
     }
   };
   var _RESERVED_CHARS_RE = "\\[\\]\\.:\\/";
@@ -41999,7 +43551,746 @@
       PropertyBinding.prototype._setValue_fromArray_setMatrixWorldNeedsUpdate
     ]
   ];
+  var AnimationAction = class {
+    constructor(mixer, clip, localRoot = null, blendMode = clip.blendMode) {
+      this._mixer = mixer;
+      this._clip = clip;
+      this._localRoot = localRoot;
+      this.blendMode = blendMode;
+      const tracks = clip.tracks, nTracks = tracks.length, interpolants = new Array(nTracks);
+      const interpolantSettings = {
+        endingStart: ZeroCurvatureEnding,
+        endingEnd: ZeroCurvatureEnding
+      };
+      for (let i2 = 0; i2 !== nTracks; ++i2) {
+        const interpolant = tracks[i2].createInterpolant(null);
+        interpolants[i2] = interpolant;
+        interpolant.settings = interpolantSettings;
+      }
+      this._interpolantSettings = interpolantSettings;
+      this._interpolants = interpolants;
+      this._propertyBindings = new Array(nTracks);
+      this._cacheIndex = null;
+      this._byClipCacheIndex = null;
+      this._timeScaleInterpolant = null;
+      this._weightInterpolant = null;
+      this.loop = LoopRepeat;
+      this._loopCount = -1;
+      this._startTime = null;
+      this.time = 0;
+      this.timeScale = 1;
+      this._effectiveTimeScale = 1;
+      this.weight = 1;
+      this._effectiveWeight = 1;
+      this.repetitions = Infinity;
+      this.paused = false;
+      this.enabled = true;
+      this.clampWhenFinished = false;
+      this.zeroSlopeAtStart = true;
+      this.zeroSlopeAtEnd = true;
+    }
+    play() {
+      this._mixer._activateAction(this);
+      return this;
+    }
+    stop() {
+      this._mixer._deactivateAction(this);
+      return this.reset();
+    }
+    reset() {
+      this.paused = false;
+      this.enabled = true;
+      this.time = 0;
+      this._loopCount = -1;
+      this._startTime = null;
+      return this.stopFading().stopWarping();
+    }
+    isRunning() {
+      return this.enabled && !this.paused && this.timeScale !== 0 && this._startTime === null && this._mixer._isActiveAction(this);
+    }
+    isScheduled() {
+      return this._mixer._isActiveAction(this);
+    }
+    startAt(time) {
+      this._startTime = time;
+      return this;
+    }
+    setLoop(mode, repetitions) {
+      this.loop = mode;
+      this.repetitions = repetitions;
+      return this;
+    }
+    setEffectiveWeight(weight) {
+      this.weight = weight;
+      this._effectiveWeight = this.enabled ? weight : 0;
+      return this.stopFading();
+    }
+    getEffectiveWeight() {
+      return this._effectiveWeight;
+    }
+    fadeIn(duration) {
+      return this._scheduleFading(duration, 0, 1);
+    }
+    fadeOut(duration) {
+      return this._scheduleFading(duration, 1, 0);
+    }
+    crossFadeFrom(fadeOutAction, duration, warp) {
+      fadeOutAction.fadeOut(duration);
+      this.fadeIn(duration);
+      if (warp) {
+        const fadeInDuration = this._clip.duration, fadeOutDuration = fadeOutAction._clip.duration, startEndRatio = fadeOutDuration / fadeInDuration, endStartRatio = fadeInDuration / fadeOutDuration;
+        fadeOutAction.warp(1, startEndRatio, duration);
+        this.warp(endStartRatio, 1, duration);
+      }
+      return this;
+    }
+    crossFadeTo(fadeInAction, duration, warp) {
+      return fadeInAction.crossFadeFrom(this, duration, warp);
+    }
+    stopFading() {
+      const weightInterpolant = this._weightInterpolant;
+      if (weightInterpolant !== null) {
+        this._weightInterpolant = null;
+        this._mixer._takeBackControlInterpolant(weightInterpolant);
+      }
+      return this;
+    }
+    setEffectiveTimeScale(timeScale) {
+      this.timeScale = timeScale;
+      this._effectiveTimeScale = this.paused ? 0 : timeScale;
+      return this.stopWarping();
+    }
+    getEffectiveTimeScale() {
+      return this._effectiveTimeScale;
+    }
+    setDuration(duration) {
+      this.timeScale = this._clip.duration / duration;
+      return this.stopWarping();
+    }
+    syncWith(action) {
+      this.time = action.time;
+      this.timeScale = action.timeScale;
+      return this.stopWarping();
+    }
+    halt(duration) {
+      return this.warp(this._effectiveTimeScale, 0, duration);
+    }
+    warp(startTimeScale, endTimeScale, duration) {
+      const mixer = this._mixer, now2 = mixer.time, timeScale = this.timeScale;
+      let interpolant = this._timeScaleInterpolant;
+      if (interpolant === null) {
+        interpolant = mixer._lendControlInterpolant();
+        this._timeScaleInterpolant = interpolant;
+      }
+      const times = interpolant.parameterPositions, values = interpolant.sampleValues;
+      times[0] = now2;
+      times[1] = now2 + duration;
+      values[0] = startTimeScale / timeScale;
+      values[1] = endTimeScale / timeScale;
+      return this;
+    }
+    stopWarping() {
+      const timeScaleInterpolant = this._timeScaleInterpolant;
+      if (timeScaleInterpolant !== null) {
+        this._timeScaleInterpolant = null;
+        this._mixer._takeBackControlInterpolant(timeScaleInterpolant);
+      }
+      return this;
+    }
+    getMixer() {
+      return this._mixer;
+    }
+    getClip() {
+      return this._clip;
+    }
+    getRoot() {
+      return this._localRoot || this._mixer._root;
+    }
+    _update(time, deltaTime, timeDirection, accuIndex) {
+      if (!this.enabled) {
+        this._updateWeight(time);
+        return;
+      }
+      const startTime = this._startTime;
+      if (startTime !== null) {
+        const timeRunning = (time - startTime) * timeDirection;
+        if (timeRunning < 0 || timeDirection === 0) {
+          deltaTime = 0;
+        } else {
+          this._startTime = null;
+          deltaTime = timeDirection * timeRunning;
+        }
+      }
+      deltaTime *= this._updateTimeScale(time);
+      const clipTime = this._updateTime(deltaTime);
+      const weight = this._updateWeight(time);
+      if (weight > 0) {
+        const interpolants = this._interpolants;
+        const propertyMixers = this._propertyBindings;
+        switch (this.blendMode) {
+          case AdditiveAnimationBlendMode:
+            for (let j2 = 0, m = interpolants.length; j2 !== m; ++j2) {
+              interpolants[j2].evaluate(clipTime);
+              propertyMixers[j2].accumulateAdditive(weight);
+            }
+            break;
+          case NormalAnimationBlendMode:
+          default:
+            for (let j2 = 0, m = interpolants.length; j2 !== m; ++j2) {
+              interpolants[j2].evaluate(clipTime);
+              propertyMixers[j2].accumulate(accuIndex, weight);
+            }
+        }
+      }
+    }
+    _updateWeight(time) {
+      let weight = 0;
+      if (this.enabled) {
+        weight = this.weight;
+        const interpolant = this._weightInterpolant;
+        if (interpolant !== null) {
+          const interpolantValue = interpolant.evaluate(time)[0];
+          weight *= interpolantValue;
+          if (time > interpolant.parameterPositions[1]) {
+            this.stopFading();
+            if (interpolantValue === 0) {
+              this.enabled = false;
+            }
+          }
+        }
+      }
+      this._effectiveWeight = weight;
+      return weight;
+    }
+    _updateTimeScale(time) {
+      let timeScale = 0;
+      if (!this.paused) {
+        timeScale = this.timeScale;
+        const interpolant = this._timeScaleInterpolant;
+        if (interpolant !== null) {
+          const interpolantValue = interpolant.evaluate(time)[0];
+          timeScale *= interpolantValue;
+          if (time > interpolant.parameterPositions[1]) {
+            this.stopWarping();
+            if (timeScale === 0) {
+              this.paused = true;
+            } else {
+              this.timeScale = timeScale;
+            }
+          }
+        }
+      }
+      this._effectiveTimeScale = timeScale;
+      return timeScale;
+    }
+    _updateTime(deltaTime) {
+      const duration = this._clip.duration;
+      const loop = this.loop;
+      let time = this.time + deltaTime;
+      let loopCount = this._loopCount;
+      const pingPong = loop === LoopPingPong;
+      if (deltaTime === 0) {
+        if (loopCount === -1)
+          return time;
+        return pingPong && (loopCount & 1) === 1 ? duration - time : time;
+      }
+      if (loop === LoopOnce) {
+        if (loopCount === -1) {
+          this._loopCount = 0;
+          this._setEndings(true, true, false);
+        }
+        handle_stop: {
+          if (time >= duration) {
+            time = duration;
+          } else if (time < 0) {
+            time = 0;
+          } else {
+            this.time = time;
+            break handle_stop;
+          }
+          if (this.clampWhenFinished)
+            this.paused = true;
+          else
+            this.enabled = false;
+          this.time = time;
+          this._mixer.dispatchEvent({
+            type: "finished",
+            action: this,
+            direction: deltaTime < 0 ? -1 : 1
+          });
+        }
+      } else {
+        if (loopCount === -1) {
+          if (deltaTime >= 0) {
+            loopCount = 0;
+            this._setEndings(true, this.repetitions === 0, pingPong);
+          } else {
+            this._setEndings(this.repetitions === 0, true, pingPong);
+          }
+        }
+        if (time >= duration || time < 0) {
+          const loopDelta = Math.floor(time / duration);
+          time -= duration * loopDelta;
+          loopCount += Math.abs(loopDelta);
+          const pending = this.repetitions - loopCount;
+          if (pending <= 0) {
+            if (this.clampWhenFinished)
+              this.paused = true;
+            else
+              this.enabled = false;
+            time = deltaTime > 0 ? duration : 0;
+            this.time = time;
+            this._mixer.dispatchEvent({
+              type: "finished",
+              action: this,
+              direction: deltaTime > 0 ? 1 : -1
+            });
+          } else {
+            if (pending === 1) {
+              const atStart = deltaTime < 0;
+              this._setEndings(atStart, !atStart, pingPong);
+            } else {
+              this._setEndings(false, false, pingPong);
+            }
+            this._loopCount = loopCount;
+            this.time = time;
+            this._mixer.dispatchEvent({
+              type: "loop",
+              action: this,
+              loopDelta
+            });
+          }
+        } else {
+          this.time = time;
+        }
+        if (pingPong && (loopCount & 1) === 1) {
+          return duration - time;
+        }
+      }
+      return time;
+    }
+    _setEndings(atStart, atEnd, pingPong) {
+      const settings = this._interpolantSettings;
+      if (pingPong) {
+        settings.endingStart = ZeroSlopeEnding;
+        settings.endingEnd = ZeroSlopeEnding;
+      } else {
+        if (atStart) {
+          settings.endingStart = this.zeroSlopeAtStart ? ZeroSlopeEnding : ZeroCurvatureEnding;
+        } else {
+          settings.endingStart = WrapAroundEnding;
+        }
+        if (atEnd) {
+          settings.endingEnd = this.zeroSlopeAtEnd ? ZeroSlopeEnding : ZeroCurvatureEnding;
+        } else {
+          settings.endingEnd = WrapAroundEnding;
+        }
+      }
+    }
+    _scheduleFading(duration, weightNow, weightThen) {
+      const mixer = this._mixer, now2 = mixer.time;
+      let interpolant = this._weightInterpolant;
+      if (interpolant === null) {
+        interpolant = mixer._lendControlInterpolant();
+        this._weightInterpolant = interpolant;
+      }
+      const times = interpolant.parameterPositions, values = interpolant.sampleValues;
+      times[0] = now2;
+      values[0] = weightNow;
+      times[1] = now2 + duration;
+      values[1] = weightThen;
+      return this;
+    }
+  };
   var _controlInterpolantsResultBuffer = new Float32Array(1);
+  var AnimationMixer = class extends EventDispatcher {
+    constructor(root) {
+      super();
+      this._root = root;
+      this._initMemoryManager();
+      this._accuIndex = 0;
+      this.time = 0;
+      this.timeScale = 1;
+    }
+    _bindAction(action, prototypeAction) {
+      const root = action._localRoot || this._root, tracks = action._clip.tracks, nTracks = tracks.length, bindings = action._propertyBindings, interpolants = action._interpolants, rootUuid = root.uuid, bindingsByRoot = this._bindingsByRootAndName;
+      let bindingsByName = bindingsByRoot[rootUuid];
+      if (bindingsByName === void 0) {
+        bindingsByName = {};
+        bindingsByRoot[rootUuid] = bindingsByName;
+      }
+      for (let i2 = 0; i2 !== nTracks; ++i2) {
+        const track = tracks[i2], trackName = track.name;
+        let binding = bindingsByName[trackName];
+        if (binding !== void 0) {
+          ++binding.referenceCount;
+          bindings[i2] = binding;
+        } else {
+          binding = bindings[i2];
+          if (binding !== void 0) {
+            if (binding._cacheIndex === null) {
+              ++binding.referenceCount;
+              this._addInactiveBinding(binding, rootUuid, trackName);
+            }
+            continue;
+          }
+          const path = prototypeAction && prototypeAction._propertyBindings[i2].binding.parsedPath;
+          binding = new PropertyMixer(
+            PropertyBinding.create(root, trackName, path),
+            track.ValueTypeName,
+            track.getValueSize()
+          );
+          ++binding.referenceCount;
+          this._addInactiveBinding(binding, rootUuid, trackName);
+          bindings[i2] = binding;
+        }
+        interpolants[i2].resultBuffer = binding.buffer;
+      }
+    }
+    _activateAction(action) {
+      if (!this._isActiveAction(action)) {
+        if (action._cacheIndex === null) {
+          const rootUuid = (action._localRoot || this._root).uuid, clipUuid = action._clip.uuid, actionsForClip = this._actionsByClip[clipUuid];
+          this._bindAction(
+            action,
+            actionsForClip && actionsForClip.knownActions[0]
+          );
+          this._addInactiveAction(action, clipUuid, rootUuid);
+        }
+        const bindings = action._propertyBindings;
+        for (let i2 = 0, n2 = bindings.length; i2 !== n2; ++i2) {
+          const binding = bindings[i2];
+          if (binding.useCount++ === 0) {
+            this._lendBinding(binding);
+            binding.saveOriginalState();
+          }
+        }
+        this._lendAction(action);
+      }
+    }
+    _deactivateAction(action) {
+      if (this._isActiveAction(action)) {
+        const bindings = action._propertyBindings;
+        for (let i2 = 0, n2 = bindings.length; i2 !== n2; ++i2) {
+          const binding = bindings[i2];
+          if (--binding.useCount === 0) {
+            binding.restoreOriginalState();
+            this._takeBackBinding(binding);
+          }
+        }
+        this._takeBackAction(action);
+      }
+    }
+    _initMemoryManager() {
+      this._actions = [];
+      this._nActiveActions = 0;
+      this._actionsByClip = {};
+      this._bindings = [];
+      this._nActiveBindings = 0;
+      this._bindingsByRootAndName = {};
+      this._controlInterpolants = [];
+      this._nActiveControlInterpolants = 0;
+      const scope = this;
+      this.stats = {
+        actions: {
+          get total() {
+            return scope._actions.length;
+          },
+          get inUse() {
+            return scope._nActiveActions;
+          }
+        },
+        bindings: {
+          get total() {
+            return scope._bindings.length;
+          },
+          get inUse() {
+            return scope._nActiveBindings;
+          }
+        },
+        controlInterpolants: {
+          get total() {
+            return scope._controlInterpolants.length;
+          },
+          get inUse() {
+            return scope._nActiveControlInterpolants;
+          }
+        }
+      };
+    }
+    _isActiveAction(action) {
+      const index = action._cacheIndex;
+      return index !== null && index < this._nActiveActions;
+    }
+    _addInactiveAction(action, clipUuid, rootUuid) {
+      const actions = this._actions, actionsByClip = this._actionsByClip;
+      let actionsForClip = actionsByClip[clipUuid];
+      if (actionsForClip === void 0) {
+        actionsForClip = {
+          knownActions: [action],
+          actionByRoot: {}
+        };
+        action._byClipCacheIndex = 0;
+        actionsByClip[clipUuid] = actionsForClip;
+      } else {
+        const knownActions = actionsForClip.knownActions;
+        action._byClipCacheIndex = knownActions.length;
+        knownActions.push(action);
+      }
+      action._cacheIndex = actions.length;
+      actions.push(action);
+      actionsForClip.actionByRoot[rootUuid] = action;
+    }
+    _removeInactiveAction(action) {
+      const actions = this._actions, lastInactiveAction = actions[actions.length - 1], cacheIndex = action._cacheIndex;
+      lastInactiveAction._cacheIndex = cacheIndex;
+      actions[cacheIndex] = lastInactiveAction;
+      actions.pop();
+      action._cacheIndex = null;
+      const clipUuid = action._clip.uuid, actionsByClip = this._actionsByClip, actionsForClip = actionsByClip[clipUuid], knownActionsForClip = actionsForClip.knownActions, lastKnownAction = knownActionsForClip[knownActionsForClip.length - 1], byClipCacheIndex = action._byClipCacheIndex;
+      lastKnownAction._byClipCacheIndex = byClipCacheIndex;
+      knownActionsForClip[byClipCacheIndex] = lastKnownAction;
+      knownActionsForClip.pop();
+      action._byClipCacheIndex = null;
+      const actionByRoot = actionsForClip.actionByRoot, rootUuid = (action._localRoot || this._root).uuid;
+      delete actionByRoot[rootUuid];
+      if (knownActionsForClip.length === 0) {
+        delete actionsByClip[clipUuid];
+      }
+      this._removeInactiveBindingsForAction(action);
+    }
+    _removeInactiveBindingsForAction(action) {
+      const bindings = action._propertyBindings;
+      for (let i2 = 0, n2 = bindings.length; i2 !== n2; ++i2) {
+        const binding = bindings[i2];
+        if (--binding.referenceCount === 0) {
+          this._removeInactiveBinding(binding);
+        }
+      }
+    }
+    _lendAction(action) {
+      const actions = this._actions, prevIndex = action._cacheIndex, lastActiveIndex = this._nActiveActions++, firstInactiveAction = actions[lastActiveIndex];
+      action._cacheIndex = lastActiveIndex;
+      actions[lastActiveIndex] = action;
+      firstInactiveAction._cacheIndex = prevIndex;
+      actions[prevIndex] = firstInactiveAction;
+    }
+    _takeBackAction(action) {
+      const actions = this._actions, prevIndex = action._cacheIndex, firstInactiveIndex = --this._nActiveActions, lastActiveAction = actions[firstInactiveIndex];
+      action._cacheIndex = firstInactiveIndex;
+      actions[firstInactiveIndex] = action;
+      lastActiveAction._cacheIndex = prevIndex;
+      actions[prevIndex] = lastActiveAction;
+    }
+    _addInactiveBinding(binding, rootUuid, trackName) {
+      const bindingsByRoot = this._bindingsByRootAndName, bindings = this._bindings;
+      let bindingByName = bindingsByRoot[rootUuid];
+      if (bindingByName === void 0) {
+        bindingByName = {};
+        bindingsByRoot[rootUuid] = bindingByName;
+      }
+      bindingByName[trackName] = binding;
+      binding._cacheIndex = bindings.length;
+      bindings.push(binding);
+    }
+    _removeInactiveBinding(binding) {
+      const bindings = this._bindings, propBinding = binding.binding, rootUuid = propBinding.rootNode.uuid, trackName = propBinding.path, bindingsByRoot = this._bindingsByRootAndName, bindingByName = bindingsByRoot[rootUuid], lastInactiveBinding = bindings[bindings.length - 1], cacheIndex = binding._cacheIndex;
+      lastInactiveBinding._cacheIndex = cacheIndex;
+      bindings[cacheIndex] = lastInactiveBinding;
+      bindings.pop();
+      delete bindingByName[trackName];
+      if (Object.keys(bindingByName).length === 0) {
+        delete bindingsByRoot[rootUuid];
+      }
+    }
+    _lendBinding(binding) {
+      const bindings = this._bindings, prevIndex = binding._cacheIndex, lastActiveIndex = this._nActiveBindings++, firstInactiveBinding = bindings[lastActiveIndex];
+      binding._cacheIndex = lastActiveIndex;
+      bindings[lastActiveIndex] = binding;
+      firstInactiveBinding._cacheIndex = prevIndex;
+      bindings[prevIndex] = firstInactiveBinding;
+    }
+    _takeBackBinding(binding) {
+      const bindings = this._bindings, prevIndex = binding._cacheIndex, firstInactiveIndex = --this._nActiveBindings, lastActiveBinding = bindings[firstInactiveIndex];
+      binding._cacheIndex = firstInactiveIndex;
+      bindings[firstInactiveIndex] = binding;
+      lastActiveBinding._cacheIndex = prevIndex;
+      bindings[prevIndex] = lastActiveBinding;
+    }
+    _lendControlInterpolant() {
+      const interpolants = this._controlInterpolants, lastActiveIndex = this._nActiveControlInterpolants++;
+      let interpolant = interpolants[lastActiveIndex];
+      if (interpolant === void 0) {
+        interpolant = new LinearInterpolant(
+          new Float32Array(2),
+          new Float32Array(2),
+          1,
+          _controlInterpolantsResultBuffer
+        );
+        interpolant.__cacheIndex = lastActiveIndex;
+        interpolants[lastActiveIndex] = interpolant;
+      }
+      return interpolant;
+    }
+    _takeBackControlInterpolant(interpolant) {
+      const interpolants = this._controlInterpolants, prevIndex = interpolant.__cacheIndex, firstInactiveIndex = --this._nActiveControlInterpolants, lastActiveInterpolant = interpolants[firstInactiveIndex];
+      interpolant.__cacheIndex = firstInactiveIndex;
+      interpolants[firstInactiveIndex] = interpolant;
+      lastActiveInterpolant.__cacheIndex = prevIndex;
+      interpolants[prevIndex] = lastActiveInterpolant;
+    }
+    clipAction(clip, optionalRoot, blendMode) {
+      const root = optionalRoot || this._root, rootUuid = root.uuid;
+      let clipObject = typeof clip === "string" ? AnimationClip.findByName(root, clip) : clip;
+      const clipUuid = clipObject !== null ? clipObject.uuid : clip;
+      const actionsForClip = this._actionsByClip[clipUuid];
+      let prototypeAction = null;
+      if (blendMode === void 0) {
+        if (clipObject !== null) {
+          blendMode = clipObject.blendMode;
+        } else {
+          blendMode = NormalAnimationBlendMode;
+        }
+      }
+      if (actionsForClip !== void 0) {
+        const existingAction = actionsForClip.actionByRoot[rootUuid];
+        if (existingAction !== void 0 && existingAction.blendMode === blendMode) {
+          return existingAction;
+        }
+        prototypeAction = actionsForClip.knownActions[0];
+        if (clipObject === null)
+          clipObject = prototypeAction._clip;
+      }
+      if (clipObject === null)
+        return null;
+      const newAction = new AnimationAction(this, clipObject, optionalRoot, blendMode);
+      this._bindAction(newAction, prototypeAction);
+      this._addInactiveAction(newAction, clipUuid, rootUuid);
+      return newAction;
+    }
+    existingAction(clip, optionalRoot) {
+      const root = optionalRoot || this._root, rootUuid = root.uuid, clipObject = typeof clip === "string" ? AnimationClip.findByName(root, clip) : clip, clipUuid = clipObject ? clipObject.uuid : clip, actionsForClip = this._actionsByClip[clipUuid];
+      if (actionsForClip !== void 0) {
+        return actionsForClip.actionByRoot[rootUuid] || null;
+      }
+      return null;
+    }
+    stopAllAction() {
+      const actions = this._actions, nActions = this._nActiveActions;
+      for (let i2 = nActions - 1; i2 >= 0; --i2) {
+        actions[i2].stop();
+      }
+      return this;
+    }
+    update(deltaTime) {
+      deltaTime *= this.timeScale;
+      const actions = this._actions, nActions = this._nActiveActions, time = this.time += deltaTime, timeDirection = Math.sign(deltaTime), accuIndex = this._accuIndex ^= 1;
+      for (let i2 = 0; i2 !== nActions; ++i2) {
+        const action = actions[i2];
+        action._update(time, deltaTime, timeDirection, accuIndex);
+      }
+      const bindings = this._bindings, nBindings = this._nActiveBindings;
+      for (let i2 = 0; i2 !== nBindings; ++i2) {
+        bindings[i2].apply(accuIndex);
+      }
+      return this;
+    }
+    setTime(timeInSeconds) {
+      this.time = 0;
+      for (let i2 = 0; i2 < this._actions.length; i2++) {
+        this._actions[i2].time = 0;
+      }
+      return this.update(timeInSeconds);
+    }
+    getRoot() {
+      return this._root;
+    }
+    uncacheClip(clip) {
+      const actions = this._actions, clipUuid = clip.uuid, actionsByClip = this._actionsByClip, actionsForClip = actionsByClip[clipUuid];
+      if (actionsForClip !== void 0) {
+        const actionsToRemove = actionsForClip.knownActions;
+        for (let i2 = 0, n2 = actionsToRemove.length; i2 !== n2; ++i2) {
+          const action = actionsToRemove[i2];
+          this._deactivateAction(action);
+          const cacheIndex = action._cacheIndex, lastInactiveAction = actions[actions.length - 1];
+          action._cacheIndex = null;
+          action._byClipCacheIndex = null;
+          lastInactiveAction._cacheIndex = cacheIndex;
+          actions[cacheIndex] = lastInactiveAction;
+          actions.pop();
+          this._removeInactiveBindingsForAction(action);
+        }
+        delete actionsByClip[clipUuid];
+      }
+    }
+    uncacheRoot(root) {
+      const rootUuid = root.uuid, actionsByClip = this._actionsByClip;
+      for (const clipUuid in actionsByClip) {
+        const actionByRoot = actionsByClip[clipUuid].actionByRoot, action = actionByRoot[rootUuid];
+        if (action !== void 0) {
+          this._deactivateAction(action);
+          this._removeInactiveAction(action);
+        }
+      }
+      const bindingsByRoot = this._bindingsByRootAndName, bindingByName = bindingsByRoot[rootUuid];
+      if (bindingByName !== void 0) {
+        for (const trackName in bindingByName) {
+          const binding = bindingByName[trackName];
+          binding.restoreOriginalState();
+          this._removeInactiveBinding(binding);
+        }
+      }
+    }
+    uncacheAction(clip, optionalRoot) {
+      const action = this.existingAction(clip, optionalRoot);
+      if (action !== null) {
+        this._deactivateAction(action);
+        this._removeInactiveAction(action);
+      }
+    }
+  };
+  var Spherical = class {
+    constructor(radius = 1, phi = 0, theta = 0) {
+      this.radius = radius;
+      this.phi = phi;
+      this.theta = theta;
+      return this;
+    }
+    set(radius, phi, theta) {
+      this.radius = radius;
+      this.phi = phi;
+      this.theta = theta;
+      return this;
+    }
+    copy(other) {
+      this.radius = other.radius;
+      this.phi = other.phi;
+      this.theta = other.theta;
+      return this;
+    }
+    makeSafe() {
+      const EPS = 1e-6;
+      this.phi = Math.max(EPS, Math.min(Math.PI - EPS, this.phi));
+      return this;
+    }
+    setFromVector3(v2) {
+      return this.setFromCartesianCoords(v2.x, v2.y, v2.z);
+    }
+    setFromCartesianCoords(x2, y2, z2) {
+      this.radius = Math.sqrt(x2 * x2 + y2 * y2 + z2 * z2);
+      if (this.radius === 0) {
+        this.theta = 0;
+        this.phi = 0;
+      } else {
+        this.theta = Math.atan2(x2, z2);
+        this.phi = Math.acos(clamp(y2 / this.radius, -1, 1));
+      }
+      return this;
+    }
+    clone() {
+      return new this.constructor().copy(this);
+    }
+  };
   if (typeof __THREE_DEVTOOLS__ !== "undefined") {
     __THREE_DEVTOOLS__.dispatchEvent(new CustomEvent("register", { detail: {
       revision: REVISION
@@ -42012,19 +44303,6 @@
       window.__THREE__ = REVISION;
     }
   }
-
-  // src/HutaoProject/scene.ts
-  var Scene2 = class {
-    constructor() {
-      this.scene = new Scene();
-    }
-    getScene() {
-      return this.scene;
-    }
-    init(container) {
-    }
-  };
-  var scene_default = new Scene2();
 
   // src/HutaoProject/camera.ts
   var Camera2 = class {
@@ -42041,12 +44319,29 @@
         0.1,
         1e3
       );
-      this._camera.position.set(30, 5, 70);
-      console.log("scene.getScene().position", scene_default.getScene().position);
-      this._camera.lookAt(scene_default.getScene().position);
+      const position = {
+        x: -2,
+        y: 16,
+        z: 6
+      };
+      this._camera.position.set(position.x, position.y, position.z);
+      this._camera.lookAt(1.6, 14, -4);
     }
   };
   var camera_default = new Camera2();
+
+  // src/HutaoProject/scene.ts
+  var Scene2 = class {
+    constructor() {
+      this.scene = new Scene();
+    }
+    getScene() {
+      return this.scene;
+    }
+    init(container) {
+    }
+  };
+  var scene_default = new Scene2();
 
   // node_modules/three/examples/jsm/shaders/MMDToonShader.js
   var lights_mmd_toon_pars_fragment = `
@@ -52249,14 +54544,14 @@ void RE_IndirectDiffuse_BlinnPhong( const in vec3 irradiance, const in Geometric
       r2[1] = -r2[1];
     },
     leftToRightIndexOrder: function(p) {
-      var tmp = p[2];
+      var tmp2 = p[2];
       p[2] = p[0];
-      p[0] = tmp;
+      p[0] = tmp2;
     },
     leftToRightVector3Range: function(v1, v2) {
-      var tmp = -v2[2];
+      var tmp2 = -v2[2];
       v2[2] = -v1[2];
-      v1[2] = tmp;
+      v1[2] = tmp2;
     },
     leftToRightEulerRange: function(r1, r2) {
       var tmp1 = -r2[0];
@@ -53116,16 +55411,16 @@ void RE_IndirectDiffuse_BlinnPhong( const in vec3 irradiance, const in Geometric
       return;
     }
     model.metadata.coordinateSystem = "right";
-    var helper = new DataCreationHelper();
+    var helper2 = new DataCreationHelper();
     for (var i2 = 0; i2 < model.metadata.vertexCount; i2++) {
-      helper.leftToRightVector3(model.vertices[i2].position);
-      helper.leftToRightVector3(model.vertices[i2].normal);
+      helper2.leftToRightVector3(model.vertices[i2].position);
+      helper2.leftToRightVector3(model.vertices[i2].normal);
     }
     for (var i2 = 0; i2 < model.metadata.faceCount; i2++) {
-      helper.leftToRightIndexOrder(model.faces[i2].indices);
+      helper2.leftToRightIndexOrder(model.faces[i2].indices);
     }
     for (var i2 = 0; i2 < model.metadata.boneCount; i2++) {
-      helper.leftToRightVector3(model.bones[i2].position);
+      helper2.leftToRightVector3(model.bones[i2].position);
     }
     for (var i2 = 0; i2 < model.metadata.morphCount; i2++) {
       var m = model.morphs[i2];
@@ -53133,18 +55428,18 @@ void RE_IndirectDiffuse_BlinnPhong( const in vec3 irradiance, const in Geometric
         continue;
       }
       for (var j2 = 0; j2 < m.elements.length; j2++) {
-        helper.leftToRightVector3(m.elements[j2].position);
+        helper2.leftToRightVector3(m.elements[j2].position);
       }
     }
     for (var i2 = 0; i2 < model.metadata.rigidBodyCount; i2++) {
-      helper.leftToRightVector3(model.rigidBodies[i2].position);
-      helper.leftToRightEuler(model.rigidBodies[i2].rotation);
+      helper2.leftToRightVector3(model.rigidBodies[i2].position);
+      helper2.leftToRightEuler(model.rigidBodies[i2].rotation);
     }
     for (var i2 = 0; i2 < model.metadata.constraintCount; i2++) {
-      helper.leftToRightVector3(model.constraints[i2].position);
-      helper.leftToRightEuler(model.constraints[i2].rotation);
-      helper.leftToRightVector3Range(model.constraints[i2].translationLimitation1, model.constraints[i2].translationLimitation2);
-      helper.leftToRightEulerRange(model.constraints[i2].rotationLimitation1, model.constraints[i2].rotationLimitation2);
+      helper2.leftToRightVector3(model.constraints[i2].position);
+      helper2.leftToRightEuler(model.constraints[i2].rotation);
+      helper2.leftToRightVector3Range(model.constraints[i2].translationLimitation1, model.constraints[i2].translationLimitation2);
+      helper2.leftToRightEulerRange(model.constraints[i2].rotationLimitation1, model.constraints[i2].rotationLimitation2);
     }
   };
   Parser.prototype.leftToRightVmd = function(vmd) {
@@ -53152,14 +55447,14 @@ void RE_IndirectDiffuse_BlinnPhong( const in vec3 irradiance, const in Geometric
       return;
     }
     vmd.metadata.coordinateSystem = "right";
-    var helper = new DataCreationHelper();
+    var helper2 = new DataCreationHelper();
     for (var i2 = 0; i2 < vmd.metadata.motionCount; i2++) {
-      helper.leftToRightVector3(vmd.motions[i2].position);
-      helper.leftToRightQuaternion(vmd.motions[i2].rotation);
+      helper2.leftToRightVector3(vmd.motions[i2].position);
+      helper2.leftToRightQuaternion(vmd.motions[i2].rotation);
     }
     for (var i2 = 0; i2 < vmd.metadata.cameraCount; i2++) {
-      helper.leftToRightVector3(vmd.cameras[i2].position);
-      helper.leftToRightEuler(vmd.cameras[i2].rotation);
+      helper2.leftToRightVector3(vmd.cameras[i2].position);
+      helper2.leftToRightEuler(vmd.cameras[i2].rotation);
     }
   };
   Parser.prototype.leftToRightVpd = function(vpd) {
@@ -53167,10 +55462,10 @@ void RE_IndirectDiffuse_BlinnPhong( const in vec3 irradiance, const in Geometric
       return;
     }
     vpd.metadata.coordinateSystem = "right";
-    var helper = new DataCreationHelper();
+    var helper2 = new DataCreationHelper();
     for (var i2 = 0; i2 < vpd.bones.length; i2++) {
-      helper.leftToRightVector3(vpd.bones[i2].translation);
-      helper.leftToRightQuaternion(vpd.bones[i2].quaternion);
+      helper2.leftToRightVector3(vpd.bones[i2].translation);
+      helper2.leftToRightQuaternion(vpd.bones[i2].quaternion);
     }
   };
   var MMDParser = {
@@ -54250,23 +56545,1657 @@ void RE_IndirectDiffuse_BlinnPhong( const in vec3 irradiance, const in Geometric
     }
   };
 
+  // node_modules/three/examples/jsm/animation/CCDIKSolver.js
+  var _q = new Quaternion();
+  var _targetPos = new Vector3();
+  var _targetVec = new Vector3();
+  var _effectorPos = new Vector3();
+  var _effectorVec = new Vector3();
+  var _linkPos = new Vector3();
+  var _invLinkQ = new Quaternion();
+  var _linkScale = new Vector3();
+  var _axis = new Vector3();
+  var _vector = new Vector3();
+  var _matrix2 = new Matrix4();
+  var CCDIKSolver = class {
+    constructor(mesh, iks = []) {
+      this.mesh = mesh;
+      this.iks = iks;
+      this._valid();
+    }
+    update() {
+      const iks = this.iks;
+      for (let i2 = 0, il = iks.length; i2 < il; i2++) {
+        this.updateOne(iks[i2]);
+      }
+      return this;
+    }
+    updateOne(ik) {
+      const bones = this.mesh.skeleton.bones;
+      const math = Math;
+      const effector = bones[ik.effector];
+      const target = bones[ik.target];
+      _targetPos.setFromMatrixPosition(target.matrixWorld);
+      const links = ik.links;
+      const iteration = ik.iteration !== void 0 ? ik.iteration : 1;
+      for (let i2 = 0; i2 < iteration; i2++) {
+        let rotated = false;
+        for (let j2 = 0, jl = links.length; j2 < jl; j2++) {
+          const link = bones[links[j2].index];
+          if (links[j2].enabled === false)
+            break;
+          const limitation = links[j2].limitation;
+          const rotationMin = links[j2].rotationMin;
+          const rotationMax = links[j2].rotationMax;
+          link.matrixWorld.decompose(_linkPos, _invLinkQ, _linkScale);
+          _invLinkQ.invert();
+          _effectorPos.setFromMatrixPosition(effector.matrixWorld);
+          _effectorVec.subVectors(_effectorPos, _linkPos);
+          _effectorVec.applyQuaternion(_invLinkQ);
+          _effectorVec.normalize();
+          _targetVec.subVectors(_targetPos, _linkPos);
+          _targetVec.applyQuaternion(_invLinkQ);
+          _targetVec.normalize();
+          let angle = _targetVec.dot(_effectorVec);
+          if (angle > 1) {
+            angle = 1;
+          } else if (angle < -1) {
+            angle = -1;
+          }
+          angle = math.acos(angle);
+          if (angle < 1e-5)
+            continue;
+          if (ik.minAngle !== void 0 && angle < ik.minAngle) {
+            angle = ik.minAngle;
+          }
+          if (ik.maxAngle !== void 0 && angle > ik.maxAngle) {
+            angle = ik.maxAngle;
+          }
+          _axis.crossVectors(_effectorVec, _targetVec);
+          _axis.normalize();
+          _q.setFromAxisAngle(_axis, angle);
+          link.quaternion.multiply(_q);
+          if (limitation !== void 0) {
+            let c2 = link.quaternion.w;
+            if (c2 > 1)
+              c2 = 1;
+            const c22 = math.sqrt(1 - c2 * c2);
+            link.quaternion.set(
+              limitation.x * c22,
+              limitation.y * c22,
+              limitation.z * c22,
+              c2
+            );
+          }
+          if (rotationMin !== void 0) {
+            link.rotation.setFromVector3(_vector.setFromEuler(link.rotation).max(rotationMin));
+          }
+          if (rotationMax !== void 0) {
+            link.rotation.setFromVector3(_vector.setFromEuler(link.rotation).min(rotationMax));
+          }
+          link.updateMatrixWorld(true);
+          rotated = true;
+        }
+        if (!rotated)
+          break;
+      }
+      return this;
+    }
+    createHelper() {
+      return new CCDIKHelper(this.mesh, this.iks);
+    }
+    _valid() {
+      const iks = this.iks;
+      const bones = this.mesh.skeleton.bones;
+      for (let i2 = 0, il = iks.length; i2 < il; i2++) {
+        const ik = iks[i2];
+        const effector = bones[ik.effector];
+        const links = ik.links;
+        let link0, link1;
+        link0 = effector;
+        for (let j2 = 0, jl = links.length; j2 < jl; j2++) {
+          link1 = bones[links[j2].index];
+          if (link0.parent !== link1) {
+            console.warn("THREE.CCDIKSolver: bone " + link0.name + " is not the child of bone " + link1.name);
+          }
+          link0 = link1;
+        }
+      }
+    }
+  };
+  function getPosition(bone, matrixWorldInv) {
+    return _vector.setFromMatrixPosition(bone.matrixWorld).applyMatrix4(matrixWorldInv);
+  }
+  function setPositionOfBoneToAttributeArray(array, index, bone, matrixWorldInv) {
+    const v2 = getPosition(bone, matrixWorldInv);
+    array[index * 3 + 0] = v2.x;
+    array[index * 3 + 1] = v2.y;
+    array[index * 3 + 2] = v2.z;
+  }
+  var CCDIKHelper = class extends Object3D {
+    constructor(mesh, iks = [], sphereSize = 0.25) {
+      super();
+      this.root = mesh;
+      this.iks = iks;
+      this.matrix.copy(mesh.matrixWorld);
+      this.matrixAutoUpdate = false;
+      this.sphereGeometry = new SphereGeometry(sphereSize, 16, 8);
+      this.targetSphereMaterial = new MeshBasicMaterial({
+        color: new Color(16746632),
+        depthTest: false,
+        depthWrite: false,
+        transparent: true
+      });
+      this.effectorSphereMaterial = new MeshBasicMaterial({
+        color: new Color(8978312),
+        depthTest: false,
+        depthWrite: false,
+        transparent: true
+      });
+      this.linkSphereMaterial = new MeshBasicMaterial({
+        color: new Color(8947967),
+        depthTest: false,
+        depthWrite: false,
+        transparent: true
+      });
+      this.lineMaterial = new LineBasicMaterial({
+        color: new Color(16711680),
+        depthTest: false,
+        depthWrite: false,
+        transparent: true
+      });
+      this._init();
+    }
+    updateMatrixWorld(force) {
+      const mesh = this.root;
+      if (this.visible) {
+        let offset = 0;
+        const iks = this.iks;
+        const bones = mesh.skeleton.bones;
+        _matrix2.copy(mesh.matrixWorld).invert();
+        for (let i2 = 0, il = iks.length; i2 < il; i2++) {
+          const ik = iks[i2];
+          const targetBone = bones[ik.target];
+          const effectorBone = bones[ik.effector];
+          const targetMesh = this.children[offset++];
+          const effectorMesh = this.children[offset++];
+          targetMesh.position.copy(getPosition(targetBone, _matrix2));
+          effectorMesh.position.copy(getPosition(effectorBone, _matrix2));
+          for (let j2 = 0, jl = ik.links.length; j2 < jl; j2++) {
+            const link = ik.links[j2];
+            const linkBone = bones[link.index];
+            const linkMesh = this.children[offset++];
+            linkMesh.position.copy(getPosition(linkBone, _matrix2));
+          }
+          const line = this.children[offset++];
+          const array = line.geometry.attributes.position.array;
+          setPositionOfBoneToAttributeArray(array, 0, targetBone, _matrix2);
+          setPositionOfBoneToAttributeArray(array, 1, effectorBone, _matrix2);
+          for (let j2 = 0, jl = ik.links.length; j2 < jl; j2++) {
+            const link = ik.links[j2];
+            const linkBone = bones[link.index];
+            setPositionOfBoneToAttributeArray(array, j2 + 2, linkBone, _matrix2);
+          }
+          line.geometry.attributes.position.needsUpdate = true;
+        }
+      }
+      this.matrix.copy(mesh.matrixWorld);
+      super.updateMatrixWorld(force);
+    }
+    dispose() {
+      this.sphereGeometry.dispose();
+      this.targetSphereMaterial.dispose();
+      this.effectorSphereMaterial.dispose();
+      this.linkSphereMaterial.dispose();
+      this.lineMaterial.dispose();
+      const children = this.children;
+      for (let i2 = 0; i2 < children.length; i2++) {
+        const child = children[i2];
+        if (child.isLine)
+          child.geometry.dispose();
+      }
+    }
+    _init() {
+      const scope = this;
+      const iks = this.iks;
+      function createLineGeometry(ik) {
+        const geometry = new BufferGeometry();
+        const vertices = new Float32Array((2 + ik.links.length) * 3);
+        geometry.setAttribute("position", new BufferAttribute(vertices, 3));
+        return geometry;
+      }
+      function createTargetMesh() {
+        return new Mesh(scope.sphereGeometry, scope.targetSphereMaterial);
+      }
+      function createEffectorMesh() {
+        return new Mesh(scope.sphereGeometry, scope.effectorSphereMaterial);
+      }
+      function createLinkMesh() {
+        return new Mesh(scope.sphereGeometry, scope.linkSphereMaterial);
+      }
+      function createLine(ik) {
+        return new Line(createLineGeometry(ik), scope.lineMaterial);
+      }
+      for (let i2 = 0, il = iks.length; i2 < il; i2++) {
+        const ik = iks[i2];
+        this.add(createTargetMesh());
+        this.add(createEffectorMesh());
+        for (let j2 = 0, jl = ik.links.length; j2 < jl; j2++) {
+          this.add(createLinkMesh());
+        }
+        this.add(createLine(ik));
+      }
+    }
+  };
+
+  // node_modules/three/examples/jsm/animation/MMDPhysics.js
+  var MMDPhysics = class {
+    constructor(mesh, rigidBodyParams, constraintParams = [], params = {}) {
+      if (typeof Ammo === "undefined") {
+        throw new Error("THREE.MMDPhysics: Import ammo.js https://github.com/kripken/ammo.js");
+      }
+      this.manager = new ResourceManager();
+      this.mesh = mesh;
+      this.unitStep = params.unitStep !== void 0 ? params.unitStep : 1 / 65;
+      this.maxStepNum = params.maxStepNum !== void 0 ? params.maxStepNum : 3;
+      this.gravity = new Vector3(0, -9.8 * 10, 0);
+      if (params.gravity !== void 0)
+        this.gravity.copy(params.gravity);
+      this.world = params.world !== void 0 ? params.world : null;
+      this.bodies = [];
+      this.constraints = [];
+      this._init(mesh, rigidBodyParams, constraintParams);
+    }
+    update(delta) {
+      const manager = this.manager;
+      const mesh = this.mesh;
+      let isNonDefaultScale = false;
+      const position = manager.allocThreeVector3();
+      const quaternion = manager.allocThreeQuaternion();
+      const scale = manager.allocThreeVector3();
+      mesh.matrixWorld.decompose(position, quaternion, scale);
+      if (scale.x !== 1 || scale.y !== 1 || scale.z !== 1) {
+        isNonDefaultScale = true;
+      }
+      let parent;
+      if (isNonDefaultScale) {
+        parent = mesh.parent;
+        if (parent !== null)
+          mesh.parent = null;
+        scale.copy(this.mesh.scale);
+        mesh.scale.set(1, 1, 1);
+        mesh.updateMatrixWorld(true);
+      }
+      this._updateRigidBodies();
+      this._stepSimulation(delta);
+      this._updateBones();
+      if (isNonDefaultScale) {
+        if (parent !== null)
+          mesh.parent = parent;
+        mesh.scale.copy(scale);
+      }
+      manager.freeThreeVector3(scale);
+      manager.freeThreeQuaternion(quaternion);
+      manager.freeThreeVector3(position);
+      return this;
+    }
+    reset() {
+      for (let i2 = 0, il = this.bodies.length; i2 < il; i2++) {
+        this.bodies[i2].reset();
+      }
+      return this;
+    }
+    warmup(cycles) {
+      for (let i2 = 0; i2 < cycles; i2++) {
+        this.update(1 / 60);
+      }
+      return this;
+    }
+    setGravity(gravity) {
+      this.world.setGravity(new Ammo.btVector3(gravity.x, gravity.y, gravity.z));
+      this.gravity.copy(gravity);
+      return this;
+    }
+    createHelper() {
+      return new MMDPhysicsHelper(this.mesh, this);
+    }
+    _init(mesh, rigidBodyParams, constraintParams) {
+      const manager = this.manager;
+      const parent = mesh.parent;
+      if (parent !== null)
+        mesh.parent = null;
+      const currentPosition = manager.allocThreeVector3();
+      const currentQuaternion = manager.allocThreeQuaternion();
+      const currentScale = manager.allocThreeVector3();
+      currentPosition.copy(mesh.position);
+      currentQuaternion.copy(mesh.quaternion);
+      currentScale.copy(mesh.scale);
+      mesh.position.set(0, 0, 0);
+      mesh.quaternion.set(0, 0, 0, 1);
+      mesh.scale.set(1, 1, 1);
+      mesh.updateMatrixWorld(true);
+      if (this.world === null) {
+        this.world = this._createWorld();
+        this.setGravity(this.gravity);
+      }
+      this._initRigidBodies(rigidBodyParams);
+      this._initConstraints(constraintParams);
+      if (parent !== null)
+        mesh.parent = parent;
+      mesh.position.copy(currentPosition);
+      mesh.quaternion.copy(currentQuaternion);
+      mesh.scale.copy(currentScale);
+      mesh.updateMatrixWorld(true);
+      this.reset();
+      manager.freeThreeVector3(currentPosition);
+      manager.freeThreeQuaternion(currentQuaternion);
+      manager.freeThreeVector3(currentScale);
+    }
+    _createWorld() {
+      const config = new Ammo.btDefaultCollisionConfiguration();
+      const dispatcher = new Ammo.btCollisionDispatcher(config);
+      const cache = new Ammo.btDbvtBroadphase();
+      const solver = new Ammo.btSequentialImpulseConstraintSolver();
+      const world2 = new Ammo.btDiscreteDynamicsWorld(dispatcher, cache, solver, config);
+      return world2;
+    }
+    _initRigidBodies(rigidBodies) {
+      for (let i2 = 0, il = rigidBodies.length; i2 < il; i2++) {
+        this.bodies.push(new RigidBody(
+          this.mesh,
+          this.world,
+          rigidBodies[i2],
+          this.manager
+        ));
+      }
+    }
+    _initConstraints(constraints) {
+      for (let i2 = 0, il = constraints.length; i2 < il; i2++) {
+        const params = constraints[i2];
+        const bodyA = this.bodies[params.rigidBodyIndex1];
+        const bodyB = this.bodies[params.rigidBodyIndex2];
+        this.constraints.push(new Constraint(this.mesh, this.world, bodyA, bodyB, params, this.manager));
+      }
+    }
+    _stepSimulation(delta) {
+      const unitStep = this.unitStep;
+      let stepTime = delta;
+      let maxStepNum = (delta / unitStep | 0) + 1;
+      if (stepTime < unitStep) {
+        stepTime = unitStep;
+        maxStepNum = 1;
+      }
+      if (maxStepNum > this.maxStepNum) {
+        maxStepNum = this.maxStepNum;
+      }
+      this.world.stepSimulation(stepTime, maxStepNum, unitStep);
+    }
+    _updateRigidBodies() {
+      for (let i2 = 0, il = this.bodies.length; i2 < il; i2++) {
+        this.bodies[i2].updateFromBone();
+      }
+    }
+    _updateBones() {
+      for (let i2 = 0, il = this.bodies.length; i2 < il; i2++) {
+        this.bodies[i2].updateBone();
+      }
+    }
+  };
+  var ResourceManager = class {
+    constructor() {
+      this.threeVector3s = [];
+      this.threeMatrix4s = [];
+      this.threeQuaternions = [];
+      this.threeEulers = [];
+      this.transforms = [];
+      this.quaternions = [];
+      this.vector3s = [];
+    }
+    allocThreeVector3() {
+      return this.threeVector3s.length > 0 ? this.threeVector3s.pop() : new Vector3();
+    }
+    freeThreeVector3(v2) {
+      this.threeVector3s.push(v2);
+    }
+    allocThreeMatrix4() {
+      return this.threeMatrix4s.length > 0 ? this.threeMatrix4s.pop() : new Matrix4();
+    }
+    freeThreeMatrix4(m) {
+      this.threeMatrix4s.push(m);
+    }
+    allocThreeQuaternion() {
+      return this.threeQuaternions.length > 0 ? this.threeQuaternions.pop() : new Quaternion();
+    }
+    freeThreeQuaternion(q2) {
+      this.threeQuaternions.push(q2);
+    }
+    allocThreeEuler() {
+      return this.threeEulers.length > 0 ? this.threeEulers.pop() : new Euler();
+    }
+    freeThreeEuler(e2) {
+      this.threeEulers.push(e2);
+    }
+    allocTransform() {
+      return this.transforms.length > 0 ? this.transforms.pop() : new Ammo.btTransform();
+    }
+    freeTransform(t2) {
+      this.transforms.push(t2);
+    }
+    allocQuaternion() {
+      return this.quaternions.length > 0 ? this.quaternions.pop() : new Ammo.btQuaternion();
+    }
+    freeQuaternion(q2) {
+      this.quaternions.push(q2);
+    }
+    allocVector3() {
+      return this.vector3s.length > 0 ? this.vector3s.pop() : new Ammo.btVector3();
+    }
+    freeVector3(v2) {
+      this.vector3s.push(v2);
+    }
+    setIdentity(t2) {
+      t2.setIdentity();
+    }
+    getBasis(t2) {
+      var q2 = this.allocQuaternion();
+      t2.getBasis().getRotation(q2);
+      return q2;
+    }
+    getBasisAsMatrix3(t2) {
+      var q2 = this.getBasis(t2);
+      var m = this.quaternionToMatrix3(q2);
+      this.freeQuaternion(q2);
+      return m;
+    }
+    getOrigin(t2) {
+      return t2.getOrigin();
+    }
+    setOrigin(t2, v2) {
+      t2.getOrigin().setValue(v2.x(), v2.y(), v2.z());
+    }
+    copyOrigin(t1, t2) {
+      var o2 = t2.getOrigin();
+      this.setOrigin(t1, o2);
+    }
+    setBasis(t2, q2) {
+      t2.setRotation(q2);
+    }
+    setBasisFromMatrix3(t2, m) {
+      var q2 = this.matrix3ToQuaternion(m);
+      this.setBasis(t2, q2);
+      this.freeQuaternion(q2);
+    }
+    setOriginFromArray3(t2, a2) {
+      t2.getOrigin().setValue(a2[0], a2[1], a2[2]);
+    }
+    setOriginFromThreeVector3(t2, v2) {
+      t2.getOrigin().setValue(v2.x, v2.y, v2.z);
+    }
+    setBasisFromArray3(t2, a2) {
+      var thQ = this.allocThreeQuaternion();
+      var thE = this.allocThreeEuler();
+      thE.set(a2[0], a2[1], a2[2]);
+      this.setBasisFromThreeQuaternion(t2, thQ.setFromEuler(thE));
+      this.freeThreeEuler(thE);
+      this.freeThreeQuaternion(thQ);
+    }
+    setBasisFromThreeQuaternion(t2, a2) {
+      var q2 = this.allocQuaternion();
+      q2.setX(a2.x);
+      q2.setY(a2.y);
+      q2.setZ(a2.z);
+      q2.setW(a2.w);
+      this.setBasis(t2, q2);
+      this.freeQuaternion(q2);
+    }
+    multiplyTransforms(t1, t2) {
+      var t3 = this.allocTransform();
+      this.setIdentity(t3);
+      var m1 = this.getBasisAsMatrix3(t1);
+      var m2 = this.getBasisAsMatrix3(t2);
+      var o1 = this.getOrigin(t1);
+      var o2 = this.getOrigin(t2);
+      var v1 = this.multiplyMatrix3ByVector3(m1, o2);
+      var v2 = this.addVector3(v1, o1);
+      this.setOrigin(t3, v2);
+      var m3 = this.multiplyMatrices3(m1, m2);
+      this.setBasisFromMatrix3(t3, m3);
+      this.freeVector3(v1);
+      this.freeVector3(v2);
+      return t3;
+    }
+    inverseTransform(t2) {
+      var t22 = this.allocTransform();
+      var m1 = this.getBasisAsMatrix3(t2);
+      var o2 = this.getOrigin(t2);
+      var m2 = this.transposeMatrix3(m1);
+      var v1 = this.negativeVector3(o2);
+      var v2 = this.multiplyMatrix3ByVector3(m2, v1);
+      this.setOrigin(t22, v2);
+      this.setBasisFromMatrix3(t22, m2);
+      this.freeVector3(v1);
+      this.freeVector3(v2);
+      return t22;
+    }
+    multiplyMatrices3(m1, m2) {
+      var m3 = [];
+      var v10 = this.rowOfMatrix3(m1, 0);
+      var v11 = this.rowOfMatrix3(m1, 1);
+      var v12 = this.rowOfMatrix3(m1, 2);
+      var v20 = this.columnOfMatrix3(m2, 0);
+      var v21 = this.columnOfMatrix3(m2, 1);
+      var v22 = this.columnOfMatrix3(m2, 2);
+      m3[0] = this.dotVectors3(v10, v20);
+      m3[1] = this.dotVectors3(v10, v21);
+      m3[2] = this.dotVectors3(v10, v22);
+      m3[3] = this.dotVectors3(v11, v20);
+      m3[4] = this.dotVectors3(v11, v21);
+      m3[5] = this.dotVectors3(v11, v22);
+      m3[6] = this.dotVectors3(v12, v20);
+      m3[7] = this.dotVectors3(v12, v21);
+      m3[8] = this.dotVectors3(v12, v22);
+      this.freeVector3(v10);
+      this.freeVector3(v11);
+      this.freeVector3(v12);
+      this.freeVector3(v20);
+      this.freeVector3(v21);
+      this.freeVector3(v22);
+      return m3;
+    }
+    addVector3(v1, v2) {
+      var v3 = this.allocVector3();
+      v3.setValue(v1.x() + v2.x(), v1.y() + v2.y(), v1.z() + v2.z());
+      return v3;
+    }
+    dotVectors3(v1, v2) {
+      return v1.x() * v2.x() + v1.y() * v2.y() + v1.z() * v2.z();
+    }
+    rowOfMatrix3(m, i2) {
+      var v2 = this.allocVector3();
+      v2.setValue(m[i2 * 3 + 0], m[i2 * 3 + 1], m[i2 * 3 + 2]);
+      return v2;
+    }
+    columnOfMatrix3(m, i2) {
+      var v2 = this.allocVector3();
+      v2.setValue(m[i2 + 0], m[i2 + 3], m[i2 + 6]);
+      return v2;
+    }
+    negativeVector3(v2) {
+      var v22 = this.allocVector3();
+      v22.setValue(-v2.x(), -v2.y(), -v2.z());
+      return v22;
+    }
+    multiplyMatrix3ByVector3(m, v2) {
+      var v4 = this.allocVector3();
+      var v0 = this.rowOfMatrix3(m, 0);
+      var v1 = this.rowOfMatrix3(m, 1);
+      var v22 = this.rowOfMatrix3(m, 2);
+      var x2 = this.dotVectors3(v0, v2);
+      var y2 = this.dotVectors3(v1, v2);
+      var z2 = this.dotVectors3(v22, v2);
+      v4.setValue(x2, y2, z2);
+      this.freeVector3(v0);
+      this.freeVector3(v1);
+      this.freeVector3(v22);
+      return v4;
+    }
+    transposeMatrix3(m) {
+      var m2 = [];
+      m2[0] = m[0];
+      m2[1] = m[3];
+      m2[2] = m[6];
+      m2[3] = m[1];
+      m2[4] = m[4];
+      m2[5] = m[7];
+      m2[6] = m[2];
+      m2[7] = m[5];
+      m2[8] = m[8];
+      return m2;
+    }
+    quaternionToMatrix3(q2) {
+      var m = [];
+      var x2 = q2.x();
+      var y2 = q2.y();
+      var z2 = q2.z();
+      var w2 = q2.w();
+      var xx = x2 * x2;
+      var yy = y2 * y2;
+      var zz = z2 * z2;
+      var xy = x2 * y2;
+      var yz = y2 * z2;
+      var zx = z2 * x2;
+      var xw = x2 * w2;
+      var yw = y2 * w2;
+      var zw = z2 * w2;
+      m[0] = 1 - 2 * (yy + zz);
+      m[1] = 2 * (xy - zw);
+      m[2] = 2 * (zx + yw);
+      m[3] = 2 * (xy + zw);
+      m[4] = 1 - 2 * (zz + xx);
+      m[5] = 2 * (yz - xw);
+      m[6] = 2 * (zx - yw);
+      m[7] = 2 * (yz + xw);
+      m[8] = 1 - 2 * (xx + yy);
+      return m;
+    }
+    matrix3ToQuaternion(m) {
+      var t2 = m[0] + m[4] + m[8];
+      var s2, x2, y2, z2, w2;
+      if (t2 > 0) {
+        s2 = Math.sqrt(t2 + 1) * 2;
+        w2 = 0.25 * s2;
+        x2 = (m[7] - m[5]) / s2;
+        y2 = (m[2] - m[6]) / s2;
+        z2 = (m[3] - m[1]) / s2;
+      } else if (m[0] > m[4] && m[0] > m[8]) {
+        s2 = Math.sqrt(1 + m[0] - m[4] - m[8]) * 2;
+        w2 = (m[7] - m[5]) / s2;
+        x2 = 0.25 * s2;
+        y2 = (m[1] + m[3]) / s2;
+        z2 = (m[2] + m[6]) / s2;
+      } else if (m[4] > m[8]) {
+        s2 = Math.sqrt(1 + m[4] - m[0] - m[8]) * 2;
+        w2 = (m[2] - m[6]) / s2;
+        x2 = (m[1] + m[3]) / s2;
+        y2 = 0.25 * s2;
+        z2 = (m[5] + m[7]) / s2;
+      } else {
+        s2 = Math.sqrt(1 + m[8] - m[0] - m[4]) * 2;
+        w2 = (m[3] - m[1]) / s2;
+        x2 = (m[2] + m[6]) / s2;
+        y2 = (m[5] + m[7]) / s2;
+        z2 = 0.25 * s2;
+      }
+      var q2 = this.allocQuaternion();
+      q2.setX(x2);
+      q2.setY(y2);
+      q2.setZ(z2);
+      q2.setW(w2);
+      return q2;
+    }
+  };
+  var RigidBody = class {
+    constructor(mesh, world2, params, manager) {
+      this.mesh = mesh;
+      this.world = world2;
+      this.params = params;
+      this.manager = manager;
+      this.body = null;
+      this.bone = null;
+      this.boneOffsetForm = null;
+      this.boneOffsetFormInverse = null;
+      this._init();
+    }
+    reset() {
+      this._setTransformFromBone();
+      return this;
+    }
+    updateFromBone() {
+      if (this.params.boneIndex !== -1 && this.params.type === 0) {
+        this._setTransformFromBone();
+      }
+      return this;
+    }
+    updateBone() {
+      if (this.params.type === 0 || this.params.boneIndex === -1) {
+        return this;
+      }
+      this._updateBoneRotation();
+      if (this.params.type === 1) {
+        this._updateBonePosition();
+      }
+      this.bone.updateMatrixWorld(true);
+      if (this.params.type === 2) {
+        this._setPositionFromBone();
+      }
+      return this;
+    }
+    _init() {
+      function generateShape(p) {
+        switch (p.shapeType) {
+          case 0:
+            return new Ammo.btSphereShape(p.width);
+          case 1:
+            return new Ammo.btBoxShape(new Ammo.btVector3(p.width, p.height, p.depth));
+          case 2:
+            return new Ammo.btCapsuleShape(p.width, p.height);
+          default:
+            throw new Error("unknown shape type " + p.shapeType);
+        }
+      }
+      const manager = this.manager;
+      const params = this.params;
+      const bones = this.mesh.skeleton.bones;
+      const bone = params.boneIndex === -1 ? new Bone() : bones[params.boneIndex];
+      const shape = generateShape(params);
+      const weight = params.type === 0 ? 0 : params.weight;
+      const localInertia = manager.allocVector3();
+      localInertia.setValue(0, 0, 0);
+      if (weight !== 0) {
+        shape.calculateLocalInertia(weight, localInertia);
+      }
+      const boneOffsetForm = manager.allocTransform();
+      manager.setIdentity(boneOffsetForm);
+      manager.setOriginFromArray3(boneOffsetForm, params.position);
+      manager.setBasisFromArray3(boneOffsetForm, params.rotation);
+      const vector = manager.allocThreeVector3();
+      const boneForm = manager.allocTransform();
+      manager.setIdentity(boneForm);
+      manager.setOriginFromThreeVector3(boneForm, bone.getWorldPosition(vector));
+      const form = manager.multiplyTransforms(boneForm, boneOffsetForm);
+      const state = new Ammo.btDefaultMotionState(form);
+      const info = new Ammo.btRigidBodyConstructionInfo(weight, state, shape, localInertia);
+      info.set_m_friction(params.friction);
+      info.set_m_restitution(params.restitution);
+      const body = new Ammo.btRigidBody(info);
+      if (params.type === 0) {
+        body.setCollisionFlags(body.getCollisionFlags() | 2);
+        body.setActivationState(4);
+      }
+      body.setDamping(params.positionDamping, params.rotationDamping);
+      body.setSleepingThresholds(0, 0);
+      this.world.addRigidBody(body, 1 << params.groupIndex, params.groupTarget);
+      this.body = body;
+      this.bone = bone;
+      this.boneOffsetForm = boneOffsetForm;
+      this.boneOffsetFormInverse = manager.inverseTransform(boneOffsetForm);
+      manager.freeVector3(localInertia);
+      manager.freeTransform(form);
+      manager.freeTransform(boneForm);
+      manager.freeThreeVector3(vector);
+    }
+    _getBoneTransform() {
+      const manager = this.manager;
+      const p = manager.allocThreeVector3();
+      const q2 = manager.allocThreeQuaternion();
+      const s2 = manager.allocThreeVector3();
+      this.bone.matrixWorld.decompose(p, q2, s2);
+      const tr = manager.allocTransform();
+      manager.setOriginFromThreeVector3(tr, p);
+      manager.setBasisFromThreeQuaternion(tr, q2);
+      const form = manager.multiplyTransforms(tr, this.boneOffsetForm);
+      manager.freeTransform(tr);
+      manager.freeThreeVector3(s2);
+      manager.freeThreeQuaternion(q2);
+      manager.freeThreeVector3(p);
+      return form;
+    }
+    _getWorldTransformForBone() {
+      const manager = this.manager;
+      const tr = this.body.getCenterOfMassTransform();
+      return manager.multiplyTransforms(tr, this.boneOffsetFormInverse);
+    }
+    _setTransformFromBone() {
+      const manager = this.manager;
+      const form = this._getBoneTransform();
+      this.body.setCenterOfMassTransform(form);
+      this.body.getMotionState().setWorldTransform(form);
+      manager.freeTransform(form);
+    }
+    _setPositionFromBone() {
+      const manager = this.manager;
+      const form = this._getBoneTransform();
+      const tr = manager.allocTransform();
+      this.body.getMotionState().getWorldTransform(tr);
+      manager.copyOrigin(tr, form);
+      this.body.setCenterOfMassTransform(tr);
+      this.body.getMotionState().setWorldTransform(tr);
+      manager.freeTransform(tr);
+      manager.freeTransform(form);
+    }
+    _updateBoneRotation() {
+      const manager = this.manager;
+      const tr = this._getWorldTransformForBone();
+      const q2 = manager.getBasis(tr);
+      const thQ = manager.allocThreeQuaternion();
+      const thQ2 = manager.allocThreeQuaternion();
+      const thQ3 = manager.allocThreeQuaternion();
+      thQ.set(q2.x(), q2.y(), q2.z(), q2.w());
+      thQ2.setFromRotationMatrix(this.bone.matrixWorld);
+      thQ2.conjugate();
+      thQ2.multiply(thQ);
+      thQ3.setFromRotationMatrix(this.bone.matrix);
+      this.bone.quaternion.copy(thQ2.multiply(thQ3).normalize());
+      manager.freeThreeQuaternion(thQ);
+      manager.freeThreeQuaternion(thQ2);
+      manager.freeThreeQuaternion(thQ3);
+      manager.freeQuaternion(q2);
+      manager.freeTransform(tr);
+    }
+    _updateBonePosition() {
+      const manager = this.manager;
+      const tr = this._getWorldTransformForBone();
+      const thV = manager.allocThreeVector3();
+      const o2 = manager.getOrigin(tr);
+      thV.set(o2.x(), o2.y(), o2.z());
+      if (this.bone.parent) {
+        this.bone.parent.worldToLocal(thV);
+      }
+      this.bone.position.copy(thV);
+      manager.freeThreeVector3(thV);
+      manager.freeTransform(tr);
+    }
+  };
+  var Constraint = class {
+    constructor(mesh, world2, bodyA, bodyB, params, manager) {
+      this.mesh = mesh;
+      this.world = world2;
+      this.bodyA = bodyA;
+      this.bodyB = bodyB;
+      this.params = params;
+      this.manager = manager;
+      this.constraint = null;
+      this._init();
+    }
+    _init() {
+      const manager = this.manager;
+      const params = this.params;
+      const bodyA = this.bodyA;
+      const bodyB = this.bodyB;
+      const form = manager.allocTransform();
+      manager.setIdentity(form);
+      manager.setOriginFromArray3(form, params.position);
+      manager.setBasisFromArray3(form, params.rotation);
+      const formA = manager.allocTransform();
+      const formB = manager.allocTransform();
+      bodyA.body.getMotionState().getWorldTransform(formA);
+      bodyB.body.getMotionState().getWorldTransform(formB);
+      const formInverseA = manager.inverseTransform(formA);
+      const formInverseB = manager.inverseTransform(formB);
+      const formA2 = manager.multiplyTransforms(formInverseA, form);
+      const formB2 = manager.multiplyTransforms(formInverseB, form);
+      const constraint = new Ammo.btGeneric6DofSpringConstraint(bodyA.body, bodyB.body, formA2, formB2, true);
+      const lll = manager.allocVector3();
+      const lul = manager.allocVector3();
+      const all = manager.allocVector3();
+      const aul = manager.allocVector3();
+      lll.setValue(
+        params.translationLimitation1[0],
+        params.translationLimitation1[1],
+        params.translationLimitation1[2]
+      );
+      lul.setValue(
+        params.translationLimitation2[0],
+        params.translationLimitation2[1],
+        params.translationLimitation2[2]
+      );
+      all.setValue(
+        params.rotationLimitation1[0],
+        params.rotationLimitation1[1],
+        params.rotationLimitation1[2]
+      );
+      aul.setValue(
+        params.rotationLimitation2[0],
+        params.rotationLimitation2[1],
+        params.rotationLimitation2[2]
+      );
+      constraint.setLinearLowerLimit(lll);
+      constraint.setLinearUpperLimit(lul);
+      constraint.setAngularLowerLimit(all);
+      constraint.setAngularUpperLimit(aul);
+      for (let i2 = 0; i2 < 3; i2++) {
+        if (params.springPosition[i2] !== 0) {
+          constraint.enableSpring(i2, true);
+          constraint.setStiffness(i2, params.springPosition[i2]);
+        }
+      }
+      for (let i2 = 0; i2 < 3; i2++) {
+        if (params.springRotation[i2] !== 0) {
+          constraint.enableSpring(i2 + 3, true);
+          constraint.setStiffness(i2 + 3, params.springRotation[i2]);
+        }
+      }
+      if (constraint.setParam !== void 0) {
+        for (let i2 = 0; i2 < 6; i2++) {
+          constraint.setParam(2, 0.475, i2);
+        }
+      }
+      this.world.addConstraint(constraint, true);
+      this.constraint = constraint;
+      manager.freeTransform(form);
+      manager.freeTransform(formA);
+      manager.freeTransform(formB);
+      manager.freeTransform(formInverseA);
+      manager.freeTransform(formInverseB);
+      manager.freeTransform(formA2);
+      manager.freeTransform(formB2);
+      manager.freeVector3(lll);
+      manager.freeVector3(lul);
+      manager.freeVector3(all);
+      manager.freeVector3(aul);
+    }
+  };
+  var _position = new Vector3();
+  var _quaternion = new Quaternion();
+  var _scale = new Vector3();
+  var _matrixWorldInv = new Matrix4();
+  var MMDPhysicsHelper = class extends Object3D {
+    constructor(mesh, physics) {
+      super();
+      this.root = mesh;
+      this.physics = physics;
+      this.matrix.copy(mesh.matrixWorld);
+      this.matrixAutoUpdate = false;
+      this.materials = [];
+      this.materials.push(
+        new MeshBasicMaterial({
+          color: new Color(16746632),
+          wireframe: true,
+          depthTest: false,
+          depthWrite: false,
+          opacity: 0.25,
+          transparent: true
+        })
+      );
+      this.materials.push(
+        new MeshBasicMaterial({
+          color: new Color(8978312),
+          wireframe: true,
+          depthTest: false,
+          depthWrite: false,
+          opacity: 0.25,
+          transparent: true
+        })
+      );
+      this.materials.push(
+        new MeshBasicMaterial({
+          color: new Color(8947967),
+          wireframe: true,
+          depthTest: false,
+          depthWrite: false,
+          opacity: 0.25,
+          transparent: true
+        })
+      );
+      this._init();
+    }
+    dispose() {
+      const materials = this.materials;
+      const children = this.children;
+      for (let i2 = 0; i2 < materials.length; i2++) {
+        materials[i2].dispose();
+      }
+      for (let i2 = 0; i2 < children.length; i2++) {
+        const child = children[i2];
+        if (child.isMesh)
+          child.geometry.dispose();
+      }
+    }
+    updateMatrixWorld(force) {
+      var mesh = this.root;
+      if (this.visible) {
+        var bodies = this.physics.bodies;
+        _matrixWorldInv.copy(mesh.matrixWorld).decompose(_position, _quaternion, _scale).compose(_position, _quaternion, _scale.set(1, 1, 1)).invert();
+        for (var i2 = 0, il = bodies.length; i2 < il; i2++) {
+          var body = bodies[i2].body;
+          var child = this.children[i2];
+          var tr = body.getCenterOfMassTransform();
+          var origin = tr.getOrigin();
+          var rotation = tr.getRotation();
+          child.position.set(origin.x(), origin.y(), origin.z()).applyMatrix4(_matrixWorldInv);
+          child.quaternion.setFromRotationMatrix(_matrixWorldInv).multiply(
+            _quaternion.set(rotation.x(), rotation.y(), rotation.z(), rotation.w())
+          );
+        }
+      }
+      this.matrix.copy(mesh.matrixWorld).decompose(_position, _quaternion, _scale).compose(_position, _quaternion, _scale.set(1, 1, 1));
+      super.updateMatrixWorld(force);
+    }
+    _init() {
+      var bodies = this.physics.bodies;
+      function createGeometry(param2) {
+        switch (param2.shapeType) {
+          case 0:
+            return new SphereGeometry(param2.width, 16, 8);
+          case 1:
+            return new BoxGeometry(param2.width * 2, param2.height * 2, param2.depth * 2, 8, 8, 8);
+          case 2:
+            return new CapsuleGeometry(param2.width, param2.height, 8, 16);
+          default:
+            return null;
+        }
+      }
+      for (var i2 = 0, il = bodies.length; i2 < il; i2++) {
+        var param = bodies[i2].params;
+        this.add(new Mesh(createGeometry(param), this.materials[param.type]));
+      }
+    }
+  };
+
+  // node_modules/three/examples/jsm/animation/MMDAnimationHelper.js
+  var MMDAnimationHelper = class {
+    constructor(params = {}) {
+      this.meshes = [];
+      this.camera = null;
+      this.cameraTarget = new Object3D();
+      this.cameraTarget.name = "target";
+      this.audio = null;
+      this.audioManager = null;
+      this.objects = /* @__PURE__ */ new WeakMap();
+      this.configuration = {
+        sync: params.sync !== void 0 ? params.sync : true,
+        afterglow: params.afterglow !== void 0 ? params.afterglow : 0,
+        resetPhysicsOnLoop: params.resetPhysicsOnLoop !== void 0 ? params.resetPhysicsOnLoop : true,
+        pmxAnimation: params.pmxAnimation !== void 0 ? params.pmxAnimation : false
+      };
+      this.enabled = {
+        animation: true,
+        ik: true,
+        grant: true,
+        physics: true,
+        cameraAnimation: true
+      };
+      this.onBeforePhysics = function() {
+      };
+      this.sharedPhysics = false;
+      this.masterPhysics = null;
+    }
+    add(object, params = {}) {
+      if (object.isSkinnedMesh) {
+        this._addMesh(object, params);
+      } else if (object.isCamera) {
+        this._setupCamera(object, params);
+      } else if (object.type === "Audio") {
+        this._setupAudio(object, params);
+      } else {
+        throw new Error("THREE.MMDAnimationHelper.add: accepts only THREE.SkinnedMesh or THREE.Camera or THREE.Audio instance.");
+      }
+      if (this.configuration.sync)
+        this._syncDuration();
+      return this;
+    }
+    remove(object) {
+      if (object.isSkinnedMesh) {
+        this._removeMesh(object);
+      } else if (object.isCamera) {
+        this._clearCamera(object);
+      } else if (object.type === "Audio") {
+        this._clearAudio(object);
+      } else {
+        throw new Error("THREE.MMDAnimationHelper.remove: accepts only THREE.SkinnedMesh or THREE.Camera or THREE.Audio instance.");
+      }
+      if (this.configuration.sync)
+        this._syncDuration();
+      return this;
+    }
+    update(delta) {
+      if (this.audioManager !== null)
+        this.audioManager.control(delta);
+      for (let i2 = 0; i2 < this.meshes.length; i2++) {
+        this._animateMesh(this.meshes[i2], delta);
+      }
+      if (this.sharedPhysics)
+        this._updateSharedPhysics(delta);
+      if (this.camera !== null)
+        this._animateCamera(this.camera, delta);
+      return this;
+    }
+    pose(mesh, vpd, params = {}) {
+      if (params.resetPose !== false)
+        mesh.pose();
+      const bones = mesh.skeleton.bones;
+      const boneParams = vpd.bones;
+      const boneNameDictionary = {};
+      for (let i2 = 0, il = bones.length; i2 < il; i2++) {
+        boneNameDictionary[bones[i2].name] = i2;
+      }
+      const vector = new Vector3();
+      const quaternion = new Quaternion();
+      for (let i2 = 0, il = boneParams.length; i2 < il; i2++) {
+        const boneParam = boneParams[i2];
+        const boneIndex = boneNameDictionary[boneParam.name];
+        if (boneIndex === void 0)
+          continue;
+        const bone = bones[boneIndex];
+        bone.position.add(vector.fromArray(boneParam.translation));
+        bone.quaternion.multiply(quaternion.fromArray(boneParam.quaternion));
+      }
+      mesh.updateMatrixWorld(true);
+      if (this.configuration.pmxAnimation && mesh.geometry.userData.MMD && mesh.geometry.userData.MMD.format === "pmx") {
+        const sortedBonesData = this._sortBoneDataArray(mesh.geometry.userData.MMD.bones.slice());
+        const ikSolver = params.ik !== false ? this._createCCDIKSolver(mesh) : null;
+        const grantSolver = params.grant !== false ? this.createGrantSolver(mesh) : null;
+        this._animatePMXMesh(mesh, sortedBonesData, ikSolver, grantSolver);
+      } else {
+        if (params.ik !== false) {
+          this._createCCDIKSolver(mesh).update();
+        }
+        if (params.grant !== false) {
+          this.createGrantSolver(mesh).update();
+        }
+      }
+      return this;
+    }
+    enable(key, enabled) {
+      if (this.enabled[key] === void 0) {
+        throw new Error("THREE.MMDAnimationHelper.enable: unknown key " + key);
+      }
+      this.enabled[key] = enabled;
+      if (key === "physics") {
+        for (let i2 = 0, il = this.meshes.length; i2 < il; i2++) {
+          this._optimizeIK(this.meshes[i2], enabled);
+        }
+      }
+      return this;
+    }
+    createGrantSolver(mesh) {
+      return new GrantSolver(mesh, mesh.geometry.userData.MMD.grants);
+    }
+    _addMesh(mesh, params) {
+      if (this.meshes.indexOf(mesh) >= 0) {
+        throw new Error("THREE.MMDAnimationHelper._addMesh: SkinnedMesh '" + mesh.name + "' has already been added.");
+      }
+      this.meshes.push(mesh);
+      this.objects.set(mesh, { looped: false });
+      this._setupMeshAnimation(mesh, params.animation);
+      if (params.physics !== false) {
+        this._setupMeshPhysics(mesh, params);
+      }
+      return this;
+    }
+    _setupCamera(camera, params) {
+      if (this.camera === camera) {
+        throw new Error("THREE.MMDAnimationHelper._setupCamera: Camera '" + camera.name + "' has already been set.");
+      }
+      if (this.camera)
+        this.clearCamera(this.camera);
+      this.camera = camera;
+      camera.add(this.cameraTarget);
+      this.objects.set(camera, {});
+      if (params.animation !== void 0) {
+        this._setupCameraAnimation(camera, params.animation);
+      }
+      return this;
+    }
+    _setupAudio(audio, params) {
+      if (this.audio === audio) {
+        throw new Error("THREE.MMDAnimationHelper._setupAudio: Audio '" + audio.name + "' has already been set.");
+      }
+      if (this.audio)
+        this.clearAudio(this.audio);
+      this.audio = audio;
+      this.audioManager = new AudioManager(audio, params);
+      this.objects.set(this.audioManager, {
+        duration: this.audioManager.duration
+      });
+      return this;
+    }
+    _removeMesh(mesh) {
+      let found = false;
+      let writeIndex = 0;
+      for (let i2 = 0, il = this.meshes.length; i2 < il; i2++) {
+        if (this.meshes[i2] === mesh) {
+          this.objects.delete(mesh);
+          found = true;
+          continue;
+        }
+        this.meshes[writeIndex++] = this.meshes[i2];
+      }
+      if (!found) {
+        throw new Error("THREE.MMDAnimationHelper._removeMesh: SkinnedMesh '" + mesh.name + "' has not been added yet.");
+      }
+      this.meshes.length = writeIndex;
+      return this;
+    }
+    _clearCamera(camera) {
+      if (camera !== this.camera) {
+        throw new Error("THREE.MMDAnimationHelper._clearCamera: Camera '" + camera.name + "' has not been set yet.");
+      }
+      this.camera.remove(this.cameraTarget);
+      this.objects.delete(this.camera);
+      this.camera = null;
+      return this;
+    }
+    _clearAudio(audio) {
+      if (audio !== this.audio) {
+        throw new Error("THREE.MMDAnimationHelper._clearAudio: Audio '" + audio.name + "' has not been set yet.");
+      }
+      this.objects.delete(this.audioManager);
+      this.audio = null;
+      this.audioManager = null;
+      return this;
+    }
+    _setupMeshAnimation(mesh, animation) {
+      const objects = this.objects.get(mesh);
+      if (animation !== void 0) {
+        const animations = Array.isArray(animation) ? animation : [animation];
+        objects.mixer = new AnimationMixer(mesh);
+        for (let i2 = 0, il = animations.length; i2 < il; i2++) {
+          objects.mixer.clipAction(animations[i2]).play();
+        }
+        objects.mixer.addEventListener("loop", function(event) {
+          const tracks = event.action._clip.tracks;
+          if (tracks.length > 0 && tracks[0].name.slice(0, 6) !== ".bones")
+            return;
+          objects.looped = true;
+        });
+      }
+      objects.ikSolver = this._createCCDIKSolver(mesh);
+      objects.grantSolver = this.createGrantSolver(mesh);
+      return this;
+    }
+    _setupCameraAnimation(camera, animation) {
+      const animations = Array.isArray(animation) ? animation : [animation];
+      const objects = this.objects.get(camera);
+      objects.mixer = new AnimationMixer(camera);
+      for (let i2 = 0, il = animations.length; i2 < il; i2++) {
+        objects.mixer.clipAction(animations[i2]).play();
+      }
+    }
+    _setupMeshPhysics(mesh, params) {
+      const objects = this.objects.get(mesh);
+      if (params.world === void 0 && this.sharedPhysics) {
+        const masterPhysics = this._getMasterPhysics();
+        if (masterPhysics !== null)
+          world = masterPhysics.world;
+      }
+      objects.physics = this._createMMDPhysics(mesh, params);
+      if (objects.mixer && params.animationWarmup !== false) {
+        this._animateMesh(mesh, 0);
+        objects.physics.reset();
+      }
+      objects.physics.warmup(params.warmup !== void 0 ? params.warmup : 60);
+      this._optimizeIK(mesh, true);
+    }
+    _animateMesh(mesh, delta) {
+      const objects = this.objects.get(mesh);
+      const mixer = objects.mixer;
+      const ikSolver = objects.ikSolver;
+      const grantSolver = objects.grantSolver;
+      const physics = objects.physics;
+      const looped = objects.looped;
+      if (mixer && this.enabled.animation) {
+        this._restoreBones(mesh);
+        mixer.update(delta);
+        this._saveBones(mesh);
+        if (this.configuration.pmxAnimation && mesh.geometry.userData.MMD && mesh.geometry.userData.MMD.format === "pmx") {
+          if (!objects.sortedBonesData)
+            objects.sortedBonesData = this._sortBoneDataArray(mesh.geometry.userData.MMD.bones.slice());
+          this._animatePMXMesh(
+            mesh,
+            objects.sortedBonesData,
+            ikSolver && this.enabled.ik ? ikSolver : null,
+            grantSolver && this.enabled.grant ? grantSolver : null
+          );
+        } else {
+          if (ikSolver && this.enabled.ik) {
+            mesh.updateMatrixWorld(true);
+            ikSolver.update();
+          }
+          if (grantSolver && this.enabled.grant) {
+            grantSolver.update();
+          }
+        }
+      }
+      if (looped === true && this.enabled.physics) {
+        if (physics && this.configuration.resetPhysicsOnLoop)
+          physics.reset();
+        objects.looped = false;
+      }
+      if (physics && this.enabled.physics && !this.sharedPhysics) {
+        this.onBeforePhysics(mesh);
+        physics.update(delta);
+      }
+    }
+    _sortBoneDataArray(boneDataArray) {
+      return boneDataArray.sort(function(a2, b2) {
+        if (a2.transformationClass !== b2.transformationClass) {
+          return a2.transformationClass - b2.transformationClass;
+        } else {
+          return a2.index - b2.index;
+        }
+      });
+    }
+    _animatePMXMesh(mesh, sortedBonesData, ikSolver, grantSolver) {
+      _quaternionIndex = 0;
+      _grantResultMap.clear();
+      for (let i2 = 0, il = sortedBonesData.length; i2 < il; i2++) {
+        updateOne(mesh, sortedBonesData[i2].index, ikSolver, grantSolver);
+      }
+      mesh.updateMatrixWorld(true);
+      return this;
+    }
+    _animateCamera(camera, delta) {
+      const mixer = this.objects.get(camera).mixer;
+      if (mixer && this.enabled.cameraAnimation) {
+        mixer.update(delta);
+        camera.updateProjectionMatrix();
+        camera.up.set(0, 1, 0);
+        camera.up.applyQuaternion(camera.quaternion);
+        camera.lookAt(this.cameraTarget.position);
+      }
+    }
+    _optimizeIK(mesh, physicsEnabled) {
+      const iks = mesh.geometry.userData.MMD.iks;
+      const bones = mesh.geometry.userData.MMD.bones;
+      for (let i2 = 0, il = iks.length; i2 < il; i2++) {
+        const ik = iks[i2];
+        const links = ik.links;
+        for (let j2 = 0, jl = links.length; j2 < jl; j2++) {
+          const link = links[j2];
+          if (physicsEnabled === true) {
+            link.enabled = bones[link.index].rigidBodyType > 0 ? false : true;
+          } else {
+            link.enabled = true;
+          }
+        }
+      }
+    }
+    _createCCDIKSolver(mesh) {
+      if (CCDIKSolver === void 0) {
+        throw new Error("THREE.MMDAnimationHelper: Import CCDIKSolver.");
+      }
+      return new CCDIKSolver(mesh, mesh.geometry.userData.MMD.iks);
+    }
+    _createMMDPhysics(mesh, params) {
+      if (MMDPhysics === void 0) {
+        throw new Error("THREE.MMDPhysics: Import MMDPhysics.");
+      }
+      return new MMDPhysics(
+        mesh,
+        mesh.geometry.userData.MMD.rigidBodies,
+        mesh.geometry.userData.MMD.constraints,
+        params
+      );
+    }
+    _syncDuration() {
+      let max = 0;
+      const objects = this.objects;
+      const meshes = this.meshes;
+      const camera = this.camera;
+      const audioManager = this.audioManager;
+      for (let i2 = 0, il = meshes.length; i2 < il; i2++) {
+        const mixer = this.objects.get(meshes[i2]).mixer;
+        if (mixer === void 0)
+          continue;
+        for (let j2 = 0; j2 < mixer._actions.length; j2++) {
+          const clip = mixer._actions[j2]._clip;
+          if (!objects.has(clip)) {
+            objects.set(clip, {
+              duration: clip.duration
+            });
+          }
+          max = Math.max(max, objects.get(clip).duration);
+        }
+      }
+      if (camera !== null) {
+        const mixer = this.objects.get(camera).mixer;
+        if (mixer !== void 0) {
+          for (let i2 = 0, il = mixer._actions.length; i2 < il; i2++) {
+            const clip = mixer._actions[i2]._clip;
+            if (!objects.has(clip)) {
+              objects.set(clip, {
+                duration: clip.duration
+              });
+            }
+            max = Math.max(max, objects.get(clip).duration);
+          }
+        }
+      }
+      if (audioManager !== null) {
+        max = Math.max(max, objects.get(audioManager).duration);
+      }
+      max += this.configuration.afterglow;
+      for (let i2 = 0, il = this.meshes.length; i2 < il; i2++) {
+        const mixer = this.objects.get(this.meshes[i2]).mixer;
+        if (mixer === void 0)
+          continue;
+        for (let j2 = 0, jl = mixer._actions.length; j2 < jl; j2++) {
+          mixer._actions[j2]._clip.duration = max;
+        }
+      }
+      if (camera !== null) {
+        const mixer = this.objects.get(camera).mixer;
+        if (mixer !== void 0) {
+          for (let i2 = 0, il = mixer._actions.length; i2 < il; i2++) {
+            mixer._actions[i2]._clip.duration = max;
+          }
+        }
+      }
+      if (audioManager !== null) {
+        audioManager.duration = max;
+      }
+    }
+    _updatePropertyMixersBuffer(mesh) {
+      const mixer = this.objects.get(mesh).mixer;
+      const propertyMixers = mixer._bindings;
+      const accuIndex = mixer._accuIndex;
+      for (let i2 = 0, il = propertyMixers.length; i2 < il; i2++) {
+        const propertyMixer = propertyMixers[i2];
+        const buffer = propertyMixer.buffer;
+        const stride = propertyMixer.valueSize;
+        const offset = (accuIndex + 1) * stride;
+        propertyMixer.binding.getValue(buffer, offset);
+      }
+    }
+    _saveBones(mesh) {
+      const objects = this.objects.get(mesh);
+      const bones = mesh.skeleton.bones;
+      let backupBones = objects.backupBones;
+      if (backupBones === void 0) {
+        backupBones = new Float32Array(bones.length * 7);
+        objects.backupBones = backupBones;
+      }
+      for (let i2 = 0, il = bones.length; i2 < il; i2++) {
+        const bone = bones[i2];
+        bone.position.toArray(backupBones, i2 * 7);
+        bone.quaternion.toArray(backupBones, i2 * 7 + 3);
+      }
+    }
+    _restoreBones(mesh) {
+      const objects = this.objects.get(mesh);
+      const backupBones = objects.backupBones;
+      if (backupBones === void 0)
+        return;
+      const bones = mesh.skeleton.bones;
+      for (let i2 = 0, il = bones.length; i2 < il; i2++) {
+        const bone = bones[i2];
+        bone.position.fromArray(backupBones, i2 * 7);
+        bone.quaternion.fromArray(backupBones, i2 * 7 + 3);
+      }
+    }
+    _getMasterPhysics() {
+      if (this.masterPhysics !== null)
+        return this.masterPhysics;
+      for (let i2 = 0, il = this.meshes.length; i2 < il; i2++) {
+        const physics = this.meshes[i2].physics;
+        if (physics !== void 0 && physics !== null) {
+          this.masterPhysics = physics;
+          return this.masterPhysics;
+        }
+      }
+      return null;
+    }
+    _updateSharedPhysics(delta) {
+      if (this.meshes.length === 0 || !this.enabled.physics || !this.sharedPhysics)
+        return;
+      const physics = this._getMasterPhysics();
+      if (physics === null)
+        return;
+      for (let i2 = 0, il = this.meshes.length; i2 < il; i2++) {
+        const p = this.meshes[i2].physics;
+        if (p !== null && p !== void 0) {
+          p.updateRigidBodies();
+        }
+      }
+      physics.stepSimulation(delta);
+      for (let i2 = 0, il = this.meshes.length; i2 < il; i2++) {
+        const p = this.meshes[i2].physics;
+        if (p !== null && p !== void 0) {
+          p.updateBones();
+        }
+      }
+    }
+  };
+  var _quaternions = [];
+  var _quaternionIndex = 0;
+  function getQuaternion() {
+    if (_quaternionIndex >= _quaternions.length) {
+      _quaternions.push(new Quaternion());
+    }
+    return _quaternions[_quaternionIndex++];
+  }
+  var _grantResultMap = /* @__PURE__ */ new Map();
+  function updateOne(mesh, boneIndex, ikSolver, grantSolver) {
+    const bones = mesh.skeleton.bones;
+    const bonesData = mesh.geometry.userData.MMD.bones;
+    const boneData = bonesData[boneIndex];
+    const bone = bones[boneIndex];
+    if (_grantResultMap.has(boneIndex))
+      return;
+    const quaternion = getQuaternion();
+    _grantResultMap.set(boneIndex, quaternion.copy(bone.quaternion));
+    if (grantSolver && boneData.grant && !boneData.grant.isLocal && boneData.grant.affectRotation) {
+      const parentIndex = boneData.grant.parentIndex;
+      const ratio = boneData.grant.ratio;
+      if (!_grantResultMap.has(parentIndex)) {
+        updateOne(mesh, parentIndex, ikSolver, grantSolver);
+      }
+      grantSolver.addGrantRotation(bone, _grantResultMap.get(parentIndex), ratio);
+    }
+    if (ikSolver && boneData.ik) {
+      mesh.updateMatrixWorld(true);
+      ikSolver.updateOne(boneData.ik);
+      const links = boneData.ik.links;
+      for (let i2 = 0, il = links.length; i2 < il; i2++) {
+        const link = links[i2];
+        if (link.enabled === false)
+          continue;
+        const linkIndex = link.index;
+        if (_grantResultMap.has(linkIndex)) {
+          _grantResultMap.set(linkIndex, _grantResultMap.get(linkIndex).copy(bones[linkIndex].quaternion));
+        }
+      }
+    }
+    quaternion.copy(bone.quaternion);
+  }
+  var AudioManager = class {
+    constructor(audio, params = {}) {
+      this.audio = audio;
+      this.elapsedTime = 0;
+      this.currentTime = 0;
+      this.delayTime = params.delayTime !== void 0 ? params.delayTime : 0;
+      this.audioDuration = this.audio.buffer.duration;
+      this.duration = this.audioDuration + this.delayTime;
+    }
+    control(delta) {
+      this.elapsed += delta;
+      this.currentTime += delta;
+      if (this._shouldStopAudio())
+        this.audio.stop();
+      if (this._shouldStartAudio())
+        this.audio.play();
+      return this;
+    }
+    _shouldStartAudio() {
+      if (this.audio.isPlaying)
+        return false;
+      while (this.currentTime >= this.duration) {
+        this.currentTime -= this.duration;
+      }
+      if (this.currentTime < this.delayTime)
+        return false;
+      if (this.currentTime - this.delayTime > this.audioDuration)
+        return false;
+      return true;
+    }
+    _shouldStopAudio() {
+      return this.audio.isPlaying && this.currentTime >= this.duration;
+    }
+  };
+  var _q2 = new Quaternion();
+  var GrantSolver = class {
+    constructor(mesh, grants = []) {
+      this.mesh = mesh;
+      this.grants = grants;
+    }
+    update() {
+      const grants = this.grants;
+      for (let i2 = 0, il = grants.length; i2 < il; i2++) {
+        this.updateOne(grants[i2]);
+      }
+      return this;
+    }
+    updateOne(grant) {
+      const bones = this.mesh.skeleton.bones;
+      const bone = bones[grant.index];
+      const parentBone = bones[grant.parentIndex];
+      if (grant.isLocal) {
+        if (grant.affectPosition) {
+        }
+        if (grant.affectRotation) {
+        }
+      } else {
+        if (grant.affectPosition) {
+        }
+        if (grant.affectRotation) {
+          this.addGrantRotation(bone, parentBone.quaternion, grant.ratio);
+        }
+      }
+      return this;
+    }
+    addGrantRotation(bone, q2, ratio) {
+      _q2.set(0, 0, 0, 1);
+      _q2.slerp(q2, ratio);
+      bone.quaternion.multiply(_q2);
+      return this;
+    }
+  };
+
   // src/HutaoProject/loader.ts
+  var helper = new MMDAnimationHelper();
   var Loader2 = class {
-    loadHutaoModel() {
-      MMDLoader;
-      const loader = new MMDLoader();
-      loader.load(
-        "../assets/hutao/\u80E1\u6843.pmx",
-        function(mesh) {
-          scene_default.getScene().add(mesh);
-        },
-        function(xhr) {
-          console.log(xhr.loaded / xhr.total * 100 + "% loaded");
-        },
-        function(error) {
-          console.log("An error happened");
+    constructor() {
+      this.loadingCount = 0;
+      this.mmdLoader = new MMDLoader();
+    }
+    startLoading() {
+      this.loadingCount++;
+    }
+    finishLoading() {
+      setTimeout(() => this.loadingCount--, 1e3);
+    }
+    loaded() {
+      return this.loadingCount === 0;
+    }
+    loadHutao() {
+      this.startLoading();
+      this.mmdLoader.loadWithAnimation(
+        "/public/hutao/hutao.pmx",
+        "/public/move/ayaka-dance.vmd",
+        (mmd) => {
+          this.finishLoading();
+          helper.add(mmd.mesh, {
+            animation: mmd.animation
+          });
+          scene_default.getScene().add(mmd.mesh);
         }
       );
+    }
+    loadScene() {
+      this.startLoading();
+      this.mmdLoader.load("/public/\u68A8\u56ED\u534E\u706F/\u68A8\u56ED.pmx", (mesh) => {
+        this.finishLoading();
+        scene_default.getScene().add(mesh);
+      });
+    }
+    loadCamera() {
+      this.startLoading();
+      this.mmdLoader.loadAnimation(
+        "./public/move/ayaka-camera.vmd",
+        camera_default.getCamera(),
+        (cameraAnimation) => {
+          this.finishLoading();
+          helper.add(camera_default.getCamera(), {
+            animation: cameraAnimation
+          });
+        }
+      );
+    }
+    loadModels() {
+      this.loadHutao();
+      this.loadCamera();
+      this.loadScene();
     }
   };
   var loader_default = new Loader2();
@@ -54287,6 +58216,669 @@ void RE_IndirectDiffuse_BlinnPhong( const in vec3 irradiance, const in Geometric
   };
   var renderer_default = new Renderer();
 
+  // node_modules/three/examples/jsm/controls/OrbitControls.js
+  var _changeEvent = { type: "change" };
+  var _startEvent = { type: "start" };
+  var _endEvent = { type: "end" };
+  var OrbitControls = class extends EventDispatcher {
+    constructor(object, domElement) {
+      super();
+      this.object = object;
+      this.domElement = domElement;
+      this.domElement.style.touchAction = "none";
+      this.enabled = true;
+      this.target = new Vector3();
+      this.minDistance = 0;
+      this.maxDistance = Infinity;
+      this.minZoom = 0;
+      this.maxZoom = Infinity;
+      this.minPolarAngle = 0;
+      this.maxPolarAngle = Math.PI;
+      this.minAzimuthAngle = -Infinity;
+      this.maxAzimuthAngle = Infinity;
+      this.enableDamping = false;
+      this.dampingFactor = 0.05;
+      this.enableZoom = true;
+      this.zoomSpeed = 1;
+      this.enableRotate = true;
+      this.rotateSpeed = 1;
+      this.enablePan = true;
+      this.panSpeed = 1;
+      this.screenSpacePanning = true;
+      this.keyPanSpeed = 7;
+      this.autoRotate = false;
+      this.autoRotateSpeed = 2;
+      this.keys = { LEFT: "ArrowLeft", UP: "ArrowUp", RIGHT: "ArrowRight", BOTTOM: "ArrowDown" };
+      this.mouseButtons = { LEFT: MOUSE.ROTATE, MIDDLE: MOUSE.DOLLY, RIGHT: MOUSE.PAN };
+      this.touches = { ONE: TOUCH.ROTATE, TWO: TOUCH.DOLLY_PAN };
+      this.target0 = this.target.clone();
+      this.position0 = this.object.position.clone();
+      this.zoom0 = this.object.zoom;
+      this._domElementKeyEvents = null;
+      this.getPolarAngle = function() {
+        return spherical.phi;
+      };
+      this.getAzimuthalAngle = function() {
+        return spherical.theta;
+      };
+      this.getDistance = function() {
+        return this.object.position.distanceTo(this.target);
+      };
+      this.listenToKeyEvents = function(domElement2) {
+        domElement2.addEventListener("keydown", onKeyDown);
+        this._domElementKeyEvents = domElement2;
+      };
+      this.saveState = function() {
+        scope.target0.copy(scope.target);
+        scope.position0.copy(scope.object.position);
+        scope.zoom0 = scope.object.zoom;
+      };
+      this.reset = function() {
+        scope.target.copy(scope.target0);
+        scope.object.position.copy(scope.position0);
+        scope.object.zoom = scope.zoom0;
+        scope.object.updateProjectionMatrix();
+        scope.dispatchEvent(_changeEvent);
+        scope.update();
+        state = STATE.NONE;
+      };
+      this.update = function() {
+        const offset = new Vector3();
+        const quat = new Quaternion().setFromUnitVectors(object.up, new Vector3(0, 1, 0));
+        const quatInverse = quat.clone().invert();
+        const lastPosition = new Vector3();
+        const lastQuaternion = new Quaternion();
+        const twoPI = 2 * Math.PI;
+        return function update() {
+          const position = scope.object.position;
+          offset.copy(position).sub(scope.target);
+          offset.applyQuaternion(quat);
+          spherical.setFromVector3(offset);
+          if (scope.autoRotate && state === STATE.NONE) {
+            rotateLeft(getAutoRotationAngle());
+          }
+          if (scope.enableDamping) {
+            spherical.theta += sphericalDelta.theta * scope.dampingFactor;
+            spherical.phi += sphericalDelta.phi * scope.dampingFactor;
+          } else {
+            spherical.theta += sphericalDelta.theta;
+            spherical.phi += sphericalDelta.phi;
+          }
+          let min = scope.minAzimuthAngle;
+          let max = scope.maxAzimuthAngle;
+          if (isFinite(min) && isFinite(max)) {
+            if (min < -Math.PI)
+              min += twoPI;
+            else if (min > Math.PI)
+              min -= twoPI;
+            if (max < -Math.PI)
+              max += twoPI;
+            else if (max > Math.PI)
+              max -= twoPI;
+            if (min <= max) {
+              spherical.theta = Math.max(min, Math.min(max, spherical.theta));
+            } else {
+              spherical.theta = spherical.theta > (min + max) / 2 ? Math.max(min, spherical.theta) : Math.min(max, spherical.theta);
+            }
+          }
+          spherical.phi = Math.max(scope.minPolarAngle, Math.min(scope.maxPolarAngle, spherical.phi));
+          spherical.makeSafe();
+          spherical.radius *= scale;
+          spherical.radius = Math.max(scope.minDistance, Math.min(scope.maxDistance, spherical.radius));
+          if (scope.enableDamping === true) {
+            scope.target.addScaledVector(panOffset, scope.dampingFactor);
+          } else {
+            scope.target.add(panOffset);
+          }
+          offset.setFromSpherical(spherical);
+          offset.applyQuaternion(quatInverse);
+          position.copy(scope.target).add(offset);
+          scope.object.lookAt(scope.target);
+          if (scope.enableDamping === true) {
+            sphericalDelta.theta *= 1 - scope.dampingFactor;
+            sphericalDelta.phi *= 1 - scope.dampingFactor;
+            panOffset.multiplyScalar(1 - scope.dampingFactor);
+          } else {
+            sphericalDelta.set(0, 0, 0);
+            panOffset.set(0, 0, 0);
+          }
+          scale = 1;
+          if (zoomChanged || lastPosition.distanceToSquared(scope.object.position) > EPS || 8 * (1 - lastQuaternion.dot(scope.object.quaternion)) > EPS) {
+            scope.dispatchEvent(_changeEvent);
+            lastPosition.copy(scope.object.position);
+            lastQuaternion.copy(scope.object.quaternion);
+            zoomChanged = false;
+            return true;
+          }
+          return false;
+        };
+      }();
+      this.dispose = function() {
+        scope.domElement.removeEventListener("contextmenu", onContextMenu);
+        scope.domElement.removeEventListener("pointerdown", onPointerDown);
+        scope.domElement.removeEventListener("pointercancel", onPointerCancel);
+        scope.domElement.removeEventListener("wheel", onMouseWheel);
+        scope.domElement.removeEventListener("pointermove", onPointerMove);
+        scope.domElement.removeEventListener("pointerup", onPointerUp);
+        if (scope._domElementKeyEvents !== null) {
+          scope._domElementKeyEvents.removeEventListener("keydown", onKeyDown);
+        }
+      };
+      const scope = this;
+      const STATE = {
+        NONE: -1,
+        ROTATE: 0,
+        DOLLY: 1,
+        PAN: 2,
+        TOUCH_ROTATE: 3,
+        TOUCH_PAN: 4,
+        TOUCH_DOLLY_PAN: 5,
+        TOUCH_DOLLY_ROTATE: 6
+      };
+      let state = STATE.NONE;
+      const EPS = 1e-6;
+      const spherical = new Spherical();
+      const sphericalDelta = new Spherical();
+      let scale = 1;
+      const panOffset = new Vector3();
+      let zoomChanged = false;
+      const rotateStart = new Vector2();
+      const rotateEnd = new Vector2();
+      const rotateDelta = new Vector2();
+      const panStart = new Vector2();
+      const panEnd = new Vector2();
+      const panDelta = new Vector2();
+      const dollyStart = new Vector2();
+      const dollyEnd = new Vector2();
+      const dollyDelta = new Vector2();
+      const pointers = [];
+      const pointerPositions = {};
+      function getAutoRotationAngle() {
+        return 2 * Math.PI / 60 / 60 * scope.autoRotateSpeed;
+      }
+      function getZoomScale() {
+        return Math.pow(0.95, scope.zoomSpeed);
+      }
+      function rotateLeft(angle) {
+        sphericalDelta.theta -= angle;
+      }
+      function rotateUp(angle) {
+        sphericalDelta.phi -= angle;
+      }
+      const panLeft = function() {
+        const v2 = new Vector3();
+        return function panLeft2(distance, objectMatrix) {
+          v2.setFromMatrixColumn(objectMatrix, 0);
+          v2.multiplyScalar(-distance);
+          panOffset.add(v2);
+        };
+      }();
+      const panUp = function() {
+        const v2 = new Vector3();
+        return function panUp2(distance, objectMatrix) {
+          if (scope.screenSpacePanning === true) {
+            v2.setFromMatrixColumn(objectMatrix, 1);
+          } else {
+            v2.setFromMatrixColumn(objectMatrix, 0);
+            v2.crossVectors(scope.object.up, v2);
+          }
+          v2.multiplyScalar(distance);
+          panOffset.add(v2);
+        };
+      }();
+      const pan = function() {
+        const offset = new Vector3();
+        return function pan2(deltaX, deltaY) {
+          const element = scope.domElement;
+          if (scope.object.isPerspectiveCamera) {
+            const position = scope.object.position;
+            offset.copy(position).sub(scope.target);
+            let targetDistance = offset.length();
+            targetDistance *= Math.tan(scope.object.fov / 2 * Math.PI / 180);
+            panLeft(2 * deltaX * targetDistance / element.clientHeight, scope.object.matrix);
+            panUp(2 * deltaY * targetDistance / element.clientHeight, scope.object.matrix);
+          } else if (scope.object.isOrthographicCamera) {
+            panLeft(deltaX * (scope.object.right - scope.object.left) / scope.object.zoom / element.clientWidth, scope.object.matrix);
+            panUp(deltaY * (scope.object.top - scope.object.bottom) / scope.object.zoom / element.clientHeight, scope.object.matrix);
+          } else {
+            console.warn("WARNING: OrbitControls.js encountered an unknown camera type - pan disabled.");
+            scope.enablePan = false;
+          }
+        };
+      }();
+      function dollyOut(dollyScale) {
+        if (scope.object.isPerspectiveCamera) {
+          scale /= dollyScale;
+        } else if (scope.object.isOrthographicCamera) {
+          scope.object.zoom = Math.max(scope.minZoom, Math.min(scope.maxZoom, scope.object.zoom * dollyScale));
+          scope.object.updateProjectionMatrix();
+          zoomChanged = true;
+        } else {
+          console.warn("WARNING: OrbitControls.js encountered an unknown camera type - dolly/zoom disabled.");
+          scope.enableZoom = false;
+        }
+      }
+      function dollyIn(dollyScale) {
+        if (scope.object.isPerspectiveCamera) {
+          scale *= dollyScale;
+        } else if (scope.object.isOrthographicCamera) {
+          scope.object.zoom = Math.max(scope.minZoom, Math.min(scope.maxZoom, scope.object.zoom / dollyScale));
+          scope.object.updateProjectionMatrix();
+          zoomChanged = true;
+        } else {
+          console.warn("WARNING: OrbitControls.js encountered an unknown camera type - dolly/zoom disabled.");
+          scope.enableZoom = false;
+        }
+      }
+      function handleMouseDownRotate(event) {
+        rotateStart.set(event.clientX, event.clientY);
+      }
+      function handleMouseDownDolly(event) {
+        dollyStart.set(event.clientX, event.clientY);
+      }
+      function handleMouseDownPan(event) {
+        panStart.set(event.clientX, event.clientY);
+      }
+      function handleMouseMoveRotate(event) {
+        rotateEnd.set(event.clientX, event.clientY);
+        rotateDelta.subVectors(rotateEnd, rotateStart).multiplyScalar(scope.rotateSpeed);
+        const element = scope.domElement;
+        rotateLeft(2 * Math.PI * rotateDelta.x / element.clientHeight);
+        rotateUp(2 * Math.PI * rotateDelta.y / element.clientHeight);
+        rotateStart.copy(rotateEnd);
+        scope.update();
+      }
+      function handleMouseMoveDolly(event) {
+        dollyEnd.set(event.clientX, event.clientY);
+        dollyDelta.subVectors(dollyEnd, dollyStart);
+        if (dollyDelta.y > 0) {
+          dollyOut(getZoomScale());
+        } else if (dollyDelta.y < 0) {
+          dollyIn(getZoomScale());
+        }
+        dollyStart.copy(dollyEnd);
+        scope.update();
+      }
+      function handleMouseMovePan(event) {
+        panEnd.set(event.clientX, event.clientY);
+        panDelta.subVectors(panEnd, panStart).multiplyScalar(scope.panSpeed);
+        pan(panDelta.x, panDelta.y);
+        panStart.copy(panEnd);
+        scope.update();
+      }
+      function handleMouseWheel(event) {
+        if (event.deltaY < 0) {
+          dollyIn(getZoomScale());
+        } else if (event.deltaY > 0) {
+          dollyOut(getZoomScale());
+        }
+        scope.update();
+      }
+      function handleKeyDown(event) {
+        let needsUpdate = false;
+        switch (event.code) {
+          case scope.keys.UP:
+            if (event.ctrlKey || event.metaKey || event.shiftKey) {
+              rotateUp(2 * Math.PI * scope.rotateSpeed / scope.domElement.clientHeight);
+            } else {
+              pan(0, scope.keyPanSpeed);
+            }
+            needsUpdate = true;
+            break;
+          case scope.keys.BOTTOM:
+            if (event.ctrlKey || event.metaKey || event.shiftKey) {
+              rotateUp(-2 * Math.PI * scope.rotateSpeed / scope.domElement.clientHeight);
+            } else {
+              pan(0, -scope.keyPanSpeed);
+            }
+            needsUpdate = true;
+            break;
+          case scope.keys.LEFT:
+            if (event.ctrlKey || event.metaKey || event.shiftKey) {
+              rotateLeft(2 * Math.PI * scope.rotateSpeed / scope.domElement.clientHeight);
+            } else {
+              pan(scope.keyPanSpeed, 0);
+            }
+            needsUpdate = true;
+            break;
+          case scope.keys.RIGHT:
+            if (event.ctrlKey || event.metaKey || event.shiftKey) {
+              rotateLeft(-2 * Math.PI * scope.rotateSpeed / scope.domElement.clientHeight);
+            } else {
+              pan(-scope.keyPanSpeed, 0);
+            }
+            needsUpdate = true;
+            break;
+        }
+        if (needsUpdate) {
+          event.preventDefault();
+          scope.update();
+        }
+      }
+      function handleTouchStartRotate() {
+        if (pointers.length === 1) {
+          rotateStart.set(pointers[0].pageX, pointers[0].pageY);
+        } else {
+          const x2 = 0.5 * (pointers[0].pageX + pointers[1].pageX);
+          const y2 = 0.5 * (pointers[0].pageY + pointers[1].pageY);
+          rotateStart.set(x2, y2);
+        }
+      }
+      function handleTouchStartPan() {
+        if (pointers.length === 1) {
+          panStart.set(pointers[0].pageX, pointers[0].pageY);
+        } else {
+          const x2 = 0.5 * (pointers[0].pageX + pointers[1].pageX);
+          const y2 = 0.5 * (pointers[0].pageY + pointers[1].pageY);
+          panStart.set(x2, y2);
+        }
+      }
+      function handleTouchStartDolly() {
+        const dx = pointers[0].pageX - pointers[1].pageX;
+        const dy = pointers[0].pageY - pointers[1].pageY;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        dollyStart.set(0, distance);
+      }
+      function handleTouchStartDollyPan() {
+        if (scope.enableZoom)
+          handleTouchStartDolly();
+        if (scope.enablePan)
+          handleTouchStartPan();
+      }
+      function handleTouchStartDollyRotate() {
+        if (scope.enableZoom)
+          handleTouchStartDolly();
+        if (scope.enableRotate)
+          handleTouchStartRotate();
+      }
+      function handleTouchMoveRotate(event) {
+        if (pointers.length == 1) {
+          rotateEnd.set(event.pageX, event.pageY);
+        } else {
+          const position = getSecondPointerPosition(event);
+          const x2 = 0.5 * (event.pageX + position.x);
+          const y2 = 0.5 * (event.pageY + position.y);
+          rotateEnd.set(x2, y2);
+        }
+        rotateDelta.subVectors(rotateEnd, rotateStart).multiplyScalar(scope.rotateSpeed);
+        const element = scope.domElement;
+        rotateLeft(2 * Math.PI * rotateDelta.x / element.clientHeight);
+        rotateUp(2 * Math.PI * rotateDelta.y / element.clientHeight);
+        rotateStart.copy(rotateEnd);
+      }
+      function handleTouchMovePan(event) {
+        if (pointers.length === 1) {
+          panEnd.set(event.pageX, event.pageY);
+        } else {
+          const position = getSecondPointerPosition(event);
+          const x2 = 0.5 * (event.pageX + position.x);
+          const y2 = 0.5 * (event.pageY + position.y);
+          panEnd.set(x2, y2);
+        }
+        panDelta.subVectors(panEnd, panStart).multiplyScalar(scope.panSpeed);
+        pan(panDelta.x, panDelta.y);
+        panStart.copy(panEnd);
+      }
+      function handleTouchMoveDolly(event) {
+        const position = getSecondPointerPosition(event);
+        const dx = event.pageX - position.x;
+        const dy = event.pageY - position.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        dollyEnd.set(0, distance);
+        dollyDelta.set(0, Math.pow(dollyEnd.y / dollyStart.y, scope.zoomSpeed));
+        dollyOut(dollyDelta.y);
+        dollyStart.copy(dollyEnd);
+      }
+      function handleTouchMoveDollyPan(event) {
+        if (scope.enableZoom)
+          handleTouchMoveDolly(event);
+        if (scope.enablePan)
+          handleTouchMovePan(event);
+      }
+      function handleTouchMoveDollyRotate(event) {
+        if (scope.enableZoom)
+          handleTouchMoveDolly(event);
+        if (scope.enableRotate)
+          handleTouchMoveRotate(event);
+      }
+      function onPointerDown(event) {
+        if (scope.enabled === false)
+          return;
+        if (pointers.length === 0) {
+          scope.domElement.setPointerCapture(event.pointerId);
+          scope.domElement.addEventListener("pointermove", onPointerMove);
+          scope.domElement.addEventListener("pointerup", onPointerUp);
+        }
+        addPointer(event);
+        if (event.pointerType === "touch") {
+          onTouchStart(event);
+        } else {
+          onMouseDown(event);
+        }
+      }
+      function onPointerMove(event) {
+        if (scope.enabled === false)
+          return;
+        if (event.pointerType === "touch") {
+          onTouchMove(event);
+        } else {
+          onMouseMove(event);
+        }
+      }
+      function onPointerUp(event) {
+        removePointer(event);
+        if (pointers.length === 0) {
+          scope.domElement.releasePointerCapture(event.pointerId);
+          scope.domElement.removeEventListener("pointermove", onPointerMove);
+          scope.domElement.removeEventListener("pointerup", onPointerUp);
+        }
+        scope.dispatchEvent(_endEvent);
+        state = STATE.NONE;
+      }
+      function onPointerCancel(event) {
+        removePointer(event);
+      }
+      function onMouseDown(event) {
+        let mouseAction;
+        switch (event.button) {
+          case 0:
+            mouseAction = scope.mouseButtons.LEFT;
+            break;
+          case 1:
+            mouseAction = scope.mouseButtons.MIDDLE;
+            break;
+          case 2:
+            mouseAction = scope.mouseButtons.RIGHT;
+            break;
+          default:
+            mouseAction = -1;
+        }
+        switch (mouseAction) {
+          case MOUSE.DOLLY:
+            if (scope.enableZoom === false)
+              return;
+            handleMouseDownDolly(event);
+            state = STATE.DOLLY;
+            break;
+          case MOUSE.ROTATE:
+            if (event.ctrlKey || event.metaKey || event.shiftKey) {
+              if (scope.enablePan === false)
+                return;
+              handleMouseDownPan(event);
+              state = STATE.PAN;
+            } else {
+              if (scope.enableRotate === false)
+                return;
+              handleMouseDownRotate(event);
+              state = STATE.ROTATE;
+            }
+            break;
+          case MOUSE.PAN:
+            if (event.ctrlKey || event.metaKey || event.shiftKey) {
+              if (scope.enableRotate === false)
+                return;
+              handleMouseDownRotate(event);
+              state = STATE.ROTATE;
+            } else {
+              if (scope.enablePan === false)
+                return;
+              handleMouseDownPan(event);
+              state = STATE.PAN;
+            }
+            break;
+          default:
+            state = STATE.NONE;
+        }
+        if (state !== STATE.NONE) {
+          scope.dispatchEvent(_startEvent);
+        }
+      }
+      function onMouseMove(event) {
+        switch (state) {
+          case STATE.ROTATE:
+            if (scope.enableRotate === false)
+              return;
+            handleMouseMoveRotate(event);
+            break;
+          case STATE.DOLLY:
+            if (scope.enableZoom === false)
+              return;
+            handleMouseMoveDolly(event);
+            break;
+          case STATE.PAN:
+            if (scope.enablePan === false)
+              return;
+            handleMouseMovePan(event);
+            break;
+        }
+      }
+      function onMouseWheel(event) {
+        if (scope.enabled === false || scope.enableZoom === false || state !== STATE.NONE)
+          return;
+        event.preventDefault();
+        scope.dispatchEvent(_startEvent);
+        handleMouseWheel(event);
+        scope.dispatchEvent(_endEvent);
+      }
+      function onKeyDown(event) {
+        if (scope.enabled === false || scope.enablePan === false)
+          return;
+        handleKeyDown(event);
+      }
+      function onTouchStart(event) {
+        trackPointer(event);
+        switch (pointers.length) {
+          case 1:
+            switch (scope.touches.ONE) {
+              case TOUCH.ROTATE:
+                if (scope.enableRotate === false)
+                  return;
+                handleTouchStartRotate();
+                state = STATE.TOUCH_ROTATE;
+                break;
+              case TOUCH.PAN:
+                if (scope.enablePan === false)
+                  return;
+                handleTouchStartPan();
+                state = STATE.TOUCH_PAN;
+                break;
+              default:
+                state = STATE.NONE;
+            }
+            break;
+          case 2:
+            switch (scope.touches.TWO) {
+              case TOUCH.DOLLY_PAN:
+                if (scope.enableZoom === false && scope.enablePan === false)
+                  return;
+                handleTouchStartDollyPan();
+                state = STATE.TOUCH_DOLLY_PAN;
+                break;
+              case TOUCH.DOLLY_ROTATE:
+                if (scope.enableZoom === false && scope.enableRotate === false)
+                  return;
+                handleTouchStartDollyRotate();
+                state = STATE.TOUCH_DOLLY_ROTATE;
+                break;
+              default:
+                state = STATE.NONE;
+            }
+            break;
+          default:
+            state = STATE.NONE;
+        }
+        if (state !== STATE.NONE) {
+          scope.dispatchEvent(_startEvent);
+        }
+      }
+      function onTouchMove(event) {
+        trackPointer(event);
+        switch (state) {
+          case STATE.TOUCH_ROTATE:
+            if (scope.enableRotate === false)
+              return;
+            handleTouchMoveRotate(event);
+            scope.update();
+            break;
+          case STATE.TOUCH_PAN:
+            if (scope.enablePan === false)
+              return;
+            handleTouchMovePan(event);
+            scope.update();
+            break;
+          case STATE.TOUCH_DOLLY_PAN:
+            if (scope.enableZoom === false && scope.enablePan === false)
+              return;
+            handleTouchMoveDollyPan(event);
+            scope.update();
+            break;
+          case STATE.TOUCH_DOLLY_ROTATE:
+            if (scope.enableZoom === false && scope.enableRotate === false)
+              return;
+            handleTouchMoveDollyRotate(event);
+            scope.update();
+            break;
+          default:
+            state = STATE.NONE;
+        }
+      }
+      function onContextMenu(event) {
+        if (scope.enabled === false)
+          return;
+        event.preventDefault();
+      }
+      function addPointer(event) {
+        pointers.push(event);
+      }
+      function removePointer(event) {
+        delete pointerPositions[event.pointerId];
+        for (let i2 = 0; i2 < pointers.length; i2++) {
+          if (pointers[i2].pointerId == event.pointerId) {
+            pointers.splice(i2, 1);
+            return;
+          }
+        }
+      }
+      function trackPointer(event) {
+        let position = pointerPositions[event.pointerId];
+        if (position === void 0) {
+          position = new Vector2();
+          pointerPositions[event.pointerId] = position;
+        }
+        position.set(event.pageX, event.pageY);
+      }
+      function getSecondPointerPosition(event) {
+        const pointer = event.pointerId === pointers[0].pointerId ? pointers[1] : pointers[0];
+        return pointerPositions[pointer.pointerId];
+      }
+      scope.domElement.addEventListener("contextmenu", onContextMenu);
+      scope.domElement.addEventListener("pointerdown", onPointerDown);
+      scope.domElement.addEventListener("pointercancel", onPointerCancel);
+      scope.domElement.addEventListener("wheel", onMouseWheel, { passive: false });
+      this.update();
+    }
+  };
+
   // src/HutaoProject/index.ts
   var ThreeProject = class {
     constructor() {
@@ -54294,17 +58886,37 @@ void RE_IndirectDiffuse_BlinnPhong( const in vec3 irradiance, const in Geometric
       if (!container) {
         return;
       }
+      this.clock = new Clock();
       scene_default.init(container);
       camera_default.init(container);
-      loader_default.loadHutaoModel();
       renderer_default.init(container);
     }
-    launch() {
-      if (!this.frameId) {
-        this.frameId = requestAnimationFrame(() => {
-          renderer_default.getRenderer().render(scene_default.getScene(), camera_default.getCamera());
-        });
-      }
+    render() {
+      loader_default.loadModels();
+      this.initLight();
+      this.callRenderer();
+    }
+    initLight() {
+      const ambientLight = new AmbientLight(16777215);
+      scene_default.getScene().add(ambientLight);
+    }
+    initControls() {
+      const controls = new OrbitControls(
+        camera_default.getCamera(),
+        renderer_default.getRenderer().domElement
+      );
+      controls.target = new Vector3(1.6, 14, -4);
+      this.controls = controls;
+    }
+    callRenderer() {
+      this.frameId = requestAnimationFrame(() => {
+        if (loader_default.loaded()) {
+          const time = this.clock.getDelta();
+          helper.update(time);
+        }
+        renderer_default.getRenderer().render(scene_default.getScene(), camera_default.getCamera());
+        this.callRenderer();
+      });
     }
   };
 
@@ -55533,7 +60145,7 @@ void RE_IndirectDiffuse_BlinnPhong( const in vec3 irradiance, const in Geometric
   // src/App.tsx
   function App() {
     (0, import_react2.useEffect)(() => {
-      new ThreeProject().launch();
+      new ThreeProject().render();
     }, []);
     return /* @__PURE__ */ import_react2.default.createElement(Page, { id: "three" });
   }
