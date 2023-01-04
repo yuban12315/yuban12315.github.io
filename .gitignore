@@ -1,3 +1,5 @@
 node_modules
 
 *error.log
+output/public/.DS_Store
+.DS_Store

@@ -8,6 +8,7 @@ const server = http2.createSecureServer({
   key: fs.readFileSync(path.resolve(process.env.HOME, "./localhost-key.pem")),
   cert: fs.readFileSync(path.resolve(process.env.HOME, "./localhost.pem")),
 });
+
 server.on("error", (err) => console.error(err));
 
 server.on("stream", (stream, headers) => {
