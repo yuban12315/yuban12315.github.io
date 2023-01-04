@@ -684,12 +684,12 @@
             if (children == null) {
               return children;
             }
-            var result = [];
+            var result2 = [];
             var count = 0;
-            mapIntoArray(children, result, "", "", function(child) {
+            mapIntoArray(children, result2, "", "", function(child) {
               return func.call(context, child, count++);
             });
-            return result;
+            return result2;
           }
           function countChildren(children) {
             var n2 = 0;
@@ -703,7 +703,7 @@
               forEachFunc.apply(this, arguments);
             }, forEachContext);
           }
-          function toArray(children) {
+          function toArray2(children) {
             return mapChildren(children, function(child) {
               return child;
             }) || [];
@@ -1627,10 +1627,10 @@
                 ReactCurrentActQueue.current = [];
               }
               var prevIsBatchingLegacy = ReactCurrentActQueue.isBatchingLegacy;
-              var result;
+              var result2;
               try {
                 ReactCurrentActQueue.isBatchingLegacy = true;
-                result = callback();
+                result2 = callback();
                 if (!prevIsBatchingLegacy && ReactCurrentActQueue.didScheduleLegacyUpdate) {
                   var queue = ReactCurrentActQueue.current;
                   if (queue !== null) {
@@ -1644,8 +1644,8 @@
               } finally {
                 ReactCurrentActQueue.isBatchingLegacy = prevIsBatchingLegacy;
               }
-              if (result !== null && typeof result === "object" && typeof result.then === "function") {
-                var thenableResult = result;
+              if (result2 !== null && typeof result2 === "object" && typeof result2.then === "function") {
+                var thenableResult = result2;
                 var wasAwaited = false;
                 var thenable = {
                   then: function(resolve, reject) {
@@ -1676,7 +1676,7 @@
                 }
                 return thenable;
               } else {
-                var returnValue = result;
+                var returnValue = result2;
                 popActScope(prevActScopeDepth);
                 if (actScopeDepth === 0) {
                   var _queue = ReactCurrentActQueue.current;
@@ -1766,7 +1766,7 @@
             map: mapChildren,
             forEach: forEachChildren,
             count: countChildren,
-            toArray,
+            toArray: toArray2,
             only: onlyChild
           };
           exports.Children = Children;
@@ -3587,11 +3587,11 @@
             if (node.hasOwnProperty(valueField) || typeof descriptor === "undefined" || typeof descriptor.get !== "function" || typeof descriptor.set !== "function") {
               return;
             }
-            var get2 = descriptor.get, set2 = descriptor.set;
+            var get4 = descriptor.get, set2 = descriptor.set;
             Object.defineProperty(node, valueField, {
               configurable: true,
               get: function() {
-                return get2.call(this);
+                return get4.call(this);
               },
               set: function(value) {
                 {
@@ -5483,7 +5483,7 @@
               throw new Error("clearCaughtError was called but no error was captured. This error is likely caused by a bug in React. Please file an issue.");
             }
           }
-          function get(key) {
+          function get3(key) {
             return key._reactInternals;
           }
           function has(key) {
@@ -5579,7 +5579,7 @@
                 instance._warnedAboutRefsInRender = true;
               }
             }
-            var fiber = get(component);
+            var fiber = get3(component);
             if (!fiber) {
               return false;
             }
@@ -5882,14 +5882,14 @@
           }
           function getLaneLabelMap() {
             {
-              var map = /* @__PURE__ */ new Map();
+              var map2 = /* @__PURE__ */ new Map();
               var lane = 1;
               for (var index2 = 0; index2 < TotalLanes; index2++) {
                 var label = getLabelForLane(lane);
-                map.set(lane, label);
+                map2.set(lane, label);
                 lane *= 2;
               }
-              return map;
+              return map2;
             }
           }
           function markCommitStarted(lanes) {
@@ -6849,9 +6849,9 @@
             }
             return true;
           }
-          function attemptReplayContinuousQueuedEventInMap(queuedEvent, key, map) {
+          function attemptReplayContinuousQueuedEventInMap(queuedEvent, key, map2) {
             if (attemptReplayContinuousQueuedEvent(queuedEvent)) {
-              map.delete(key);
+              map2.delete(key);
             }
           }
           function replayUnblockedEvents() {
@@ -12052,7 +12052,7 @@
           var classComponentUpdater = {
             isMounted,
             enqueueSetState: function(inst, payload, callback) {
-              var fiber = get(inst);
+              var fiber = get3(inst);
               var eventTime = requestEventTime();
               var lane = requestUpdateLane(fiber);
               var update = createUpdate(eventTime, lane);
@@ -12073,7 +12073,7 @@
               }
             },
             enqueueReplaceState: function(inst, payload, callback) {
-              var fiber = get(inst);
+              var fiber = get3(inst);
               var eventTime = requestEventTime();
               var lane = requestUpdateLane(fiber);
               var update = createUpdate(eventTime, lane);
@@ -12095,7 +12095,7 @@
               }
             },
             enqueueForceUpdate: function(inst, callback) {
-              var fiber = get(inst);
+              var fiber = get3(inst);
               var eventTime = requestEventTime();
               var lane = requestUpdateLane(fiber);
               var update = createUpdate(eventTime, lane);
@@ -14047,11 +14047,11 @@
           function rerenderState(initialState) {
             return rerenderReducer(basicStateReducer);
           }
-          function pushEffect(tag, create, destroy, deps) {
+          function pushEffect(tag, create, destroy2, deps) {
             var effect = {
               tag,
               create,
-              destroy,
+              destroy: destroy2,
               deps,
               next: null
             };
@@ -14096,20 +14096,20 @@
           function updateEffectImpl(fiberFlags, hookFlags, create, deps) {
             var hook = updateWorkInProgressHook();
             var nextDeps = deps === void 0 ? null : deps;
-            var destroy = void 0;
+            var destroy2 = void 0;
             if (currentHook !== null) {
               var prevEffect = currentHook.memoizedState;
-              destroy = prevEffect.destroy;
+              destroy2 = prevEffect.destroy;
               if (nextDeps !== null) {
                 var prevDeps = prevEffect.deps;
                 if (areHookInputsEqual(nextDeps, prevDeps)) {
-                  hook.memoizedState = pushEffect(hookFlags, create, destroy, nextDeps);
+                  hook.memoizedState = pushEffect(hookFlags, create, destroy2, nextDeps);
                   return;
                 }
               }
             }
             currentlyRenderingFiber$1.flags |= fiberFlags;
-            hook.memoizedState = pushEffect(HasEffect | hookFlags, create, destroy, nextDeps);
+            hook.memoizedState = pushEffect(HasEffect | hookFlags, create, destroy2, nextDeps);
           }
           function mountEffect(create, deps) {
             if ((currentlyRenderingFiber$1.mode & StrictEffectsMode) !== NoMode) {
@@ -18085,9 +18085,9 @@
               }
             }
           }
-          function safelyCallDestroy(current2, nearestMountedAncestor, destroy) {
+          function safelyCallDestroy(current2, nearestMountedAncestor, destroy2) {
             try {
-              destroy();
+              destroy2();
             } catch (error2) {
               captureCommitPhaseError(current2, nearestMountedAncestor, error2);
             }
@@ -18199,9 +18199,9 @@
               var effect = firstEffect;
               do {
                 if ((effect.tag & flags) === flags) {
-                  var destroy = effect.destroy;
+                  var destroy2 = effect.destroy;
                   effect.destroy = void 0;
-                  if (destroy !== void 0) {
+                  if (destroy2 !== void 0) {
                     {
                       if ((flags & Passive$1) !== NoFlags$1) {
                         markComponentPassiveEffectUnmountStarted(finishedWork);
@@ -18214,7 +18214,7 @@
                         setIsRunningInsertionEffect(true);
                       }
                     }
-                    safelyCallDestroy(finishedWork, nearestMountedAncestor, destroy);
+                    safelyCallDestroy(finishedWork, nearestMountedAncestor, destroy2);
                     {
                       if ((flags & Insertion) !== NoFlags$1) {
                         setIsRunningInsertionEffect(false);
@@ -18268,8 +18268,8 @@
                     }
                   }
                   {
-                    var destroy = effect.destroy;
-                    if (destroy !== void 0 && typeof destroy !== "function") {
+                    var destroy2 = effect.destroy;
+                    if (destroy2 !== void 0 && typeof destroy2 !== "function") {
                       var hookName = void 0;
                       if ((effect.tag & Layout) !== NoFlags) {
                         hookName = "useLayoutEffect";
@@ -18279,12 +18279,12 @@
                         hookName = "useEffect";
                       }
                       var addendum = void 0;
-                      if (destroy === null) {
+                      if (destroy2 === null) {
                         addendum = " You returned null. If your effect does not require clean up, return undefined (or nothing).";
-                      } else if (typeof destroy.then === "function") {
+                      } else if (typeof destroy2.then === "function") {
                         addendum = "\n\nIt looks like you wrote " + hookName + "(async () => ...) or returned a Promise. Instead, write the async function inside your effect and call it immediately:\n\n" + hookName + "(() => {\n  async function fetchData() {\n    // You can await here\n    const response = await MyAPI.getData(someId);\n    // ...\n  }\n  fetchData();\n}, [someId]); // Or [] if effect doesn't need props or state\n\nLearn more about data fetching with Hooks: https://reactjs.org/link/hooks-data-fetching";
                       } else {
-                        addendum = " You returned: " + destroy;
+                        addendum = " You returned: " + destroy2;
                       }
                       error("%s must not return anything besides a function, which is used for clean-up.%s", hookName, addendum);
                     }
@@ -18898,20 +18898,20 @@
                       var firstEffect = lastEffect.next;
                       var effect = firstEffect;
                       do {
-                        var _effect = effect, destroy = _effect.destroy, tag = _effect.tag;
-                        if (destroy !== void 0) {
+                        var _effect = effect, destroy2 = _effect.destroy, tag = _effect.tag;
+                        if (destroy2 !== void 0) {
                           if ((tag & Insertion) !== NoFlags$1) {
-                            safelyCallDestroy(deletedFiber, nearestMountedAncestor, destroy);
+                            safelyCallDestroy(deletedFiber, nearestMountedAncestor, destroy2);
                           } else if ((tag & Layout) !== NoFlags$1) {
                             {
                               markComponentLayoutEffectUnmountStarted(deletedFiber);
                             }
                             if (deletedFiber.mode & ProfileMode) {
                               startLayoutEffectTimer();
-                              safelyCallDestroy(deletedFiber, nearestMountedAncestor, destroy);
+                              safelyCallDestroy(deletedFiber, nearestMountedAncestor, destroy2);
                               recordLayoutEffectDuration(deletedFiber);
                             } else {
-                              safelyCallDestroy(deletedFiber, nearestMountedAncestor, destroy);
+                              safelyCallDestroy(deletedFiber, nearestMountedAncestor, destroy2);
                             }
                             {
                               markComponentLayoutEffectUnmountStopped();
@@ -21981,7 +21981,7 @@
             if (!parentComponent) {
               return emptyContextObject;
             }
-            var fiber = get(parentComponent);
+            var fiber = get3(parentComponent);
             var parentContext = findCurrentUnmaskedContext(fiber);
             if (fiber.tag === ClassComponent) {
               var Component = fiber.type;
@@ -21993,7 +21993,7 @@
           }
           function findHostInstanceWithWarning(component, methodName) {
             {
-              var fiber = get(component);
+              var fiber = get3(component);
               if (fiber === void 0) {
                 if (typeof component.render === "function") {
                   throw new Error("Unable to find node on an unmounted component.");
@@ -30676,12 +30676,12 @@
       }
       attribute.onUploadCallback();
     }
-    function get(attribute) {
+    function get3(attribute) {
       if (attribute.isInterleavedBufferAttribute)
         attribute = attribute.data;
       return buffers.get(attribute);
     }
-    function remove(attribute) {
+    function remove2(attribute) {
       if (attribute.isInterleavedBufferAttribute)
         attribute = attribute.data;
       const data = buffers.get(attribute);
@@ -30714,8 +30714,8 @@
       }
     }
     return {
-      get,
-      remove,
+      get: get3,
+      remove: remove2,
       update
     };
   }
@@ -32138,7 +32138,7 @@
       }
       return texture;
     }
-    function get(texture) {
+    function get3(texture) {
       if (texture && texture.isTexture && texture.isRenderTargetTexture === false) {
         const mapping = texture.mapping;
         if (mapping === EquirectangularReflectionMapping || mapping === EquirectangularRefractionMapping) {
@@ -32174,7 +32174,7 @@
       cubemaps = /* @__PURE__ */ new WeakMap();
     }
     return {
-      get,
+      get: get3,
       dispose
     };
   }
@@ -32848,7 +32848,7 @@
   function WebGLCubeUVMaps(renderer) {
     let cubeUVmaps = /* @__PURE__ */ new WeakMap();
     let pmremGenerator = null;
-    function get(texture) {
+    function get3(texture) {
       if (texture && texture.isTexture) {
         const mapping = texture.mapping;
         const isEquirectMap = mapping === EquirectangularReflectionMapping || mapping === EquirectangularRefractionMapping;
@@ -32909,7 +32909,7 @@
       }
     }
     return {
-      get,
+      get: get3,
       dispose
     };
   }
@@ -32993,7 +32993,7 @@
       }
       info.memory.geometries--;
     }
-    function get(object, geometry) {
+    function get3(object, geometry) {
       if (geometries[geometry.id] === true)
         return geometry;
       geometry.addEventListener("dispose", onGeometryDispose);
@@ -33060,7 +33060,7 @@
       return wireframeAttributes.get(geometry);
     }
     return {
-      get,
+      get: get3,
       update,
       getWireframeAttribute
     };
@@ -33924,8 +33924,8 @@
         addUniform(container, subscript === void 0 ? new SingleUniform(id, activeInfo, addr) : new PureArrayUniform(id, activeInfo, addr));
         break;
       } else {
-        const map = container.map;
-        let next = map[id];
+        const map2 = container.map;
+        let next = map2[id];
         if (next === void 0) {
           next = new StructuredUniform(id);
           addUniform(container, next);
@@ -34962,15 +34962,15 @@
   }
   function WebGLProperties() {
     let properties = /* @__PURE__ */ new WeakMap();
-    function get(object) {
-      let map = properties.get(object);
-      if (map === void 0) {
-        map = {};
-        properties.set(object, map);
+    function get3(object) {
+      let map2 = properties.get(object);
+      if (map2 === void 0) {
+        map2 = {};
+        properties.set(object, map2);
       }
-      return map;
+      return map2;
     }
-    function remove(object) {
+    function remove2(object) {
       properties.delete(object);
     }
     function update(object, key, value) {
@@ -34980,8 +34980,8 @@
       properties = /* @__PURE__ */ new WeakMap();
     }
     return {
-      get,
-      remove,
+      get: get3,
+      remove: remove2,
       update,
       dispose
     };
@@ -35102,7 +35102,7 @@
   }
   function WebGLRenderLists() {
     let lists = /* @__PURE__ */ new WeakMap();
-    function get(scene, renderCallDepth) {
+    function get3(scene, renderCallDepth) {
       const listArray = lists.get(scene);
       let list;
       if (listArray === void 0) {
@@ -35122,7 +35122,7 @@
       lists = /* @__PURE__ */ new WeakMap();
     }
     return {
-      get,
+      get: get3,
       dispose
     };
   }
@@ -35522,7 +35522,7 @@
   }
   function WebGLRenderStates(extensions, capabilities) {
     let renderStates = /* @__PURE__ */ new WeakMap();
-    function get(scene, renderCallDepth = 0) {
+    function get3(scene, renderCallDepth = 0) {
       const renderStateArray = renderStates.get(scene);
       let renderState;
       if (renderStateArray === void 0) {
@@ -35542,7 +35542,7 @@
       renderStates = /* @__PURE__ */ new WeakMap();
     }
     return {
-      get,
+      get: get3,
       dispose
     };
   }
@@ -35731,15 +35731,15 @@
       _renderer.renderBufferDirect(camera, null, geometry, shadowMaterialHorizontal, fullScreenMesh, null);
     }
     function getDepthMaterial(object, material, light, shadowCameraNear, shadowCameraFar, type) {
-      let result = null;
+      let result2 = null;
       const customMaterial = light.isPointLight === true ? object.customDistanceMaterial : object.customDepthMaterial;
       if (customMaterial !== void 0) {
-        result = customMaterial;
+        result2 = customMaterial;
       } else {
-        result = light.isPointLight === true ? _distanceMaterial : _depthMaterial;
+        result2 = light.isPointLight === true ? _distanceMaterial : _depthMaterial;
       }
       if (_renderer.localClippingEnabled && material.clipShadows === true && Array.isArray(material.clippingPlanes) && material.clippingPlanes.length !== 0 || material.displacementMap && material.displacementScale !== 0 || material.alphaMap && material.alphaTest > 0 || material.map && material.alphaTest > 0) {
-        const keyA = result.uuid, keyB = material.uuid;
+        const keyA = result2.uuid, keyB = material.uuid;
         let materialsForVariant = _materialCache[keyA];
         if (materialsForVariant === void 0) {
           materialsForVariant = {};
@@ -35747,35 +35747,35 @@
         }
         let cachedMaterial = materialsForVariant[keyB];
         if (cachedMaterial === void 0) {
-          cachedMaterial = result.clone();
+          cachedMaterial = result2.clone();
           materialsForVariant[keyB] = cachedMaterial;
         }
-        result = cachedMaterial;
+        result2 = cachedMaterial;
       }
-      result.visible = material.visible;
-      result.wireframe = material.wireframe;
+      result2.visible = material.visible;
+      result2.wireframe = material.wireframe;
       if (type === VSMShadowMap) {
-        result.side = material.shadowSide !== null ? material.shadowSide : material.side;
+        result2.side = material.shadowSide !== null ? material.shadowSide : material.side;
       } else {
-        result.side = material.shadowSide !== null ? material.shadowSide : shadowSide[material.side];
+        result2.side = material.shadowSide !== null ? material.shadowSide : shadowSide[material.side];
       }
-      result.alphaMap = material.alphaMap;
-      result.alphaTest = material.alphaTest;
-      result.map = material.map;
-      result.clipShadows = material.clipShadows;
-      result.clippingPlanes = material.clippingPlanes;
-      result.clipIntersection = material.clipIntersection;
-      result.displacementMap = material.displacementMap;
-      result.displacementScale = material.displacementScale;
-      result.displacementBias = material.displacementBias;
-      result.wireframeLinewidth = material.wireframeLinewidth;
-      result.linewidth = material.linewidth;
-      if (light.isPointLight === true && result.isMeshDistanceMaterial === true) {
-        result.referencePosition.setFromMatrixPosition(light.matrixWorld);
-        result.nearDistance = shadowCameraNear;
-        result.farDistance = shadowCameraFar;
+      result2.alphaMap = material.alphaMap;
+      result2.alphaTest = material.alphaTest;
+      result2.map = material.map;
+      result2.clipShadows = material.clipShadows;
+      result2.clippingPlanes = material.clippingPlanes;
+      result2.clipIntersection = material.clipIntersection;
+      result2.displacementMap = material.displacementMap;
+      result2.displacementScale = material.displacementScale;
+      result2.displacementBias = material.displacementBias;
+      result2.wireframeLinewidth = material.wireframeLinewidth;
+      result2.linewidth = material.linewidth;
+      if (light.isPointLight === true && result2.isMeshDistanceMaterial === true) {
+        result2.referencePosition.setFromMatrixPosition(light.matrixWorld);
+        result2.nearDistance = shadowCameraNear;
+        result2.farDistance = shadowCameraFar;
       }
-      return result;
+      return result2;
     }
     function renderObject(object, camera, shadowCamera, light, type) {
       if (object.visible === false)
@@ -38767,7 +38767,7 @@
     let updateList = {};
     let allocatedBindingPoints = [];
     const maxBindingPoints = capabilities.isWebGL2 ? gl.getParameter(35375) : 0;
-    function bind(uniformsGroup, program) {
+    function bind2(uniformsGroup, program) {
       const webglProgram = program.program;
       state.uniformBlockBinding(uniformsGroup, webglProgram);
     }
@@ -38946,7 +38946,7 @@
       updateList = {};
     }
     return {
-      bind,
+      bind: bind2,
       update,
       dispose
     };
@@ -41759,22 +41759,22 @@
       return times[i2] - times[j2];
     }
     const n2 = times.length;
-    const result = new Array(n2);
+    const result2 = new Array(n2);
     for (let i2 = 0; i2 !== n2; ++i2)
-      result[i2] = i2;
-    result.sort(compareTime);
-    return result;
+      result2[i2] = i2;
+    result2.sort(compareTime);
+    return result2;
   }
   function sortedArray(values, stride, order) {
     const nValues = values.length;
-    const result = new values.constructor(nValues);
+    const result2 = new values.constructor(nValues);
     for (let i2 = 0, dstOffset = 0; dstOffset !== nValues; ++i2) {
       const srcOffset = order[i2] * stride;
       for (let j2 = 0; j2 !== stride; ++j2) {
-        result[dstOffset++] = values[srcOffset + j2];
+        result2[dstOffset++] = values[srcOffset + j2];
       }
     }
-    return result;
+    return result2;
   }
   function flattenJSON(jsonKeys, times, values, valuePropertyName) {
     let i2 = 1, key = jsonKeys[0];
@@ -41907,11 +41907,11 @@
       return this.settings || this.DefaultSettings_;
     }
     copySampleValue_(index) {
-      const result = this.resultBuffer, values = this.sampleValues, stride = this.valueSize, offset = index * stride;
+      const result2 = this.resultBuffer, values = this.sampleValues, stride = this.valueSize, offset = index * stride;
       for (let i2 = 0; i2 !== stride; ++i2) {
-        result[i2] = values[offset + i2];
+        result2[i2] = values[offset + i2];
       }
-      return result;
+      return result2;
     }
     interpolate_() {
       throw new Error("call to abstract method");
@@ -41971,15 +41971,15 @@
       this._offsetNext = iNext * stride;
     }
     interpolate_(i1, t0, t2, t1) {
-      const result = this.resultBuffer, values = this.sampleValues, stride = this.valueSize, o1 = i1 * stride, o0 = o1 - stride, oP = this._offsetPrev, oN = this._offsetNext, wP = this._weightPrev, wN = this._weightNext, p = (t2 - t0) / (t1 - t0), pp = p * p, ppp = pp * p;
+      const result2 = this.resultBuffer, values = this.sampleValues, stride = this.valueSize, o1 = i1 * stride, o0 = o1 - stride, oP = this._offsetPrev, oN = this._offsetNext, wP = this._weightPrev, wN = this._weightNext, p = (t2 - t0) / (t1 - t0), pp = p * p, ppp = pp * p;
       const sP = -wP * ppp + 2 * wP * pp - wP * p;
       const s0 = (1 + wP) * ppp + (-1.5 - 2 * wP) * pp + (-0.5 + wP) * p + 1;
       const s1 = (-1 - wN) * ppp + (1.5 + wN) * pp + 0.5 * p;
       const sN = wN * ppp - wN * pp;
       for (let i2 = 0; i2 !== stride; ++i2) {
-        result[i2] = sP * values[oP + i2] + s0 * values[o0 + i2] + s1 * values[o1 + i2] + sN * values[oN + i2];
+        result2[i2] = sP * values[oP + i2] + s0 * values[o0 + i2] + s1 * values[o1 + i2] + sN * values[oN + i2];
       }
-      return result;
+      return result2;
     }
   };
   var LinearInterpolant = class extends Interpolant {
@@ -41987,11 +41987,11 @@
       super(parameterPositions, sampleValues, sampleSize, resultBuffer);
     }
     interpolate_(i1, t0, t2, t1) {
-      const result = this.resultBuffer, values = this.sampleValues, stride = this.valueSize, offset1 = i1 * stride, offset0 = offset1 - stride, weight1 = (t2 - t0) / (t1 - t0), weight0 = 1 - weight1;
+      const result2 = this.resultBuffer, values = this.sampleValues, stride = this.valueSize, offset1 = i1 * stride, offset0 = offset1 - stride, weight1 = (t2 - t0) / (t1 - t0), weight0 = 1 - weight1;
       for (let i2 = 0; i2 !== stride; ++i2) {
-        result[i2] = values[offset0 + i2] * weight0 + values[offset1 + i2] * weight1;
+        result2[i2] = values[offset0 + i2] * weight0 + values[offset1 + i2] * weight1;
       }
-      return result;
+      return result2;
     }
   };
   var DiscreteInterpolant = class extends Interpolant {
@@ -42032,14 +42032,14 @@
       json.type = track.ValueTypeName;
       return json;
     }
-    InterpolantFactoryMethodDiscrete(result) {
-      return new DiscreteInterpolant(this.times, this.values, this.getValueSize(), result);
+    InterpolantFactoryMethodDiscrete(result2) {
+      return new DiscreteInterpolant(this.times, this.values, this.getValueSize(), result2);
     }
-    InterpolantFactoryMethodLinear(result) {
-      return new LinearInterpolant(this.times, this.values, this.getValueSize(), result);
+    InterpolantFactoryMethodLinear(result2) {
+      return new LinearInterpolant(this.times, this.values, this.getValueSize(), result2);
     }
-    InterpolantFactoryMethodSmooth(result) {
-      return new CubicInterpolant(this.times, this.values, this.getValueSize(), result);
+    InterpolantFactoryMethodSmooth(result2) {
+      return new CubicInterpolant(this.times, this.values, this.getValueSize(), result2);
     }
     setInterpolation(interpolation) {
       let factoryMethod;
@@ -42240,17 +42240,17 @@
       super(parameterPositions, sampleValues, sampleSize, resultBuffer);
     }
     interpolate_(i1, t0, t2, t1) {
-      const result = this.resultBuffer, values = this.sampleValues, stride = this.valueSize, alpha = (t2 - t0) / (t1 - t0);
+      const result2 = this.resultBuffer, values = this.sampleValues, stride = this.valueSize, alpha = (t2 - t0) / (t1 - t0);
       let offset = i1 * stride;
       for (let end = offset + stride; offset !== end; offset += 4) {
-        Quaternion.slerpFlat(result, 0, values, offset - stride, values, offset, alpha);
+        Quaternion.slerpFlat(result2, 0, values, offset - stride, values, offset, alpha);
       }
-      return result;
+      return result2;
     }
   };
   var QuaternionKeyframeTrack = class extends KeyframeTrack {
-    InterpolantFactoryMethodLinear(result) {
-      return new QuaternionLinearInterpolant(this.times, this.values, this.getValueSize(), result);
+    InterpolantFactoryMethodLinear(result2) {
+      return new QuaternionLinearInterpolant(this.times, this.values, this.getValueSize(), result2);
     }
   };
   QuaternionKeyframeTrack.prototype.ValueTypeName = "quaternion";
@@ -43296,9 +43296,9 @@
             if (childNode.name === nodeName || childNode.uuid === nodeName) {
               return childNode;
             }
-            const result = searchNodeSubtree(childNode.children);
-            if (result)
-              return result;
+            const result2 = searchNodeSubtree(childNode.children);
+            if (result2)
+              return result2;
           }
           return null;
         };
@@ -44306,8 +44306,6 @@
 
   // src/HutaoProject/camera.ts
   var Camera2 = class {
-    constructor() {
-    }
     getCamera() {
       return this._camera;
     }
@@ -44711,8 +44709,8 @@ void RE_IndirectDiffuse_BlinnPhong( const in vec3 irradiance, const in Geometric
           break;
       }
       const imageData = new Uint8Array(header.width * header.height * 4);
-      const result = tgaParse(use_rle, use_pal, header, offset, content);
-      getTgaRGBA(imageData, header.width, header.height, result.pixel_data, result.palettes);
+      const result2 = tgaParse(use_rle, use_pal, header, offset, content);
+      getTgaRGBA(imageData, header.width, header.height, result2.pixel_data, result2.palettes);
       return {
         data: imageData,
         width: header.width,
@@ -55321,39 +55319,39 @@ void RE_IndirectDiffuse_BlinnPhong( const in vec3 irradiance, const in Geometric
       var q2 = null;
       for (var i2 = 4; i2 < lines.length; i2++) {
         var line = lines[i2];
-        var result;
-        result = line.match(boneHeaderPattern);
-        if (result !== null) {
+        var result2;
+        result2 = line.match(boneHeaderPattern);
+        if (result2 !== null) {
           if (n2 !== null) {
             throwError();
           }
-          n2 = result[2];
+          n2 = result2[2];
         }
-        result = line.match(boneVectorPattern);
-        if (result !== null) {
+        result2 = line.match(boneVectorPattern);
+        if (result2 !== null) {
           if (v2 !== null) {
             throwError();
           }
           v2 = [
-            parseFloat(result[1]),
-            parseFloat(result[2]),
-            parseFloat(result[3])
+            parseFloat(result2[1]),
+            parseFloat(result2[2]),
+            parseFloat(result2[3])
           ];
         }
-        result = line.match(boneQuaternionPattern);
-        if (result !== null) {
+        result2 = line.match(boneQuaternionPattern);
+        if (result2 !== null) {
           if (q2 !== null) {
             throwError();
           }
           q2 = [
-            parseFloat(result[1]),
-            parseFloat(result[2]),
-            parseFloat(result[3]),
-            parseFloat(result[4])
+            parseFloat(result2[1]),
+            parseFloat(result2[2]),
+            parseFloat(result2[3]),
+            parseFloat(result2[4])
           ];
         }
-        result = line.match(boneFooterPattern);
-        if (result !== null) {
+        result2 = line.match(boneFooterPattern);
+        if (result2 !== null) {
           if (n2 === null || v2 === null || q2 === null) {
             throwError();
           }
@@ -55411,16 +55409,16 @@ void RE_IndirectDiffuse_BlinnPhong( const in vec3 irradiance, const in Geometric
       return;
     }
     model.metadata.coordinateSystem = "right";
-    var helper2 = new DataCreationHelper();
+    var helper = new DataCreationHelper();
     for (var i2 = 0; i2 < model.metadata.vertexCount; i2++) {
-      helper2.leftToRightVector3(model.vertices[i2].position);
-      helper2.leftToRightVector3(model.vertices[i2].normal);
+      helper.leftToRightVector3(model.vertices[i2].position);
+      helper.leftToRightVector3(model.vertices[i2].normal);
     }
     for (var i2 = 0; i2 < model.metadata.faceCount; i2++) {
-      helper2.leftToRightIndexOrder(model.faces[i2].indices);
+      helper.leftToRightIndexOrder(model.faces[i2].indices);
     }
     for (var i2 = 0; i2 < model.metadata.boneCount; i2++) {
-      helper2.leftToRightVector3(model.bones[i2].position);
+      helper.leftToRightVector3(model.bones[i2].position);
     }
     for (var i2 = 0; i2 < model.metadata.morphCount; i2++) {
       var m = model.morphs[i2];
@@ -55428,18 +55426,18 @@ void RE_IndirectDiffuse_BlinnPhong( const in vec3 irradiance, const in Geometric
         continue;
       }
       for (var j2 = 0; j2 < m.elements.length; j2++) {
-        helper2.leftToRightVector3(m.elements[j2].position);
+        helper.leftToRightVector3(m.elements[j2].position);
       }
     }
     for (var i2 = 0; i2 < model.metadata.rigidBodyCount; i2++) {
-      helper2.leftToRightVector3(model.rigidBodies[i2].position);
-      helper2.leftToRightEuler(model.rigidBodies[i2].rotation);
+      helper.leftToRightVector3(model.rigidBodies[i2].position);
+      helper.leftToRightEuler(model.rigidBodies[i2].rotation);
     }
     for (var i2 = 0; i2 < model.metadata.constraintCount; i2++) {
-      helper2.leftToRightVector3(model.constraints[i2].position);
-      helper2.leftToRightEuler(model.constraints[i2].rotation);
-      helper2.leftToRightVector3Range(model.constraints[i2].translationLimitation1, model.constraints[i2].translationLimitation2);
-      helper2.leftToRightEulerRange(model.constraints[i2].rotationLimitation1, model.constraints[i2].rotationLimitation2);
+      helper.leftToRightVector3(model.constraints[i2].position);
+      helper.leftToRightEuler(model.constraints[i2].rotation);
+      helper.leftToRightVector3Range(model.constraints[i2].translationLimitation1, model.constraints[i2].translationLimitation2);
+      helper.leftToRightEulerRange(model.constraints[i2].rotationLimitation1, model.constraints[i2].rotationLimitation2);
     }
   };
   Parser.prototype.leftToRightVmd = function(vmd) {
@@ -55447,14 +55445,14 @@ void RE_IndirectDiffuse_BlinnPhong( const in vec3 irradiance, const in Geometric
       return;
     }
     vmd.metadata.coordinateSystem = "right";
-    var helper2 = new DataCreationHelper();
+    var helper = new DataCreationHelper();
     for (var i2 = 0; i2 < vmd.metadata.motionCount; i2++) {
-      helper2.leftToRightVector3(vmd.motions[i2].position);
-      helper2.leftToRightQuaternion(vmd.motions[i2].rotation);
+      helper.leftToRightVector3(vmd.motions[i2].position);
+      helper.leftToRightQuaternion(vmd.motions[i2].rotation);
     }
     for (var i2 = 0; i2 < vmd.metadata.cameraCount; i2++) {
-      helper2.leftToRightVector3(vmd.cameras[i2].position);
-      helper2.leftToRightEuler(vmd.cameras[i2].rotation);
+      helper.leftToRightVector3(vmd.cameras[i2].position);
+      helper.leftToRightEuler(vmd.cameras[i2].rotation);
     }
   };
   Parser.prototype.leftToRightVpd = function(vpd) {
@@ -55462,10 +55460,10 @@ void RE_IndirectDiffuse_BlinnPhong( const in vec3 irradiance, const in Geometric
       return;
     }
     vpd.metadata.coordinateSystem = "right";
-    var helper2 = new DataCreationHelper();
+    var helper = new DataCreationHelper();
     for (var i2 = 0; i2 < vpd.bones.length; i2++) {
-      helper2.leftToRightVector3(vpd.bones[i2].translation);
-      helper2.leftToRightQuaternion(vpd.bones[i2].quaternion);
+      helper.leftToRightVector3(vpd.bones[i2].translation);
+      helper.leftToRightQuaternion(vpd.bones[i2].quaternion);
     }
   };
   var MMDParser = {
@@ -56122,8 +56120,8 @@ void RE_IndirectDiffuse_BlinnPhong( const in vec3 irradiance, const in Geometric
       context.drawImage(image, 0, 0);
       return context.getImageData(0, 0, width, height);
     }
-    _checkImageTransparency(map, geometry, groupIndex) {
-      map.readyCallbacks.push(function(texture) {
+    _checkImageTransparency(map2, geometry, groupIndex) {
+      map2.readyCallbacks.push(function(texture) {
         function createImageData(image) {
           const canvas = document.createElement("canvas");
           canvas.width = image.width;
@@ -56170,9 +56168,9 @@ void RE_IndirectDiffuse_BlinnPhong( const in vec3 irradiance, const in Geometric
         }
         if (texture.isCompressedTexture === true) {
           if (NON_ALPHA_CHANNEL_FORMATS.includes(texture.format)) {
-            map.transparent = false;
+            map2.transparent = false;
           } else {
-            map.transparent = true;
+            map2.transparent = true;
           }
           return;
         }
@@ -56183,7 +56181,7 @@ void RE_IndirectDiffuse_BlinnPhong( const in vec3 irradiance, const in Geometric
           geometry.attributes.uv.array,
           geometry.index.array.slice(group.start, group.start + group.count)
         )) {
-          map.transparent = true;
+          map2.transparent = true;
         }
       });
     }
@@ -56377,8 +56375,8 @@ void RE_IndirectDiffuse_BlinnPhong( const in vec3 irradiance, const in Geometric
         interpolations.length = (index + 1) * interpolateStride;
       }
       const track = new typedKeyframeTrack(node, times, values);
-      track.createInterpolant = function InterpolantFactoryMethodCubicBezier(result) {
-        return new CubicBezierInterpolation(this.times, this.values, this.getValueSize(), result, new Float32Array(interpolations));
+      track.createInterpolant = function InterpolantFactoryMethodCubicBezier(result2) {
+        return new CubicBezierInterpolation(this.times, this.values, this.getValueSize(), result2, new Float32Array(interpolations));
       };
       return track;
     }
@@ -56389,7 +56387,7 @@ void RE_IndirectDiffuse_BlinnPhong( const in vec3 irradiance, const in Geometric
       this.interpolationParams = params;
     }
     interpolate_(i1, t0, t2, t1) {
-      const result = this.resultBuffer;
+      const result2 = this.resultBuffer;
       const values = this.sampleValues;
       const stride = this.valueSize;
       const params = this.interpolationParams;
@@ -56402,7 +56400,7 @@ void RE_IndirectDiffuse_BlinnPhong( const in vec3 irradiance, const in Geometric
         const y1 = params[i1 * 4 + 2];
         const y2 = params[i1 * 4 + 3];
         const ratio = this._calculate(x1, x2, y1, y2, weight1);
-        Quaternion.slerpFlat(result, 0, values, offset0, values, offset1, ratio);
+        Quaternion.slerpFlat(result2, 0, values, offset0, values, offset1, ratio);
       } else if (stride === 3) {
         for (let i2 = 0; i2 !== stride; ++i2) {
           const x1 = params[i1 * 12 + i2 * 4 + 0];
@@ -56410,7 +56408,7 @@ void RE_IndirectDiffuse_BlinnPhong( const in vec3 irradiance, const in Geometric
           const y1 = params[i1 * 12 + i2 * 4 + 2];
           const y2 = params[i1 * 12 + i2 * 4 + 3];
           const ratio = this._calculate(x1, x2, y1, y2, weight1);
-          result[i2] = values[offset0 + i2] * (1 - ratio) + values[offset1 + i2] * ratio;
+          result2[i2] = values[offset0 + i2] * (1 - ratio) + values[offset1 + i2] * ratio;
         }
       } else {
         const x1 = params[i1 * 4 + 0];
@@ -56418,9 +56416,9 @@ void RE_IndirectDiffuse_BlinnPhong( const in vec3 irradiance, const in Geometric
         const y1 = params[i1 * 4 + 2];
         const y2 = params[i1 * 4 + 3];
         const ratio = this._calculate(x1, x2, y1, y2, weight1);
-        result[0] = values[offset0] * (1 - ratio) + values[offset1] * ratio;
+        result2[0] = values[offset0] * (1 - ratio) + values[offset1] * ratio;
       }
-      return result;
+      return result2;
     }
     _calculate(x1, x2, y1, y2, x3) {
       let c2 = 0.5;
@@ -58143,7 +58141,7 @@ void RE_IndirectDiffuse_BlinnPhong( const in vec3 irradiance, const in Geometric
   };
 
   // src/HutaoProject/loader.ts
-  var helper = new MMDAnimationHelper();
+  var mmdHelper = new MMDAnimationHelper();
   var Loader2 = class {
     constructor() {
       this.loadingCount = 0;
@@ -58161,11 +58159,28 @@ void RE_IndirectDiffuse_BlinnPhong( const in vec3 irradiance, const in Geometric
     loadHutao() {
       this.startLoading();
       this.mmdLoader.loadWithAnimation(
-        "/public/hutao/hutao.pmx",
+        "/public/hutao/\u80E1\u6843.pmx",
+        "/public/move/\u8367-\u56A3\u5F20.vmd",
+        (mmd) => {
+          this.finishLoading();
+          mmdHelper.add(mmd.mesh, {
+            animation: mmd.animation
+          });
+          scene_default.getScene().add(mmd.mesh);
+          this.ikHelper = mmdHelper.objects.get(mmd.mesh).ikSolver.createHelper();
+          this.ikHelper.visible = false;
+          scene_default.getScene().add(this.ikHelper);
+        }
+      );
+    }
+    loadHutaoWithDance() {
+      this.startLoading();
+      this.mmdLoader.loadWithAnimation(
+        "/public/hutao/\u80E1\u6843.pmx",
         "/public/move/ayaka-dance.vmd",
         (mmd) => {
           this.finishLoading();
-          helper.add(mmd.mesh, {
+          mmdHelper.add(mmd.mesh, {
             animation: mmd.animation
           });
           scene_default.getScene().add(mmd.mesh);
@@ -58186,7 +58201,7 @@ void RE_IndirectDiffuse_BlinnPhong( const in vec3 irradiance, const in Geometric
         camera_default.getCamera(),
         (cameraAnimation) => {
           this.finishLoading();
-          helper.add(camera_default.getCamera(), {
+          mmdHelper.add(camera_default.getCamera(), {
             animation: cameraAnimation
           });
         }
@@ -58194,8 +58209,9 @@ void RE_IndirectDiffuse_BlinnPhong( const in vec3 irradiance, const in Geometric
     }
     loadModels() {
       this.loadHutao();
-      this.loadCamera();
-      this.loadScene();
+    }
+    getIKHelper() {
+      return this.ikHelper;
     }
   };
   var loader_default = new Loader2();
@@ -58206,7 +58222,7 @@ void RE_IndirectDiffuse_BlinnPhong( const in vec3 irradiance, const in Geometric
       const { clientHeight, clientWidth } = container;
       const renderer = new WebGLRenderer({ antialias: true });
       renderer.setSize(clientWidth, clientHeight);
-      renderer.setClearColor(new Color(16777215));
+      renderer.setClearColor(new Color(15418719));
       container.appendChild(renderer.domElement);
       this._renderer = renderer;
     }
@@ -58879,6 +58895,2743 @@ void RE_IndirectDiffuse_BlinnPhong( const in vec3 irradiance, const in Geometric
     }
   };
 
+  // node_modules/dat.gui/build/dat.gui.module.js
+  function ___$insertStyle(css2) {
+    if (!css2) {
+      return;
+    }
+    if (typeof window === "undefined") {
+      return;
+    }
+    var style = document.createElement("style");
+    style.setAttribute("type", "text/css");
+    style.innerHTML = css2;
+    document.head.appendChild(style);
+    return css2;
+  }
+  function colorToString(color, forceCSSHex) {
+    var colorFormat = color.__state.conversionName.toString();
+    var r2 = Math.round(color.r);
+    var g2 = Math.round(color.g);
+    var b2 = Math.round(color.b);
+    var a2 = color.a;
+    var h2 = Math.round(color.h);
+    var s2 = color.s.toFixed(1);
+    var v2 = color.v.toFixed(1);
+    if (forceCSSHex || colorFormat === "THREE_CHAR_HEX" || colorFormat === "SIX_CHAR_HEX") {
+      var str = color.hex.toString(16);
+      while (str.length < 6) {
+        str = "0" + str;
+      }
+      return "#" + str;
+    } else if (colorFormat === "CSS_RGB") {
+      return "rgb(" + r2 + "," + g2 + "," + b2 + ")";
+    } else if (colorFormat === "CSS_RGBA") {
+      return "rgba(" + r2 + "," + g2 + "," + b2 + "," + a2 + ")";
+    } else if (colorFormat === "HEX") {
+      return "0x" + color.hex.toString(16);
+    } else if (colorFormat === "RGB_ARRAY") {
+      return "[" + r2 + "," + g2 + "," + b2 + "]";
+    } else if (colorFormat === "RGBA_ARRAY") {
+      return "[" + r2 + "," + g2 + "," + b2 + "," + a2 + "]";
+    } else if (colorFormat === "RGB_OBJ") {
+      return "{r:" + r2 + ",g:" + g2 + ",b:" + b2 + "}";
+    } else if (colorFormat === "RGBA_OBJ") {
+      return "{r:" + r2 + ",g:" + g2 + ",b:" + b2 + ",a:" + a2 + "}";
+    } else if (colorFormat === "HSV_OBJ") {
+      return "{h:" + h2 + ",s:" + s2 + ",v:" + v2 + "}";
+    } else if (colorFormat === "HSVA_OBJ") {
+      return "{h:" + h2 + ",s:" + s2 + ",v:" + v2 + ",a:" + a2 + "}";
+    }
+    return "unknown format";
+  }
+  var ARR_EACH = Array.prototype.forEach;
+  var ARR_SLICE = Array.prototype.slice;
+  var Common = {
+    BREAK: {},
+    extend: function extend(target) {
+      this.each(ARR_SLICE.call(arguments, 1), function(obj) {
+        var keys = this.isObject(obj) ? Object.keys(obj) : [];
+        keys.forEach(function(key) {
+          if (!this.isUndefined(obj[key])) {
+            target[key] = obj[key];
+          }
+        }.bind(this));
+      }, this);
+      return target;
+    },
+    defaults: function defaults(target) {
+      this.each(ARR_SLICE.call(arguments, 1), function(obj) {
+        var keys = this.isObject(obj) ? Object.keys(obj) : [];
+        keys.forEach(function(key) {
+          if (this.isUndefined(target[key])) {
+            target[key] = obj[key];
+          }
+        }.bind(this));
+      }, this);
+      return target;
+    },
+    compose: function compose() {
+      var toCall = ARR_SLICE.call(arguments);
+      return function() {
+        var args = ARR_SLICE.call(arguments);
+        for (var i2 = toCall.length - 1; i2 >= 0; i2--) {
+          args = [toCall[i2].apply(this, args)];
+        }
+        return args[0];
+      };
+    },
+    each: function each(obj, itr, scope) {
+      if (!obj) {
+        return;
+      }
+      if (ARR_EACH && obj.forEach && obj.forEach === ARR_EACH) {
+        obj.forEach(itr, scope);
+      } else if (obj.length === obj.length + 0) {
+        var key = void 0;
+        var l2 = void 0;
+        for (key = 0, l2 = obj.length; key < l2; key++) {
+          if (key in obj && itr.call(scope, obj[key], key) === this.BREAK) {
+            return;
+          }
+        }
+      } else {
+        for (var _key in obj) {
+          if (itr.call(scope, obj[_key], _key) === this.BREAK) {
+            return;
+          }
+        }
+      }
+    },
+    defer: function defer(fnc) {
+      setTimeout(fnc, 0);
+    },
+    debounce: function debounce(func, threshold, callImmediately) {
+      var timeout = void 0;
+      return function() {
+        var obj = this;
+        var args = arguments;
+        function delayed() {
+          timeout = null;
+          if (!callImmediately)
+            func.apply(obj, args);
+        }
+        var callNow = callImmediately || !timeout;
+        clearTimeout(timeout);
+        timeout = setTimeout(delayed, threshold);
+        if (callNow) {
+          func.apply(obj, args);
+        }
+      };
+    },
+    toArray: function toArray(obj) {
+      if (obj.toArray)
+        return obj.toArray();
+      return ARR_SLICE.call(obj);
+    },
+    isUndefined: function isUndefined(obj) {
+      return obj === void 0;
+    },
+    isNull: function isNull(obj) {
+      return obj === null;
+    },
+    isNaN: function(_isNaN) {
+      function isNaN2(_x2) {
+        return _isNaN.apply(this, arguments);
+      }
+      isNaN2.toString = function() {
+        return _isNaN.toString();
+      };
+      return isNaN2;
+    }(function(obj) {
+      return isNaN(obj);
+    }),
+    isArray: Array.isArray || function(obj) {
+      return obj.constructor === Array;
+    },
+    isObject: function isObject(obj) {
+      return obj === Object(obj);
+    },
+    isNumber: function isNumber(obj) {
+      return obj === obj + 0;
+    },
+    isString: function isString(obj) {
+      return obj === obj + "";
+    },
+    isBoolean: function isBoolean(obj) {
+      return obj === false || obj === true;
+    },
+    isFunction: function isFunction(obj) {
+      return obj instanceof Function;
+    }
+  };
+  var INTERPRETATIONS = [
+    {
+      litmus: Common.isString,
+      conversions: {
+        THREE_CHAR_HEX: {
+          read: function read(original) {
+            var test = original.match(/^#([A-F0-9])([A-F0-9])([A-F0-9])$/i);
+            if (test === null) {
+              return false;
+            }
+            return {
+              space: "HEX",
+              hex: parseInt("0x" + test[1].toString() + test[1].toString() + test[2].toString() + test[2].toString() + test[3].toString() + test[3].toString(), 0)
+            };
+          },
+          write: colorToString
+        },
+        SIX_CHAR_HEX: {
+          read: function read2(original) {
+            var test = original.match(/^#([A-F0-9]{6})$/i);
+            if (test === null) {
+              return false;
+            }
+            return {
+              space: "HEX",
+              hex: parseInt("0x" + test[1].toString(), 0)
+            };
+          },
+          write: colorToString
+        },
+        CSS_RGB: {
+          read: function read3(original) {
+            var test = original.match(/^rgb\(\s*(\S+)\s*,\s*(\S+)\s*,\s*(\S+)\s*\)/);
+            if (test === null) {
+              return false;
+            }
+            return {
+              space: "RGB",
+              r: parseFloat(test[1]),
+              g: parseFloat(test[2]),
+              b: parseFloat(test[3])
+            };
+          },
+          write: colorToString
+        },
+        CSS_RGBA: {
+          read: function read4(original) {
+            var test = original.match(/^rgba\(\s*(\S+)\s*,\s*(\S+)\s*,\s*(\S+)\s*,\s*(\S+)\s*\)/);
+            if (test === null) {
+              return false;
+            }
+            return {
+              space: "RGB",
+              r: parseFloat(test[1]),
+              g: parseFloat(test[2]),
+              b: parseFloat(test[3]),
+              a: parseFloat(test[4])
+            };
+          },
+          write: colorToString
+        }
+      }
+    },
+    {
+      litmus: Common.isNumber,
+      conversions: {
+        HEX: {
+          read: function read5(original) {
+            return {
+              space: "HEX",
+              hex: original,
+              conversionName: "HEX"
+            };
+          },
+          write: function write(color) {
+            return color.hex;
+          }
+        }
+      }
+    },
+    {
+      litmus: Common.isArray,
+      conversions: {
+        RGB_ARRAY: {
+          read: function read6(original) {
+            if (original.length !== 3) {
+              return false;
+            }
+            return {
+              space: "RGB",
+              r: original[0],
+              g: original[1],
+              b: original[2]
+            };
+          },
+          write: function write2(color) {
+            return [color.r, color.g, color.b];
+          }
+        },
+        RGBA_ARRAY: {
+          read: function read7(original) {
+            if (original.length !== 4)
+              return false;
+            return {
+              space: "RGB",
+              r: original[0],
+              g: original[1],
+              b: original[2],
+              a: original[3]
+            };
+          },
+          write: function write3(color) {
+            return [color.r, color.g, color.b, color.a];
+          }
+        }
+      }
+    },
+    {
+      litmus: Common.isObject,
+      conversions: {
+        RGBA_OBJ: {
+          read: function read8(original) {
+            if (Common.isNumber(original.r) && Common.isNumber(original.g) && Common.isNumber(original.b) && Common.isNumber(original.a)) {
+              return {
+                space: "RGB",
+                r: original.r,
+                g: original.g,
+                b: original.b,
+                a: original.a
+              };
+            }
+            return false;
+          },
+          write: function write4(color) {
+            return {
+              r: color.r,
+              g: color.g,
+              b: color.b,
+              a: color.a
+            };
+          }
+        },
+        RGB_OBJ: {
+          read: function read9(original) {
+            if (Common.isNumber(original.r) && Common.isNumber(original.g) && Common.isNumber(original.b)) {
+              return {
+                space: "RGB",
+                r: original.r,
+                g: original.g,
+                b: original.b
+              };
+            }
+            return false;
+          },
+          write: function write5(color) {
+            return {
+              r: color.r,
+              g: color.g,
+              b: color.b
+            };
+          }
+        },
+        HSVA_OBJ: {
+          read: function read10(original) {
+            if (Common.isNumber(original.h) && Common.isNumber(original.s) && Common.isNumber(original.v) && Common.isNumber(original.a)) {
+              return {
+                space: "HSV",
+                h: original.h,
+                s: original.s,
+                v: original.v,
+                a: original.a
+              };
+            }
+            return false;
+          },
+          write: function write6(color) {
+            return {
+              h: color.h,
+              s: color.s,
+              v: color.v,
+              a: color.a
+            };
+          }
+        },
+        HSV_OBJ: {
+          read: function read11(original) {
+            if (Common.isNumber(original.h) && Common.isNumber(original.s) && Common.isNumber(original.v)) {
+              return {
+                space: "HSV",
+                h: original.h,
+                s: original.s,
+                v: original.v
+              };
+            }
+            return false;
+          },
+          write: function write7(color) {
+            return {
+              h: color.h,
+              s: color.s,
+              v: color.v
+            };
+          }
+        }
+      }
+    }
+  ];
+  var result = void 0;
+  var toReturn = void 0;
+  var interpret = function interpret2() {
+    toReturn = false;
+    var original = arguments.length > 1 ? Common.toArray(arguments) : arguments[0];
+    Common.each(INTERPRETATIONS, function(family) {
+      if (family.litmus(original)) {
+        Common.each(family.conversions, function(conversion, conversionName) {
+          result = conversion.read(original);
+          if (toReturn === false && result !== false) {
+            toReturn = result;
+            result.conversionName = conversionName;
+            result.conversion = conversion;
+            return Common.BREAK;
+          }
+        });
+        return Common.BREAK;
+      }
+    });
+    return toReturn;
+  };
+  var tmpComponent = void 0;
+  var ColorMath = {
+    hsv_to_rgb: function hsv_to_rgb(h2, s2, v2) {
+      var hi = Math.floor(h2 / 60) % 6;
+      var f = h2 / 60 - Math.floor(h2 / 60);
+      var p = v2 * (1 - s2);
+      var q2 = v2 * (1 - f * s2);
+      var t2 = v2 * (1 - (1 - f) * s2);
+      var c2 = [[v2, t2, p], [q2, v2, p], [p, v2, t2], [p, q2, v2], [t2, p, v2], [v2, p, q2]][hi];
+      return {
+        r: c2[0] * 255,
+        g: c2[1] * 255,
+        b: c2[2] * 255
+      };
+    },
+    rgb_to_hsv: function rgb_to_hsv(r2, g2, b2) {
+      var min = Math.min(r2, g2, b2);
+      var max = Math.max(r2, g2, b2);
+      var delta = max - min;
+      var h2 = void 0;
+      var s2 = void 0;
+      if (max !== 0) {
+        s2 = delta / max;
+      } else {
+        return {
+          h: NaN,
+          s: 0,
+          v: 0
+        };
+      }
+      if (r2 === max) {
+        h2 = (g2 - b2) / delta;
+      } else if (g2 === max) {
+        h2 = 2 + (b2 - r2) / delta;
+      } else {
+        h2 = 4 + (r2 - g2) / delta;
+      }
+      h2 /= 6;
+      if (h2 < 0) {
+        h2 += 1;
+      }
+      return {
+        h: h2 * 360,
+        s: s2,
+        v: max / 255
+      };
+    },
+    rgb_to_hex: function rgb_to_hex(r2, g2, b2) {
+      var hex = this.hex_with_component(0, 2, r2);
+      hex = this.hex_with_component(hex, 1, g2);
+      hex = this.hex_with_component(hex, 0, b2);
+      return hex;
+    },
+    component_from_hex: function component_from_hex(hex, componentIndex) {
+      return hex >> componentIndex * 8 & 255;
+    },
+    hex_with_component: function hex_with_component(hex, componentIndex, value) {
+      return value << (tmpComponent = componentIndex * 8) | hex & ~(255 << tmpComponent);
+    }
+  };
+  var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function(obj) {
+    return typeof obj;
+  } : function(obj) {
+    return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+  };
+  var classCallCheck = function(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
+      throw new TypeError("Cannot call a class as a function");
+    }
+  };
+  var createClass = function() {
+    function defineProperties(target, props) {
+      for (var i2 = 0; i2 < props.length; i2++) {
+        var descriptor = props[i2];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if ("value" in descriptor)
+          descriptor.writable = true;
+        Object.defineProperty(target, descriptor.key, descriptor);
+      }
+    }
+    return function(Constructor, protoProps, staticProps) {
+      if (protoProps)
+        defineProperties(Constructor.prototype, protoProps);
+      if (staticProps)
+        defineProperties(Constructor, staticProps);
+      return Constructor;
+    };
+  }();
+  var get = function get2(object, property, receiver) {
+    if (object === null)
+      object = Function.prototype;
+    var desc = Object.getOwnPropertyDescriptor(object, property);
+    if (desc === void 0) {
+      var parent = Object.getPrototypeOf(object);
+      if (parent === null) {
+        return void 0;
+      } else {
+        return get2(parent, property, receiver);
+      }
+    } else if ("value" in desc) {
+      return desc.value;
+    } else {
+      var getter = desc.get;
+      if (getter === void 0) {
+        return void 0;
+      }
+      return getter.call(receiver);
+    }
+  };
+  var inherits = function(subClass, superClass) {
+    if (typeof superClass !== "function" && superClass !== null) {
+      throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+    }
+    subClass.prototype = Object.create(superClass && superClass.prototype, {
+      constructor: {
+        value: subClass,
+        enumerable: false,
+        writable: true,
+        configurable: true
+      }
+    });
+    if (superClass)
+      Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+  };
+  var possibleConstructorReturn = function(self2, call) {
+    if (!self2) {
+      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+    }
+    return call && (typeof call === "object" || typeof call === "function") ? call : self2;
+  };
+  var Color2 = function() {
+    function Color3() {
+      classCallCheck(this, Color3);
+      this.__state = interpret.apply(this, arguments);
+      if (this.__state === false) {
+        throw new Error("Failed to interpret color arguments");
+      }
+      this.__state.a = this.__state.a || 1;
+    }
+    createClass(Color3, [{
+      key: "toString",
+      value: function toString() {
+        return colorToString(this);
+      }
+    }, {
+      key: "toHexString",
+      value: function toHexString() {
+        return colorToString(this, true);
+      }
+    }, {
+      key: "toOriginal",
+      value: function toOriginal() {
+        return this.__state.conversion.write(this);
+      }
+    }]);
+    return Color3;
+  }();
+  function defineRGBComponent(target, component, componentHexIndex) {
+    Object.defineProperty(target, component, {
+      get: function get$$13() {
+        if (this.__state.space === "RGB") {
+          return this.__state[component];
+        }
+        Color2.recalculateRGB(this, component, componentHexIndex);
+        return this.__state[component];
+      },
+      set: function set$$13(v2) {
+        if (this.__state.space !== "RGB") {
+          Color2.recalculateRGB(this, component, componentHexIndex);
+          this.__state.space = "RGB";
+        }
+        this.__state[component] = v2;
+      }
+    });
+  }
+  function defineHSVComponent(target, component) {
+    Object.defineProperty(target, component, {
+      get: function get$$13() {
+        if (this.__state.space === "HSV") {
+          return this.__state[component];
+        }
+        Color2.recalculateHSV(this);
+        return this.__state[component];
+      },
+      set: function set$$13(v2) {
+        if (this.__state.space !== "HSV") {
+          Color2.recalculateHSV(this);
+          this.__state.space = "HSV";
+        }
+        this.__state[component] = v2;
+      }
+    });
+  }
+  Color2.recalculateRGB = function(color, component, componentHexIndex) {
+    if (color.__state.space === "HEX") {
+      color.__state[component] = ColorMath.component_from_hex(color.__state.hex, componentHexIndex);
+    } else if (color.__state.space === "HSV") {
+      Common.extend(color.__state, ColorMath.hsv_to_rgb(color.__state.h, color.__state.s, color.__state.v));
+    } else {
+      throw new Error("Corrupted color state");
+    }
+  };
+  Color2.recalculateHSV = function(color) {
+    var result2 = ColorMath.rgb_to_hsv(color.r, color.g, color.b);
+    Common.extend(color.__state, {
+      s: result2.s,
+      v: result2.v
+    });
+    if (!Common.isNaN(result2.h)) {
+      color.__state.h = result2.h;
+    } else if (Common.isUndefined(color.__state.h)) {
+      color.__state.h = 0;
+    }
+  };
+  Color2.COMPONENTS = ["r", "g", "b", "h", "s", "v", "hex", "a"];
+  defineRGBComponent(Color2.prototype, "r", 2);
+  defineRGBComponent(Color2.prototype, "g", 1);
+  defineRGBComponent(Color2.prototype, "b", 0);
+  defineHSVComponent(Color2.prototype, "h");
+  defineHSVComponent(Color2.prototype, "s");
+  defineHSVComponent(Color2.prototype, "v");
+  Object.defineProperty(Color2.prototype, "a", {
+    get: function get$$1() {
+      return this.__state.a;
+    },
+    set: function set$$1(v2) {
+      this.__state.a = v2;
+    }
+  });
+  Object.defineProperty(Color2.prototype, "hex", {
+    get: function get$$12() {
+      if (this.__state.space !== "HEX") {
+        this.__state.hex = ColorMath.rgb_to_hex(this.r, this.g, this.b);
+        this.__state.space = "HEX";
+      }
+      return this.__state.hex;
+    },
+    set: function set$$12(v2) {
+      this.__state.space = "HEX";
+      this.__state.hex = v2;
+    }
+  });
+  var Controller = function() {
+    function Controller2(object, property) {
+      classCallCheck(this, Controller2);
+      this.initialValue = object[property];
+      this.domElement = document.createElement("div");
+      this.object = object;
+      this.property = property;
+      this.__onChange = void 0;
+      this.__onFinishChange = void 0;
+    }
+    createClass(Controller2, [{
+      key: "onChange",
+      value: function onChange(fnc) {
+        this.__onChange = fnc;
+        return this;
+      }
+    }, {
+      key: "onFinishChange",
+      value: function onFinishChange(fnc) {
+        this.__onFinishChange = fnc;
+        return this;
+      }
+    }, {
+      key: "setValue",
+      value: function setValue(newValue) {
+        this.object[this.property] = newValue;
+        if (this.__onChange) {
+          this.__onChange.call(this, newValue);
+        }
+        this.updateDisplay();
+        return this;
+      }
+    }, {
+      key: "getValue",
+      value: function getValue() {
+        return this.object[this.property];
+      }
+    }, {
+      key: "updateDisplay",
+      value: function updateDisplay2() {
+        return this;
+      }
+    }, {
+      key: "isModified",
+      value: function isModified() {
+        return this.initialValue !== this.getValue();
+      }
+    }]);
+    return Controller2;
+  }();
+  var EVENT_MAP = {
+    HTMLEvents: ["change"],
+    MouseEvents: ["click", "mousemove", "mousedown", "mouseup", "mouseover"],
+    KeyboardEvents: ["keydown"]
+  };
+  var EVENT_MAP_INV = {};
+  Common.each(EVENT_MAP, function(v2, k2) {
+    Common.each(v2, function(e2) {
+      EVENT_MAP_INV[e2] = k2;
+    });
+  });
+  var CSS_VALUE_PIXELS = /(\d+(\.\d+)?)px/;
+  function cssValueToPixels(val) {
+    if (val === "0" || Common.isUndefined(val)) {
+      return 0;
+    }
+    var match = val.match(CSS_VALUE_PIXELS);
+    if (!Common.isNull(match)) {
+      return parseFloat(match[1]);
+    }
+    return 0;
+  }
+  var dom = {
+    makeSelectable: function makeSelectable(elem, selectable) {
+      if (elem === void 0 || elem.style === void 0)
+        return;
+      elem.onselectstart = selectable ? function() {
+        return false;
+      } : function() {
+      };
+      elem.style.MozUserSelect = selectable ? "auto" : "none";
+      elem.style.KhtmlUserSelect = selectable ? "auto" : "none";
+      elem.unselectable = selectable ? "on" : "off";
+    },
+    makeFullscreen: function makeFullscreen(elem, hor, vert) {
+      var vertical = vert;
+      var horizontal = hor;
+      if (Common.isUndefined(horizontal)) {
+        horizontal = true;
+      }
+      if (Common.isUndefined(vertical)) {
+        vertical = true;
+      }
+      elem.style.position = "absolute";
+      if (horizontal) {
+        elem.style.left = 0;
+        elem.style.right = 0;
+      }
+      if (vertical) {
+        elem.style.top = 0;
+        elem.style.bottom = 0;
+      }
+    },
+    fakeEvent: function fakeEvent(elem, eventType, pars, aux) {
+      var params = pars || {};
+      var className = EVENT_MAP_INV[eventType];
+      if (!className) {
+        throw new Error("Event type " + eventType + " not supported.");
+      }
+      var evt = document.createEvent(className);
+      switch (className) {
+        case "MouseEvents": {
+          var clientX = params.x || params.clientX || 0;
+          var clientY = params.y || params.clientY || 0;
+          evt.initMouseEvent(
+            eventType,
+            params.bubbles || false,
+            params.cancelable || true,
+            window,
+            params.clickCount || 1,
+            0,
+            0,
+            clientX,
+            clientY,
+            false,
+            false,
+            false,
+            false,
+            0,
+            null
+          );
+          break;
+        }
+        case "KeyboardEvents": {
+          var init = evt.initKeyboardEvent || evt.initKeyEvent;
+          Common.defaults(params, {
+            cancelable: true,
+            ctrlKey: false,
+            altKey: false,
+            shiftKey: false,
+            metaKey: false,
+            keyCode: void 0,
+            charCode: void 0
+          });
+          init(eventType, params.bubbles || false, params.cancelable, window, params.ctrlKey, params.altKey, params.shiftKey, params.metaKey, params.keyCode, params.charCode);
+          break;
+        }
+        default: {
+          evt.initEvent(eventType, params.bubbles || false, params.cancelable || true);
+          break;
+        }
+      }
+      Common.defaults(evt, aux);
+      elem.dispatchEvent(evt);
+    },
+    bind: function bind(elem, event, func, newBool) {
+      var bool = newBool || false;
+      if (elem.addEventListener) {
+        elem.addEventListener(event, func, bool);
+      } else if (elem.attachEvent) {
+        elem.attachEvent("on" + event, func);
+      }
+      return dom;
+    },
+    unbind: function unbind(elem, event, func, newBool) {
+      var bool = newBool || false;
+      if (elem.removeEventListener) {
+        elem.removeEventListener(event, func, bool);
+      } else if (elem.detachEvent) {
+        elem.detachEvent("on" + event, func);
+      }
+      return dom;
+    },
+    addClass: function addClass(elem, className) {
+      if (elem.className === void 0) {
+        elem.className = className;
+      } else if (elem.className !== className) {
+        var classes = elem.className.split(/ +/);
+        if (classes.indexOf(className) === -1) {
+          classes.push(className);
+          elem.className = classes.join(" ").replace(/^\s+/, "").replace(/\s+$/, "");
+        }
+      }
+      return dom;
+    },
+    removeClass: function removeClass(elem, className) {
+      if (className) {
+        if (elem.className === className) {
+          elem.removeAttribute("class");
+        } else {
+          var classes = elem.className.split(/ +/);
+          var index = classes.indexOf(className);
+          if (index !== -1) {
+            classes.splice(index, 1);
+            elem.className = classes.join(" ");
+          }
+        }
+      } else {
+        elem.className = void 0;
+      }
+      return dom;
+    },
+    hasClass: function hasClass(elem, className) {
+      return new RegExp("(?:^|\\s+)" + className + "(?:\\s+|$)").test(elem.className) || false;
+    },
+    getWidth: function getWidth(elem) {
+      var style = getComputedStyle(elem);
+      return cssValueToPixels(style["border-left-width"]) + cssValueToPixels(style["border-right-width"]) + cssValueToPixels(style["padding-left"]) + cssValueToPixels(style["padding-right"]) + cssValueToPixels(style.width);
+    },
+    getHeight: function getHeight(elem) {
+      var style = getComputedStyle(elem);
+      return cssValueToPixels(style["border-top-width"]) + cssValueToPixels(style["border-bottom-width"]) + cssValueToPixels(style["padding-top"]) + cssValueToPixels(style["padding-bottom"]) + cssValueToPixels(style.height);
+    },
+    getOffset: function getOffset(el) {
+      var elem = el;
+      var offset = { left: 0, top: 0 };
+      if (elem.offsetParent) {
+        do {
+          offset.left += elem.offsetLeft;
+          offset.top += elem.offsetTop;
+          elem = elem.offsetParent;
+        } while (elem);
+      }
+      return offset;
+    },
+    isActive: function isActive(elem) {
+      return elem === document.activeElement && (elem.type || elem.href);
+    }
+  };
+  var BooleanController = function(_Controller) {
+    inherits(BooleanController2, _Controller);
+    function BooleanController2(object, property) {
+      classCallCheck(this, BooleanController2);
+      var _this2 = possibleConstructorReturn(this, (BooleanController2.__proto__ || Object.getPrototypeOf(BooleanController2)).call(this, object, property));
+      var _this = _this2;
+      _this2.__prev = _this2.getValue();
+      _this2.__checkbox = document.createElement("input");
+      _this2.__checkbox.setAttribute("type", "checkbox");
+      function onChange() {
+        _this.setValue(!_this.__prev);
+      }
+      dom.bind(_this2.__checkbox, "change", onChange, false);
+      _this2.domElement.appendChild(_this2.__checkbox);
+      _this2.updateDisplay();
+      return _this2;
+    }
+    createClass(BooleanController2, [{
+      key: "setValue",
+      value: function setValue(v2) {
+        var toReturn2 = get(BooleanController2.prototype.__proto__ || Object.getPrototypeOf(BooleanController2.prototype), "setValue", this).call(this, v2);
+        if (this.__onFinishChange) {
+          this.__onFinishChange.call(this, this.getValue());
+        }
+        this.__prev = this.getValue();
+        return toReturn2;
+      }
+    }, {
+      key: "updateDisplay",
+      value: function updateDisplay2() {
+        if (this.getValue() === true) {
+          this.__checkbox.setAttribute("checked", "checked");
+          this.__checkbox.checked = true;
+          this.__prev = true;
+        } else {
+          this.__checkbox.checked = false;
+          this.__prev = false;
+        }
+        return get(BooleanController2.prototype.__proto__ || Object.getPrototypeOf(BooleanController2.prototype), "updateDisplay", this).call(this);
+      }
+    }]);
+    return BooleanController2;
+  }(Controller);
+  var OptionController = function(_Controller) {
+    inherits(OptionController2, _Controller);
+    function OptionController2(object, property, opts) {
+      classCallCheck(this, OptionController2);
+      var _this2 = possibleConstructorReturn(this, (OptionController2.__proto__ || Object.getPrototypeOf(OptionController2)).call(this, object, property));
+      var options = opts;
+      var _this = _this2;
+      _this2.__select = document.createElement("select");
+      if (Common.isArray(options)) {
+        var map2 = {};
+        Common.each(options, function(element) {
+          map2[element] = element;
+        });
+        options = map2;
+      }
+      Common.each(options, function(value, key) {
+        var opt = document.createElement("option");
+        opt.innerHTML = key;
+        opt.setAttribute("value", value);
+        _this.__select.appendChild(opt);
+      });
+      _this2.updateDisplay();
+      dom.bind(_this2.__select, "change", function() {
+        var desiredValue = this.options[this.selectedIndex].value;
+        _this.setValue(desiredValue);
+      });
+      _this2.domElement.appendChild(_this2.__select);
+      return _this2;
+    }
+    createClass(OptionController2, [{
+      key: "setValue",
+      value: function setValue(v2) {
+        var toReturn2 = get(OptionController2.prototype.__proto__ || Object.getPrototypeOf(OptionController2.prototype), "setValue", this).call(this, v2);
+        if (this.__onFinishChange) {
+          this.__onFinishChange.call(this, this.getValue());
+        }
+        return toReturn2;
+      }
+    }, {
+      key: "updateDisplay",
+      value: function updateDisplay2() {
+        if (dom.isActive(this.__select))
+          return this;
+        this.__select.value = this.getValue();
+        return get(OptionController2.prototype.__proto__ || Object.getPrototypeOf(OptionController2.prototype), "updateDisplay", this).call(this);
+      }
+    }]);
+    return OptionController2;
+  }(Controller);
+  var StringController = function(_Controller) {
+    inherits(StringController2, _Controller);
+    function StringController2(object, property) {
+      classCallCheck(this, StringController2);
+      var _this2 = possibleConstructorReturn(this, (StringController2.__proto__ || Object.getPrototypeOf(StringController2)).call(this, object, property));
+      var _this = _this2;
+      function onChange() {
+        _this.setValue(_this.__input.value);
+      }
+      function onBlur() {
+        if (_this.__onFinishChange) {
+          _this.__onFinishChange.call(_this, _this.getValue());
+        }
+      }
+      _this2.__input = document.createElement("input");
+      _this2.__input.setAttribute("type", "text");
+      dom.bind(_this2.__input, "keyup", onChange);
+      dom.bind(_this2.__input, "change", onChange);
+      dom.bind(_this2.__input, "blur", onBlur);
+      dom.bind(_this2.__input, "keydown", function(e2) {
+        if (e2.keyCode === 13) {
+          this.blur();
+        }
+      });
+      _this2.updateDisplay();
+      _this2.domElement.appendChild(_this2.__input);
+      return _this2;
+    }
+    createClass(StringController2, [{
+      key: "updateDisplay",
+      value: function updateDisplay2() {
+        if (!dom.isActive(this.__input)) {
+          this.__input.value = this.getValue();
+        }
+        return get(StringController2.prototype.__proto__ || Object.getPrototypeOf(StringController2.prototype), "updateDisplay", this).call(this);
+      }
+    }]);
+    return StringController2;
+  }(Controller);
+  function numDecimals(x2) {
+    var _x2 = x2.toString();
+    if (_x2.indexOf(".") > -1) {
+      return _x2.length - _x2.indexOf(".") - 1;
+    }
+    return 0;
+  }
+  var NumberController = function(_Controller) {
+    inherits(NumberController2, _Controller);
+    function NumberController2(object, property, params) {
+      classCallCheck(this, NumberController2);
+      var _this = possibleConstructorReturn(this, (NumberController2.__proto__ || Object.getPrototypeOf(NumberController2)).call(this, object, property));
+      var _params = params || {};
+      _this.__min = _params.min;
+      _this.__max = _params.max;
+      _this.__step = _params.step;
+      if (Common.isUndefined(_this.__step)) {
+        if (_this.initialValue === 0) {
+          _this.__impliedStep = 1;
+        } else {
+          _this.__impliedStep = Math.pow(10, Math.floor(Math.log(Math.abs(_this.initialValue)) / Math.LN10)) / 10;
+        }
+      } else {
+        _this.__impliedStep = _this.__step;
+      }
+      _this.__precision = numDecimals(_this.__impliedStep);
+      return _this;
+    }
+    createClass(NumberController2, [{
+      key: "setValue",
+      value: function setValue(v2) {
+        var _v = v2;
+        if (this.__min !== void 0 && _v < this.__min) {
+          _v = this.__min;
+        } else if (this.__max !== void 0 && _v > this.__max) {
+          _v = this.__max;
+        }
+        if (this.__step !== void 0 && _v % this.__step !== 0) {
+          _v = Math.round(_v / this.__step) * this.__step;
+        }
+        return get(NumberController2.prototype.__proto__ || Object.getPrototypeOf(NumberController2.prototype), "setValue", this).call(this, _v);
+      }
+    }, {
+      key: "min",
+      value: function min(minValue) {
+        this.__min = minValue;
+        return this;
+      }
+    }, {
+      key: "max",
+      value: function max(maxValue) {
+        this.__max = maxValue;
+        return this;
+      }
+    }, {
+      key: "step",
+      value: function step(stepValue) {
+        this.__step = stepValue;
+        this.__impliedStep = stepValue;
+        this.__precision = numDecimals(stepValue);
+        return this;
+      }
+    }]);
+    return NumberController2;
+  }(Controller);
+  function roundToDecimal(value, decimals) {
+    var tenTo = Math.pow(10, decimals);
+    return Math.round(value * tenTo) / tenTo;
+  }
+  var NumberControllerBox = function(_NumberController) {
+    inherits(NumberControllerBox2, _NumberController);
+    function NumberControllerBox2(object, property, params) {
+      classCallCheck(this, NumberControllerBox2);
+      var _this2 = possibleConstructorReturn(this, (NumberControllerBox2.__proto__ || Object.getPrototypeOf(NumberControllerBox2)).call(this, object, property, params));
+      _this2.__truncationSuspended = false;
+      var _this = _this2;
+      var prevY = void 0;
+      function onChange() {
+        var attempted = parseFloat(_this.__input.value);
+        if (!Common.isNaN(attempted)) {
+          _this.setValue(attempted);
+        }
+      }
+      function onFinish() {
+        if (_this.__onFinishChange) {
+          _this.__onFinishChange.call(_this, _this.getValue());
+        }
+      }
+      function onBlur() {
+        onFinish();
+      }
+      function onMouseDrag(e2) {
+        var diff = prevY - e2.clientY;
+        _this.setValue(_this.getValue() + diff * _this.__impliedStep);
+        prevY = e2.clientY;
+      }
+      function onMouseUp() {
+        dom.unbind(window, "mousemove", onMouseDrag);
+        dom.unbind(window, "mouseup", onMouseUp);
+        onFinish();
+      }
+      function onMouseDown(e2) {
+        dom.bind(window, "mousemove", onMouseDrag);
+        dom.bind(window, "mouseup", onMouseUp);
+        prevY = e2.clientY;
+      }
+      _this2.__input = document.createElement("input");
+      _this2.__input.setAttribute("type", "text");
+      dom.bind(_this2.__input, "change", onChange);
+      dom.bind(_this2.__input, "blur", onBlur);
+      dom.bind(_this2.__input, "mousedown", onMouseDown);
+      dom.bind(_this2.__input, "keydown", function(e2) {
+        if (e2.keyCode === 13) {
+          _this.__truncationSuspended = true;
+          this.blur();
+          _this.__truncationSuspended = false;
+          onFinish();
+        }
+      });
+      _this2.updateDisplay();
+      _this2.domElement.appendChild(_this2.__input);
+      return _this2;
+    }
+    createClass(NumberControllerBox2, [{
+      key: "updateDisplay",
+      value: function updateDisplay2() {
+        this.__input.value = this.__truncationSuspended ? this.getValue() : roundToDecimal(this.getValue(), this.__precision);
+        return get(NumberControllerBox2.prototype.__proto__ || Object.getPrototypeOf(NumberControllerBox2.prototype), "updateDisplay", this).call(this);
+      }
+    }]);
+    return NumberControllerBox2;
+  }(NumberController);
+  function map(v2, i1, i2, o1, o2) {
+    return o1 + (o2 - o1) * ((v2 - i1) / (i2 - i1));
+  }
+  var NumberControllerSlider = function(_NumberController) {
+    inherits(NumberControllerSlider2, _NumberController);
+    function NumberControllerSlider2(object, property, min, max, step) {
+      classCallCheck(this, NumberControllerSlider2);
+      var _this2 = possibleConstructorReturn(this, (NumberControllerSlider2.__proto__ || Object.getPrototypeOf(NumberControllerSlider2)).call(this, object, property, { min, max, step }));
+      var _this = _this2;
+      _this2.__background = document.createElement("div");
+      _this2.__foreground = document.createElement("div");
+      dom.bind(_this2.__background, "mousedown", onMouseDown);
+      dom.bind(_this2.__background, "touchstart", onTouchStart);
+      dom.addClass(_this2.__background, "slider");
+      dom.addClass(_this2.__foreground, "slider-fg");
+      function onMouseDown(e2) {
+        document.activeElement.blur();
+        dom.bind(window, "mousemove", onMouseDrag);
+        dom.bind(window, "mouseup", onMouseUp);
+        onMouseDrag(e2);
+      }
+      function onMouseDrag(e2) {
+        e2.preventDefault();
+        var bgRect = _this.__background.getBoundingClientRect();
+        _this.setValue(map(e2.clientX, bgRect.left, bgRect.right, _this.__min, _this.__max));
+        return false;
+      }
+      function onMouseUp() {
+        dom.unbind(window, "mousemove", onMouseDrag);
+        dom.unbind(window, "mouseup", onMouseUp);
+        if (_this.__onFinishChange) {
+          _this.__onFinishChange.call(_this, _this.getValue());
+        }
+      }
+      function onTouchStart(e2) {
+        if (e2.touches.length !== 1) {
+          return;
+        }
+        dom.bind(window, "touchmove", onTouchMove);
+        dom.bind(window, "touchend", onTouchEnd);
+        onTouchMove(e2);
+      }
+      function onTouchMove(e2) {
+        var clientX = e2.touches[0].clientX;
+        var bgRect = _this.__background.getBoundingClientRect();
+        _this.setValue(map(clientX, bgRect.left, bgRect.right, _this.__min, _this.__max));
+      }
+      function onTouchEnd() {
+        dom.unbind(window, "touchmove", onTouchMove);
+        dom.unbind(window, "touchend", onTouchEnd);
+        if (_this.__onFinishChange) {
+          _this.__onFinishChange.call(_this, _this.getValue());
+        }
+      }
+      _this2.updateDisplay();
+      _this2.__background.appendChild(_this2.__foreground);
+      _this2.domElement.appendChild(_this2.__background);
+      return _this2;
+    }
+    createClass(NumberControllerSlider2, [{
+      key: "updateDisplay",
+      value: function updateDisplay2() {
+        var pct = (this.getValue() - this.__min) / (this.__max - this.__min);
+        this.__foreground.style.width = pct * 100 + "%";
+        return get(NumberControllerSlider2.prototype.__proto__ || Object.getPrototypeOf(NumberControllerSlider2.prototype), "updateDisplay", this).call(this);
+      }
+    }]);
+    return NumberControllerSlider2;
+  }(NumberController);
+  var FunctionController = function(_Controller) {
+    inherits(FunctionController2, _Controller);
+    function FunctionController2(object, property, text) {
+      classCallCheck(this, FunctionController2);
+      var _this2 = possibleConstructorReturn(this, (FunctionController2.__proto__ || Object.getPrototypeOf(FunctionController2)).call(this, object, property));
+      var _this = _this2;
+      _this2.__button = document.createElement("div");
+      _this2.__button.innerHTML = text === void 0 ? "Fire" : text;
+      dom.bind(_this2.__button, "click", function(e2) {
+        e2.preventDefault();
+        _this.fire();
+        return false;
+      });
+      dom.addClass(_this2.__button, "button");
+      _this2.domElement.appendChild(_this2.__button);
+      return _this2;
+    }
+    createClass(FunctionController2, [{
+      key: "fire",
+      value: function fire() {
+        if (this.__onChange) {
+          this.__onChange.call(this);
+        }
+        this.getValue().call(this.object);
+        if (this.__onFinishChange) {
+          this.__onFinishChange.call(this, this.getValue());
+        }
+      }
+    }]);
+    return FunctionController2;
+  }(Controller);
+  var ColorController = function(_Controller) {
+    inherits(ColorController2, _Controller);
+    function ColorController2(object, property) {
+      classCallCheck(this, ColorController2);
+      var _this2 = possibleConstructorReturn(this, (ColorController2.__proto__ || Object.getPrototypeOf(ColorController2)).call(this, object, property));
+      _this2.__color = new Color2(_this2.getValue());
+      _this2.__temp = new Color2(0);
+      var _this = _this2;
+      _this2.domElement = document.createElement("div");
+      dom.makeSelectable(_this2.domElement, false);
+      _this2.__selector = document.createElement("div");
+      _this2.__selector.className = "selector";
+      _this2.__saturation_field = document.createElement("div");
+      _this2.__saturation_field.className = "saturation-field";
+      _this2.__field_knob = document.createElement("div");
+      _this2.__field_knob.className = "field-knob";
+      _this2.__field_knob_border = "2px solid ";
+      _this2.__hue_knob = document.createElement("div");
+      _this2.__hue_knob.className = "hue-knob";
+      _this2.__hue_field = document.createElement("div");
+      _this2.__hue_field.className = "hue-field";
+      _this2.__input = document.createElement("input");
+      _this2.__input.type = "text";
+      _this2.__input_textShadow = "0 1px 1px ";
+      dom.bind(_this2.__input, "keydown", function(e2) {
+        if (e2.keyCode === 13) {
+          onBlur.call(this);
+        }
+      });
+      dom.bind(_this2.__input, "blur", onBlur);
+      dom.bind(_this2.__selector, "mousedown", function() {
+        dom.addClass(this, "drag").bind(window, "mouseup", function() {
+          dom.removeClass(_this.__selector, "drag");
+        });
+      });
+      dom.bind(_this2.__selector, "touchstart", function() {
+        dom.addClass(this, "drag").bind(window, "touchend", function() {
+          dom.removeClass(_this.__selector, "drag");
+        });
+      });
+      var valueField = document.createElement("div");
+      Common.extend(_this2.__selector.style, {
+        width: "122px",
+        height: "102px",
+        padding: "3px",
+        backgroundColor: "#222",
+        boxShadow: "0px 1px 3px rgba(0,0,0,0.3)"
+      });
+      Common.extend(_this2.__field_knob.style, {
+        position: "absolute",
+        width: "12px",
+        height: "12px",
+        border: _this2.__field_knob_border + (_this2.__color.v < 0.5 ? "#fff" : "#000"),
+        boxShadow: "0px 1px 3px rgba(0,0,0,0.5)",
+        borderRadius: "12px",
+        zIndex: 1
+      });
+      Common.extend(_this2.__hue_knob.style, {
+        position: "absolute",
+        width: "15px",
+        height: "2px",
+        borderRight: "4px solid #fff",
+        zIndex: 1
+      });
+      Common.extend(_this2.__saturation_field.style, {
+        width: "100px",
+        height: "100px",
+        border: "1px solid #555",
+        marginRight: "3px",
+        display: "inline-block",
+        cursor: "pointer"
+      });
+      Common.extend(valueField.style, {
+        width: "100%",
+        height: "100%",
+        background: "none"
+      });
+      linearGradient(valueField, "top", "rgba(0,0,0,0)", "#000");
+      Common.extend(_this2.__hue_field.style, {
+        width: "15px",
+        height: "100px",
+        border: "1px solid #555",
+        cursor: "ns-resize",
+        position: "absolute",
+        top: "3px",
+        right: "3px"
+      });
+      hueGradient(_this2.__hue_field);
+      Common.extend(_this2.__input.style, {
+        outline: "none",
+        textAlign: "center",
+        color: "#fff",
+        border: 0,
+        fontWeight: "bold",
+        textShadow: _this2.__input_textShadow + "rgba(0,0,0,0.7)"
+      });
+      dom.bind(_this2.__saturation_field, "mousedown", fieldDown);
+      dom.bind(_this2.__saturation_field, "touchstart", fieldDown);
+      dom.bind(_this2.__field_knob, "mousedown", fieldDown);
+      dom.bind(_this2.__field_knob, "touchstart", fieldDown);
+      dom.bind(_this2.__hue_field, "mousedown", fieldDownH);
+      dom.bind(_this2.__hue_field, "touchstart", fieldDownH);
+      function fieldDown(e2) {
+        setSV(e2);
+        dom.bind(window, "mousemove", setSV);
+        dom.bind(window, "touchmove", setSV);
+        dom.bind(window, "mouseup", fieldUpSV);
+        dom.bind(window, "touchend", fieldUpSV);
+      }
+      function fieldDownH(e2) {
+        setH(e2);
+        dom.bind(window, "mousemove", setH);
+        dom.bind(window, "touchmove", setH);
+        dom.bind(window, "mouseup", fieldUpH);
+        dom.bind(window, "touchend", fieldUpH);
+      }
+      function fieldUpSV() {
+        dom.unbind(window, "mousemove", setSV);
+        dom.unbind(window, "touchmove", setSV);
+        dom.unbind(window, "mouseup", fieldUpSV);
+        dom.unbind(window, "touchend", fieldUpSV);
+        onFinish();
+      }
+      function fieldUpH() {
+        dom.unbind(window, "mousemove", setH);
+        dom.unbind(window, "touchmove", setH);
+        dom.unbind(window, "mouseup", fieldUpH);
+        dom.unbind(window, "touchend", fieldUpH);
+        onFinish();
+      }
+      function onBlur() {
+        var i2 = interpret(this.value);
+        if (i2 !== false) {
+          _this.__color.__state = i2;
+          _this.setValue(_this.__color.toOriginal());
+        } else {
+          this.value = _this.__color.toString();
+        }
+      }
+      function onFinish() {
+        if (_this.__onFinishChange) {
+          _this.__onFinishChange.call(_this, _this.__color.toOriginal());
+        }
+      }
+      _this2.__saturation_field.appendChild(valueField);
+      _this2.__selector.appendChild(_this2.__field_knob);
+      _this2.__selector.appendChild(_this2.__saturation_field);
+      _this2.__selector.appendChild(_this2.__hue_field);
+      _this2.__hue_field.appendChild(_this2.__hue_knob);
+      _this2.domElement.appendChild(_this2.__input);
+      _this2.domElement.appendChild(_this2.__selector);
+      _this2.updateDisplay();
+      function setSV(e2) {
+        if (e2.type.indexOf("touch") === -1) {
+          e2.preventDefault();
+        }
+        var fieldRect = _this.__saturation_field.getBoundingClientRect();
+        var _ref = e2.touches && e2.touches[0] || e2, clientX = _ref.clientX, clientY = _ref.clientY;
+        var s2 = (clientX - fieldRect.left) / (fieldRect.right - fieldRect.left);
+        var v2 = 1 - (clientY - fieldRect.top) / (fieldRect.bottom - fieldRect.top);
+        if (v2 > 1) {
+          v2 = 1;
+        } else if (v2 < 0) {
+          v2 = 0;
+        }
+        if (s2 > 1) {
+          s2 = 1;
+        } else if (s2 < 0) {
+          s2 = 0;
+        }
+        _this.__color.v = v2;
+        _this.__color.s = s2;
+        _this.setValue(_this.__color.toOriginal());
+        return false;
+      }
+      function setH(e2) {
+        if (e2.type.indexOf("touch") === -1) {
+          e2.preventDefault();
+        }
+        var fieldRect = _this.__hue_field.getBoundingClientRect();
+        var _ref2 = e2.touches && e2.touches[0] || e2, clientY = _ref2.clientY;
+        var h2 = 1 - (clientY - fieldRect.top) / (fieldRect.bottom - fieldRect.top);
+        if (h2 > 1) {
+          h2 = 1;
+        } else if (h2 < 0) {
+          h2 = 0;
+        }
+        _this.__color.h = h2 * 360;
+        _this.setValue(_this.__color.toOriginal());
+        return false;
+      }
+      return _this2;
+    }
+    createClass(ColorController2, [{
+      key: "updateDisplay",
+      value: function updateDisplay2() {
+        var i2 = interpret(this.getValue());
+        if (i2 !== false) {
+          var mismatch = false;
+          Common.each(Color2.COMPONENTS, function(component) {
+            if (!Common.isUndefined(i2[component]) && !Common.isUndefined(this.__color.__state[component]) && i2[component] !== this.__color.__state[component]) {
+              mismatch = true;
+              return {};
+            }
+          }, this);
+          if (mismatch) {
+            Common.extend(this.__color.__state, i2);
+          }
+        }
+        Common.extend(this.__temp.__state, this.__color.__state);
+        this.__temp.a = 1;
+        var flip = this.__color.v < 0.5 || this.__color.s > 0.5 ? 255 : 0;
+        var _flip = 255 - flip;
+        Common.extend(this.__field_knob.style, {
+          marginLeft: 100 * this.__color.s - 7 + "px",
+          marginTop: 100 * (1 - this.__color.v) - 7 + "px",
+          backgroundColor: this.__temp.toHexString(),
+          border: this.__field_knob_border + "rgb(" + flip + "," + flip + "," + flip + ")"
+        });
+        this.__hue_knob.style.marginTop = (1 - this.__color.h / 360) * 100 + "px";
+        this.__temp.s = 1;
+        this.__temp.v = 1;
+        linearGradient(this.__saturation_field, "left", "#fff", this.__temp.toHexString());
+        this.__input.value = this.__color.toString();
+        Common.extend(this.__input.style, {
+          backgroundColor: this.__color.toHexString(),
+          color: "rgb(" + flip + "," + flip + "," + flip + ")",
+          textShadow: this.__input_textShadow + "rgba(" + _flip + "," + _flip + "," + _flip + ",.7)"
+        });
+      }
+    }]);
+    return ColorController2;
+  }(Controller);
+  var vendors = ["-moz-", "-o-", "-webkit-", "-ms-", ""];
+  function linearGradient(elem, x2, a2, b2) {
+    elem.style.background = "";
+    Common.each(vendors, function(vendor) {
+      elem.style.cssText += "background: " + vendor + "linear-gradient(" + x2 + ", " + a2 + " 0%, " + b2 + " 100%); ";
+    });
+  }
+  function hueGradient(elem) {
+    elem.style.background = "";
+    elem.style.cssText += "background: -moz-linear-gradient(top,  #ff0000 0%, #ff00ff 17%, #0000ff 34%, #00ffff 50%, #00ff00 67%, #ffff00 84%, #ff0000 100%);";
+    elem.style.cssText += "background: -webkit-linear-gradient(top,  #ff0000 0%,#ff00ff 17%,#0000ff 34%,#00ffff 50%,#00ff00 67%,#ffff00 84%,#ff0000 100%);";
+    elem.style.cssText += "background: -o-linear-gradient(top,  #ff0000 0%,#ff00ff 17%,#0000ff 34%,#00ffff 50%,#00ff00 67%,#ffff00 84%,#ff0000 100%);";
+    elem.style.cssText += "background: -ms-linear-gradient(top,  #ff0000 0%,#ff00ff 17%,#0000ff 34%,#00ffff 50%,#00ff00 67%,#ffff00 84%,#ff0000 100%);";
+    elem.style.cssText += "background: linear-gradient(top,  #ff0000 0%,#ff00ff 17%,#0000ff 34%,#00ffff 50%,#00ff00 67%,#ffff00 84%,#ff0000 100%);";
+  }
+  var css = {
+    load: function load(url, indoc) {
+      var doc = indoc || document;
+      var link = doc.createElement("link");
+      link.type = "text/css";
+      link.rel = "stylesheet";
+      link.href = url;
+      doc.getElementsByTagName("head")[0].appendChild(link);
+    },
+    inject: function inject(cssContent, indoc) {
+      var doc = indoc || document;
+      var injected = document.createElement("style");
+      injected.type = "text/css";
+      injected.innerHTML = cssContent;
+      var head = doc.getElementsByTagName("head")[0];
+      try {
+        head.appendChild(injected);
+      } catch (e2) {
+      }
+    }
+  };
+  var saveDialogContents = `<div id="dg-save" class="dg dialogue">
+
+  Here's the new load parameter for your <code>GUI</code>'s constructor:
+
+  <textarea id="dg-new-constructor"></textarea>
+
+  <div id="dg-save-locally">
+
+    <input id="dg-local-storage" type="checkbox"/> Automatically save
+    values to <code>localStorage</code> on exit.
+
+    <div id="dg-local-explain">The values saved to <code>localStorage</code> will
+      override those passed to <code>dat.GUI</code>'s constructor. This makes it
+      easier to work incrementally, but <code>localStorage</code> is fragile,
+      and your friends may not see the same values you do.
+
+    </div>
+
+  </div>
+
+</div>`;
+  var ControllerFactory = function ControllerFactory2(object, property) {
+    var initialValue = object[property];
+    if (Common.isArray(arguments[2]) || Common.isObject(arguments[2])) {
+      return new OptionController(object, property, arguments[2]);
+    }
+    if (Common.isNumber(initialValue)) {
+      if (Common.isNumber(arguments[2]) && Common.isNumber(arguments[3])) {
+        if (Common.isNumber(arguments[4])) {
+          return new NumberControllerSlider(object, property, arguments[2], arguments[3], arguments[4]);
+        }
+        return new NumberControllerSlider(object, property, arguments[2], arguments[3]);
+      }
+      if (Common.isNumber(arguments[4])) {
+        return new NumberControllerBox(object, property, { min: arguments[2], max: arguments[3], step: arguments[4] });
+      }
+      return new NumberControllerBox(object, property, { min: arguments[2], max: arguments[3] });
+    }
+    if (Common.isString(initialValue)) {
+      return new StringController(object, property);
+    }
+    if (Common.isFunction(initialValue)) {
+      return new FunctionController(object, property, "");
+    }
+    if (Common.isBoolean(initialValue)) {
+      return new BooleanController(object, property);
+    }
+    return null;
+  };
+  function requestAnimationFrame2(callback) {
+    setTimeout(callback, 1e3 / 60);
+  }
+  var requestAnimationFrame$1 = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || requestAnimationFrame2;
+  var CenteredDiv = function() {
+    function CenteredDiv2() {
+      classCallCheck(this, CenteredDiv2);
+      this.backgroundElement = document.createElement("div");
+      Common.extend(this.backgroundElement.style, {
+        backgroundColor: "rgba(0,0,0,0.8)",
+        top: 0,
+        left: 0,
+        display: "none",
+        zIndex: "1000",
+        opacity: 0,
+        WebkitTransition: "opacity 0.2s linear",
+        transition: "opacity 0.2s linear"
+      });
+      dom.makeFullscreen(this.backgroundElement);
+      this.backgroundElement.style.position = "fixed";
+      this.domElement = document.createElement("div");
+      Common.extend(this.domElement.style, {
+        position: "fixed",
+        display: "none",
+        zIndex: "1001",
+        opacity: 0,
+        WebkitTransition: "-webkit-transform 0.2s ease-out, opacity 0.2s linear",
+        transition: "transform 0.2s ease-out, opacity 0.2s linear"
+      });
+      document.body.appendChild(this.backgroundElement);
+      document.body.appendChild(this.domElement);
+      var _this = this;
+      dom.bind(this.backgroundElement, "click", function() {
+        _this.hide();
+      });
+    }
+    createClass(CenteredDiv2, [{
+      key: "show",
+      value: function show2() {
+        var _this = this;
+        this.backgroundElement.style.display = "block";
+        this.domElement.style.display = "block";
+        this.domElement.style.opacity = 0;
+        this.domElement.style.webkitTransform = "scale(1.1)";
+        this.layout();
+        Common.defer(function() {
+          _this.backgroundElement.style.opacity = 1;
+          _this.domElement.style.opacity = 1;
+          _this.domElement.style.webkitTransform = "scale(1)";
+        });
+      }
+    }, {
+      key: "hide",
+      value: function hide3() {
+        var _this = this;
+        var hide4 = function hide5() {
+          _this.domElement.style.display = "none";
+          _this.backgroundElement.style.display = "none";
+          dom.unbind(_this.domElement, "webkitTransitionEnd", hide5);
+          dom.unbind(_this.domElement, "transitionend", hide5);
+          dom.unbind(_this.domElement, "oTransitionEnd", hide5);
+        };
+        dom.bind(this.domElement, "webkitTransitionEnd", hide4);
+        dom.bind(this.domElement, "transitionend", hide4);
+        dom.bind(this.domElement, "oTransitionEnd", hide4);
+        this.backgroundElement.style.opacity = 0;
+        this.domElement.style.opacity = 0;
+        this.domElement.style.webkitTransform = "scale(1.1)";
+      }
+    }, {
+      key: "layout",
+      value: function layout() {
+        this.domElement.style.left = window.innerWidth / 2 - dom.getWidth(this.domElement) / 2 + "px";
+        this.domElement.style.top = window.innerHeight / 2 - dom.getHeight(this.domElement) / 2 + "px";
+      }
+    }]);
+    return CenteredDiv2;
+  }();
+  var styleSheet = ___$insertStyle(".dg ul{list-style:none;margin:0;padding:0;width:100%;clear:both}.dg.ac{position:fixed;top:0;left:0;right:0;height:0;z-index:0}.dg:not(.ac) .main{overflow:hidden}.dg.main{-webkit-transition:opacity .1s linear;-o-transition:opacity .1s linear;-moz-transition:opacity .1s linear;transition:opacity .1s linear}.dg.main.taller-than-window{overflow-y:auto}.dg.main.taller-than-window .close-button{opacity:1;margin-top:-1px;border-top:1px solid #2c2c2c}.dg.main ul.closed .close-button{opacity:1 !important}.dg.main:hover .close-button,.dg.main .close-button.drag{opacity:1}.dg.main .close-button{-webkit-transition:opacity .1s linear;-o-transition:opacity .1s linear;-moz-transition:opacity .1s linear;transition:opacity .1s linear;border:0;line-height:19px;height:20px;cursor:pointer;text-align:center;background-color:#000}.dg.main .close-button.close-top{position:relative}.dg.main .close-button.close-bottom{position:absolute}.dg.main .close-button:hover{background-color:#111}.dg.a{float:right;margin-right:15px;overflow-y:visible}.dg.a.has-save>ul.close-top{margin-top:0}.dg.a.has-save>ul.close-bottom{margin-top:27px}.dg.a.has-save>ul.closed{margin-top:0}.dg.a .save-row{top:0;z-index:1002}.dg.a .save-row.close-top{position:relative}.dg.a .save-row.close-bottom{position:fixed}.dg li{-webkit-transition:height .1s ease-out;-o-transition:height .1s ease-out;-moz-transition:height .1s ease-out;transition:height .1s ease-out;-webkit-transition:overflow .1s linear;-o-transition:overflow .1s linear;-moz-transition:overflow .1s linear;transition:overflow .1s linear}.dg li:not(.folder){cursor:auto;height:27px;line-height:27px;padding:0 4px 0 5px}.dg li.folder{padding:0;border-left:4px solid rgba(0,0,0,0)}.dg li.title{cursor:pointer;margin-left:-4px}.dg .closed li:not(.title),.dg .closed ul li,.dg .closed ul li>*{height:0;overflow:hidden;border:0}.dg .cr{clear:both;padding-left:3px;height:27px;overflow:hidden}.dg .property-name{cursor:default;float:left;clear:left;width:40%;overflow:hidden;text-overflow:ellipsis}.dg .cr.function .property-name{width:100%}.dg .c{float:left;width:60%;position:relative}.dg .c input[type=text]{border:0;margin-top:4px;padding:3px;width:100%;float:right}.dg .has-slider input[type=text]{width:30%;margin-left:0}.dg .slider{float:left;width:66%;margin-left:-5px;margin-right:0;height:19px;margin-top:4px}.dg .slider-fg{height:100%}.dg .c input[type=checkbox]{margin-top:7px}.dg .c select{margin-top:5px}.dg .cr.function,.dg .cr.function .property-name,.dg .cr.function *,.dg .cr.boolean,.dg .cr.boolean *{cursor:pointer}.dg .cr.color{overflow:visible}.dg .selector{display:none;position:absolute;margin-left:-9px;margin-top:23px;z-index:10}.dg .c:hover .selector,.dg .selector.drag{display:block}.dg li.save-row{padding:0}.dg li.save-row .button{display:inline-block;padding:0px 6px}.dg.dialogue{background-color:#222;width:460px;padding:15px;font-size:13px;line-height:15px}#dg-new-constructor{padding:10px;color:#222;font-family:Monaco, monospace;font-size:10px;border:0;resize:none;box-shadow:inset 1px 1px 1px #888;word-wrap:break-word;margin:12px 0;display:block;width:440px;overflow-y:scroll;height:100px;position:relative}#dg-local-explain{display:none;font-size:11px;line-height:17px;border-radius:3px;background-color:#333;padding:8px;margin-top:10px}#dg-local-explain code{font-size:10px}#dat-gui-save-locally{display:none}.dg{color:#eee;font:11px 'Lucida Grande', sans-serif;text-shadow:0 -1px 0 #111}.dg.main::-webkit-scrollbar{width:5px;background:#1a1a1a}.dg.main::-webkit-scrollbar-corner{height:0;display:none}.dg.main::-webkit-scrollbar-thumb{border-radius:5px;background:#676767}.dg li:not(.folder){background:#1a1a1a;border-bottom:1px solid #2c2c2c}.dg li.save-row{line-height:25px;background:#dad5cb;border:0}.dg li.save-row select{margin-left:5px;width:108px}.dg li.save-row .button{margin-left:5px;margin-top:1px;border-radius:2px;font-size:9px;line-height:7px;padding:4px 4px 5px 4px;background:#c5bdad;color:#fff;text-shadow:0 1px 0 #b0a58f;box-shadow:0 -1px 0 #b0a58f;cursor:pointer}.dg li.save-row .button.gears{background:#c5bdad url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAANCAYAAAB/9ZQ7AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAQJJREFUeNpiYKAU/P//PwGIC/ApCABiBSAW+I8AClAcgKxQ4T9hoMAEUrxx2QSGN6+egDX+/vWT4e7N82AMYoPAx/evwWoYoSYbACX2s7KxCxzcsezDh3evFoDEBYTEEqycggWAzA9AuUSQQgeYPa9fPv6/YWm/Acx5IPb7ty/fw+QZblw67vDs8R0YHyQhgObx+yAJkBqmG5dPPDh1aPOGR/eugW0G4vlIoTIfyFcA+QekhhHJhPdQxbiAIguMBTQZrPD7108M6roWYDFQiIAAv6Aow/1bFwXgis+f2LUAynwoIaNcz8XNx3Dl7MEJUDGQpx9gtQ8YCueB+D26OECAAQDadt7e46D42QAAAABJRU5ErkJggg==) 2px 1px no-repeat;height:7px;width:8px}.dg li.save-row .button:hover{background-color:#bab19e;box-shadow:0 -1px 0 #b0a58f}.dg li.folder{border-bottom:0}.dg li.title{padding-left:16px;background:#000 url(data:image/gif;base64,R0lGODlhBQAFAJEAAP////Pz8////////yH5BAEAAAIALAAAAAAFAAUAAAIIlI+hKgFxoCgAOw==) 6px 10px no-repeat;cursor:pointer;border-bottom:1px solid rgba(255,255,255,0.2)}.dg .closed li.title{background-image:url(data:image/gif;base64,R0lGODlhBQAFAJEAAP////Pz8////////yH5BAEAAAIALAAAAAAFAAUAAAIIlGIWqMCbWAEAOw==)}.dg .cr.boolean{border-left:3px solid #806787}.dg .cr.color{border-left:3px solid}.dg .cr.function{border-left:3px solid #e61d5f}.dg .cr.number{border-left:3px solid #2FA1D6}.dg .cr.number input[type=text]{color:#2FA1D6}.dg .cr.string{border-left:3px solid #1ed36f}.dg .cr.string input[type=text]{color:#1ed36f}.dg .cr.function:hover,.dg .cr.boolean:hover{background:#111}.dg .c input[type=text]{background:#303030;outline:none}.dg .c input[type=text]:hover{background:#3c3c3c}.dg .c input[type=text]:focus{background:#494949;color:#fff}.dg .c .slider{background:#303030;cursor:ew-resize}.dg .c .slider-fg{background:#2FA1D6;max-width:100%}.dg .c .slider:hover{background:#3c3c3c}.dg .c .slider:hover .slider-fg{background:#44abda}\n");
+  css.inject(styleSheet);
+  var CSS_NAMESPACE = "dg";
+  var HIDE_KEY_CODE = 72;
+  var CLOSE_BUTTON_HEIGHT = 20;
+  var DEFAULT_DEFAULT_PRESET_NAME = "Default";
+  var SUPPORTS_LOCAL_STORAGE = function() {
+    try {
+      return !!window.localStorage;
+    } catch (e2) {
+      return false;
+    }
+  }();
+  var SAVE_DIALOGUE = void 0;
+  var autoPlaceVirgin = true;
+  var autoPlaceContainer = void 0;
+  var hide = false;
+  var hideableGuis = [];
+  var GUI = function GUI2(pars) {
+    var _this = this;
+    var params = pars || {};
+    this.domElement = document.createElement("div");
+    this.__ul = document.createElement("ul");
+    this.domElement.appendChild(this.__ul);
+    dom.addClass(this.domElement, CSS_NAMESPACE);
+    this.__folders = {};
+    this.__controllers = [];
+    this.__rememberedObjects = [];
+    this.__rememberedObjectIndecesToControllers = [];
+    this.__listening = [];
+    params = Common.defaults(params, {
+      closeOnTop: false,
+      autoPlace: true,
+      width: GUI2.DEFAULT_WIDTH
+    });
+    params = Common.defaults(params, {
+      resizable: params.autoPlace,
+      hideable: params.autoPlace
+    });
+    if (!Common.isUndefined(params.load)) {
+      if (params.preset) {
+        params.load.preset = params.preset;
+      }
+    } else {
+      params.load = { preset: DEFAULT_DEFAULT_PRESET_NAME };
+    }
+    if (Common.isUndefined(params.parent) && params.hideable) {
+      hideableGuis.push(this);
+    }
+    params.resizable = Common.isUndefined(params.parent) && params.resizable;
+    if (params.autoPlace && Common.isUndefined(params.scrollable)) {
+      params.scrollable = true;
+    }
+    var useLocalStorage = SUPPORTS_LOCAL_STORAGE && localStorage.getItem(getLocalStorageHash(this, "isLocal")) === "true";
+    var saveToLocalStorage = void 0;
+    var titleRow = void 0;
+    Object.defineProperties(
+      this,
+      {
+        parent: {
+          get: function get$$13() {
+            return params.parent;
+          }
+        },
+        scrollable: {
+          get: function get$$13() {
+            return params.scrollable;
+          }
+        },
+        autoPlace: {
+          get: function get$$13() {
+            return params.autoPlace;
+          }
+        },
+        closeOnTop: {
+          get: function get$$13() {
+            return params.closeOnTop;
+          }
+        },
+        preset: {
+          get: function get$$13() {
+            if (_this.parent) {
+              return _this.getRoot().preset;
+            }
+            return params.load.preset;
+          },
+          set: function set$$13(v2) {
+            if (_this.parent) {
+              _this.getRoot().preset = v2;
+            } else {
+              params.load.preset = v2;
+            }
+            setPresetSelectIndex(this);
+            _this.revert();
+          }
+        },
+        width: {
+          get: function get$$13() {
+            return params.width;
+          },
+          set: function set$$13(v2) {
+            params.width = v2;
+            setWidth(_this, v2);
+          }
+        },
+        name: {
+          get: function get$$13() {
+            return params.name;
+          },
+          set: function set$$13(v2) {
+            params.name = v2;
+            if (titleRow) {
+              titleRow.innerHTML = params.name;
+            }
+          }
+        },
+        closed: {
+          get: function get$$13() {
+            return params.closed;
+          },
+          set: function set$$13(v2) {
+            params.closed = v2;
+            if (params.closed) {
+              dom.addClass(_this.__ul, GUI2.CLASS_CLOSED);
+            } else {
+              dom.removeClass(_this.__ul, GUI2.CLASS_CLOSED);
+            }
+            this.onResize();
+            if (_this.__closeButton) {
+              _this.__closeButton.innerHTML = v2 ? GUI2.TEXT_OPEN : GUI2.TEXT_CLOSED;
+            }
+          }
+        },
+        load: {
+          get: function get$$13() {
+            return params.load;
+          }
+        },
+        useLocalStorage: {
+          get: function get$$13() {
+            return useLocalStorage;
+          },
+          set: function set$$13(bool) {
+            if (SUPPORTS_LOCAL_STORAGE) {
+              useLocalStorage = bool;
+              if (bool) {
+                dom.bind(window, "unload", saveToLocalStorage);
+              } else {
+                dom.unbind(window, "unload", saveToLocalStorage);
+              }
+              localStorage.setItem(getLocalStorageHash(_this, "isLocal"), bool);
+            }
+          }
+        }
+      }
+    );
+    if (Common.isUndefined(params.parent)) {
+      this.closed = params.closed || false;
+      dom.addClass(this.domElement, GUI2.CLASS_MAIN);
+      dom.makeSelectable(this.domElement, false);
+      if (SUPPORTS_LOCAL_STORAGE) {
+        if (useLocalStorage) {
+          _this.useLocalStorage = true;
+          var savedGui = localStorage.getItem(getLocalStorageHash(this, "gui"));
+          if (savedGui) {
+            params.load = JSON.parse(savedGui);
+          }
+        }
+      }
+      this.__closeButton = document.createElement("div");
+      this.__closeButton.innerHTML = GUI2.TEXT_CLOSED;
+      dom.addClass(this.__closeButton, GUI2.CLASS_CLOSE_BUTTON);
+      if (params.closeOnTop) {
+        dom.addClass(this.__closeButton, GUI2.CLASS_CLOSE_TOP);
+        this.domElement.insertBefore(this.__closeButton, this.domElement.childNodes[0]);
+      } else {
+        dom.addClass(this.__closeButton, GUI2.CLASS_CLOSE_BOTTOM);
+        this.domElement.appendChild(this.__closeButton);
+      }
+      dom.bind(this.__closeButton, "click", function() {
+        _this.closed = !_this.closed;
+      });
+    } else {
+      if (params.closed === void 0) {
+        params.closed = true;
+      }
+      var titleRowName = document.createTextNode(params.name);
+      dom.addClass(titleRowName, "controller-name");
+      titleRow = addRow(_this, titleRowName);
+      var onClickTitle = function onClickTitle2(e2) {
+        e2.preventDefault();
+        _this.closed = !_this.closed;
+        return false;
+      };
+      dom.addClass(this.__ul, GUI2.CLASS_CLOSED);
+      dom.addClass(titleRow, "title");
+      dom.bind(titleRow, "click", onClickTitle);
+      if (!params.closed) {
+        this.closed = false;
+      }
+    }
+    if (params.autoPlace) {
+      if (Common.isUndefined(params.parent)) {
+        if (autoPlaceVirgin) {
+          autoPlaceContainer = document.createElement("div");
+          dom.addClass(autoPlaceContainer, CSS_NAMESPACE);
+          dom.addClass(autoPlaceContainer, GUI2.CLASS_AUTO_PLACE_CONTAINER);
+          document.body.appendChild(autoPlaceContainer);
+          autoPlaceVirgin = false;
+        }
+        autoPlaceContainer.appendChild(this.domElement);
+        dom.addClass(this.domElement, GUI2.CLASS_AUTO_PLACE);
+      }
+      if (!this.parent) {
+        setWidth(_this, params.width);
+      }
+    }
+    this.__resizeHandler = function() {
+      _this.onResizeDebounced();
+    };
+    dom.bind(window, "resize", this.__resizeHandler);
+    dom.bind(this.__ul, "webkitTransitionEnd", this.__resizeHandler);
+    dom.bind(this.__ul, "transitionend", this.__resizeHandler);
+    dom.bind(this.__ul, "oTransitionEnd", this.__resizeHandler);
+    this.onResize();
+    if (params.resizable) {
+      addResizeHandle(this);
+    }
+    saveToLocalStorage = function saveToLocalStorage2() {
+      if (SUPPORTS_LOCAL_STORAGE && localStorage.getItem(getLocalStorageHash(_this, "isLocal")) === "true") {
+        localStorage.setItem(getLocalStorageHash(_this, "gui"), JSON.stringify(_this.getSaveObject()));
+      }
+    };
+    this.saveToLocalStorageIfPossible = saveToLocalStorage;
+    function resetWidth() {
+      var root = _this.getRoot();
+      root.width += 1;
+      Common.defer(function() {
+        root.width -= 1;
+      });
+    }
+    if (!params.parent) {
+      resetWidth();
+    }
+  };
+  GUI.toggleHide = function() {
+    hide = !hide;
+    Common.each(hideableGuis, function(gui) {
+      gui.domElement.style.display = hide ? "none" : "";
+    });
+  };
+  GUI.CLASS_AUTO_PLACE = "a";
+  GUI.CLASS_AUTO_PLACE_CONTAINER = "ac";
+  GUI.CLASS_MAIN = "main";
+  GUI.CLASS_CONTROLLER_ROW = "cr";
+  GUI.CLASS_TOO_TALL = "taller-than-window";
+  GUI.CLASS_CLOSED = "closed";
+  GUI.CLASS_CLOSE_BUTTON = "close-button";
+  GUI.CLASS_CLOSE_TOP = "close-top";
+  GUI.CLASS_CLOSE_BOTTOM = "close-bottom";
+  GUI.CLASS_DRAG = "drag";
+  GUI.DEFAULT_WIDTH = 245;
+  GUI.TEXT_CLOSED = "Close Controls";
+  GUI.TEXT_OPEN = "Open Controls";
+  GUI._keydownHandler = function(e2) {
+    if (document.activeElement.type !== "text" && (e2.which === HIDE_KEY_CODE || e2.keyCode === HIDE_KEY_CODE)) {
+      GUI.toggleHide();
+    }
+  };
+  dom.bind(window, "keydown", GUI._keydownHandler, false);
+  Common.extend(
+    GUI.prototype,
+    {
+      add: function add(object, property) {
+        return _add(this, object, property, {
+          factoryArgs: Array.prototype.slice.call(arguments, 2)
+        });
+      },
+      addColor: function addColor(object, property) {
+        return _add(this, object, property, {
+          color: true
+        });
+      },
+      remove: function remove(controller) {
+        this.__ul.removeChild(controller.__li);
+        this.__controllers.splice(this.__controllers.indexOf(controller), 1);
+        var _this = this;
+        Common.defer(function() {
+          _this.onResize();
+        });
+      },
+      destroy: function destroy() {
+        if (this.parent) {
+          throw new Error("Only the root GUI should be removed with .destroy(). For subfolders, use gui.removeFolder(folder) instead.");
+        }
+        if (this.autoPlace) {
+          autoPlaceContainer.removeChild(this.domElement);
+        }
+        var _this = this;
+        Common.each(this.__folders, function(subfolder) {
+          _this.removeFolder(subfolder);
+        });
+        dom.unbind(window, "keydown", GUI._keydownHandler, false);
+        removeListeners(this);
+      },
+      addFolder: function addFolder(name) {
+        if (this.__folders[name] !== void 0) {
+          throw new Error('You already have a folder in this GUI by the name "' + name + '"');
+        }
+        var newGuiParams = { name, parent: this };
+        newGuiParams.autoPlace = this.autoPlace;
+        if (this.load && this.load.folders && this.load.folders[name]) {
+          newGuiParams.closed = this.load.folders[name].closed;
+          newGuiParams.load = this.load.folders[name];
+        }
+        var gui = new GUI(newGuiParams);
+        this.__folders[name] = gui;
+        var li = addRow(this, gui.domElement);
+        dom.addClass(li, "folder");
+        return gui;
+      },
+      removeFolder: function removeFolder(folder) {
+        this.__ul.removeChild(folder.domElement.parentElement);
+        delete this.__folders[folder.name];
+        if (this.load && this.load.folders && this.load.folders[folder.name]) {
+          delete this.load.folders[folder.name];
+        }
+        removeListeners(folder);
+        var _this = this;
+        Common.each(folder.__folders, function(subfolder) {
+          folder.removeFolder(subfolder);
+        });
+        Common.defer(function() {
+          _this.onResize();
+        });
+      },
+      open: function open() {
+        this.closed = false;
+      },
+      close: function close() {
+        this.closed = true;
+      },
+      hide: function hide2() {
+        this.domElement.style.display = "none";
+      },
+      show: function show() {
+        this.domElement.style.display = "";
+      },
+      onResize: function onResize() {
+        var root = this.getRoot();
+        if (root.scrollable) {
+          var top = dom.getOffset(root.__ul).top;
+          var h2 = 0;
+          Common.each(root.__ul.childNodes, function(node) {
+            if (!(root.autoPlace && node === root.__save_row)) {
+              h2 += dom.getHeight(node);
+            }
+          });
+          if (window.innerHeight - top - CLOSE_BUTTON_HEIGHT < h2) {
+            dom.addClass(root.domElement, GUI.CLASS_TOO_TALL);
+            root.__ul.style.height = window.innerHeight - top - CLOSE_BUTTON_HEIGHT + "px";
+          } else {
+            dom.removeClass(root.domElement, GUI.CLASS_TOO_TALL);
+            root.__ul.style.height = "auto";
+          }
+        }
+        if (root.__resize_handle) {
+          Common.defer(function() {
+            root.__resize_handle.style.height = root.__ul.offsetHeight + "px";
+          });
+        }
+        if (root.__closeButton) {
+          root.__closeButton.style.width = root.width + "px";
+        }
+      },
+      onResizeDebounced: Common.debounce(function() {
+        this.onResize();
+      }, 50),
+      remember: function remember() {
+        if (Common.isUndefined(SAVE_DIALOGUE)) {
+          SAVE_DIALOGUE = new CenteredDiv();
+          SAVE_DIALOGUE.domElement.innerHTML = saveDialogContents;
+        }
+        if (this.parent) {
+          throw new Error("You can only call remember on a top level GUI.");
+        }
+        var _this = this;
+        Common.each(Array.prototype.slice.call(arguments), function(object) {
+          if (_this.__rememberedObjects.length === 0) {
+            addSaveMenu(_this);
+          }
+          if (_this.__rememberedObjects.indexOf(object) === -1) {
+            _this.__rememberedObjects.push(object);
+          }
+        });
+        if (this.autoPlace) {
+          setWidth(this, this.width);
+        }
+      },
+      getRoot: function getRoot() {
+        var gui = this;
+        while (gui.parent) {
+          gui = gui.parent;
+        }
+        return gui;
+      },
+      getSaveObject: function getSaveObject() {
+        var toReturn2 = this.load;
+        toReturn2.closed = this.closed;
+        if (this.__rememberedObjects.length > 0) {
+          toReturn2.preset = this.preset;
+          if (!toReturn2.remembered) {
+            toReturn2.remembered = {};
+          }
+          toReturn2.remembered[this.preset] = getCurrentPreset(this);
+        }
+        toReturn2.folders = {};
+        Common.each(this.__folders, function(element, key) {
+          toReturn2.folders[key] = element.getSaveObject();
+        });
+        return toReturn2;
+      },
+      save: function save() {
+        if (!this.load.remembered) {
+          this.load.remembered = {};
+        }
+        this.load.remembered[this.preset] = getCurrentPreset(this);
+        markPresetModified(this, false);
+        this.saveToLocalStorageIfPossible();
+      },
+      saveAs: function saveAs(presetName) {
+        if (!this.load.remembered) {
+          this.load.remembered = {};
+          this.load.remembered[DEFAULT_DEFAULT_PRESET_NAME] = getCurrentPreset(this, true);
+        }
+        this.load.remembered[presetName] = getCurrentPreset(this);
+        this.preset = presetName;
+        addPresetOption(this, presetName, true);
+        this.saveToLocalStorageIfPossible();
+      },
+      revert: function revert(gui) {
+        Common.each(this.__controllers, function(controller) {
+          if (!this.getRoot().load.remembered) {
+            controller.setValue(controller.initialValue);
+          } else {
+            recallSavedValue(gui || this.getRoot(), controller);
+          }
+          if (controller.__onFinishChange) {
+            controller.__onFinishChange.call(controller, controller.getValue());
+          }
+        }, this);
+        Common.each(this.__folders, function(folder) {
+          folder.revert(folder);
+        });
+        if (!gui) {
+          markPresetModified(this.getRoot(), false);
+        }
+      },
+      listen: function listen(controller) {
+        var init = this.__listening.length === 0;
+        this.__listening.push(controller);
+        if (init) {
+          updateDisplays(this.__listening);
+        }
+      },
+      updateDisplay: function updateDisplay() {
+        Common.each(this.__controllers, function(controller) {
+          controller.updateDisplay();
+        });
+        Common.each(this.__folders, function(folder) {
+          folder.updateDisplay();
+        });
+      }
+    }
+  );
+  function addRow(gui, newDom, liBefore) {
+    var li = document.createElement("li");
+    if (newDom) {
+      li.appendChild(newDom);
+    }
+    if (liBefore) {
+      gui.__ul.insertBefore(li, liBefore);
+    } else {
+      gui.__ul.appendChild(li);
+    }
+    gui.onResize();
+    return li;
+  }
+  function removeListeners(gui) {
+    dom.unbind(window, "resize", gui.__resizeHandler);
+    if (gui.saveToLocalStorageIfPossible) {
+      dom.unbind(window, "unload", gui.saveToLocalStorageIfPossible);
+    }
+  }
+  function markPresetModified(gui, modified) {
+    var opt = gui.__preset_select[gui.__preset_select.selectedIndex];
+    if (modified) {
+      opt.innerHTML = opt.value + "*";
+    } else {
+      opt.innerHTML = opt.value;
+    }
+  }
+  function augmentController(gui, li, controller) {
+    controller.__li = li;
+    controller.__gui = gui;
+    Common.extend(controller, {
+      options: function options(_options) {
+        if (arguments.length > 1) {
+          var nextSibling = controller.__li.nextElementSibling;
+          controller.remove();
+          return _add(gui, controller.object, controller.property, {
+            before: nextSibling,
+            factoryArgs: [Common.toArray(arguments)]
+          });
+        }
+        if (Common.isArray(_options) || Common.isObject(_options)) {
+          var _nextSibling = controller.__li.nextElementSibling;
+          controller.remove();
+          return _add(gui, controller.object, controller.property, {
+            before: _nextSibling,
+            factoryArgs: [_options]
+          });
+        }
+      },
+      name: function name(_name) {
+        controller.__li.firstElementChild.firstElementChild.innerHTML = _name;
+        return controller;
+      },
+      listen: function listen2() {
+        controller.__gui.listen(controller);
+        return controller;
+      },
+      remove: function remove2() {
+        controller.__gui.remove(controller);
+        return controller;
+      }
+    });
+    if (controller instanceof NumberControllerSlider) {
+      var box = new NumberControllerBox(controller.object, controller.property, { min: controller.__min, max: controller.__max, step: controller.__step });
+      Common.each(["updateDisplay", "onChange", "onFinishChange", "step", "min", "max"], function(method) {
+        var pc = controller[method];
+        var pb = box[method];
+        controller[method] = box[method] = function() {
+          var args = Array.prototype.slice.call(arguments);
+          pb.apply(box, args);
+          return pc.apply(controller, args);
+        };
+      });
+      dom.addClass(li, "has-slider");
+      controller.domElement.insertBefore(box.domElement, controller.domElement.firstElementChild);
+    } else if (controller instanceof NumberControllerBox) {
+      var r2 = function r3(returned) {
+        if (Common.isNumber(controller.__min) && Common.isNumber(controller.__max)) {
+          var oldName = controller.__li.firstElementChild.firstElementChild.innerHTML;
+          var wasListening = controller.__gui.__listening.indexOf(controller) > -1;
+          controller.remove();
+          var newController = _add(gui, controller.object, controller.property, {
+            before: controller.__li.nextElementSibling,
+            factoryArgs: [controller.__min, controller.__max, controller.__step]
+          });
+          newController.name(oldName);
+          if (wasListening)
+            newController.listen();
+          return newController;
+        }
+        return returned;
+      };
+      controller.min = Common.compose(r2, controller.min);
+      controller.max = Common.compose(r2, controller.max);
+    } else if (controller instanceof BooleanController) {
+      dom.bind(li, "click", function() {
+        dom.fakeEvent(controller.__checkbox, "click");
+      });
+      dom.bind(controller.__checkbox, "click", function(e2) {
+        e2.stopPropagation();
+      });
+    } else if (controller instanceof FunctionController) {
+      dom.bind(li, "click", function() {
+        dom.fakeEvent(controller.__button, "click");
+      });
+      dom.bind(li, "mouseover", function() {
+        dom.addClass(controller.__button, "hover");
+      });
+      dom.bind(li, "mouseout", function() {
+        dom.removeClass(controller.__button, "hover");
+      });
+    } else if (controller instanceof ColorController) {
+      dom.addClass(li, "color");
+      controller.updateDisplay = Common.compose(function(val) {
+        li.style.borderLeftColor = controller.__color.toString();
+        return val;
+      }, controller.updateDisplay);
+      controller.updateDisplay();
+    }
+    controller.setValue = Common.compose(function(val) {
+      if (gui.getRoot().__preset_select && controller.isModified()) {
+        markPresetModified(gui.getRoot(), true);
+      }
+      return val;
+    }, controller.setValue);
+  }
+  function recallSavedValue(gui, controller) {
+    var root = gui.getRoot();
+    var matchedIndex = root.__rememberedObjects.indexOf(controller.object);
+    if (matchedIndex !== -1) {
+      var controllerMap = root.__rememberedObjectIndecesToControllers[matchedIndex];
+      if (controllerMap === void 0) {
+        controllerMap = {};
+        root.__rememberedObjectIndecesToControllers[matchedIndex] = controllerMap;
+      }
+      controllerMap[controller.property] = controller;
+      if (root.load && root.load.remembered) {
+        var presetMap = root.load.remembered;
+        var preset = void 0;
+        if (presetMap[gui.preset]) {
+          preset = presetMap[gui.preset];
+        } else if (presetMap[DEFAULT_DEFAULT_PRESET_NAME]) {
+          preset = presetMap[DEFAULT_DEFAULT_PRESET_NAME];
+        } else {
+          return;
+        }
+        if (preset[matchedIndex] && preset[matchedIndex][controller.property] !== void 0) {
+          var value = preset[matchedIndex][controller.property];
+          controller.initialValue = value;
+          controller.setValue(value);
+        }
+      }
+    }
+  }
+  function _add(gui, object, property, params) {
+    if (object[property] === void 0) {
+      throw new Error('Object "' + object + '" has no property "' + property + '"');
+    }
+    var controller = void 0;
+    if (params.color) {
+      controller = new ColorController(object, property);
+    } else {
+      var factoryArgs = [object, property].concat(params.factoryArgs);
+      controller = ControllerFactory.apply(gui, factoryArgs);
+    }
+    if (params.before instanceof Controller) {
+      params.before = params.before.__li;
+    }
+    recallSavedValue(gui, controller);
+    dom.addClass(controller.domElement, "c");
+    var name = document.createElement("span");
+    dom.addClass(name, "property-name");
+    name.innerHTML = controller.property;
+    var container = document.createElement("div");
+    container.appendChild(name);
+    container.appendChild(controller.domElement);
+    var li = addRow(gui, container, params.before);
+    dom.addClass(li, GUI.CLASS_CONTROLLER_ROW);
+    if (controller instanceof ColorController) {
+      dom.addClass(li, "color");
+    } else {
+      dom.addClass(li, _typeof(controller.getValue()));
+    }
+    augmentController(gui, li, controller);
+    gui.__controllers.push(controller);
+    return controller;
+  }
+  function getLocalStorageHash(gui, key) {
+    return document.location.href + "." + key;
+  }
+  function addPresetOption(gui, name, setSelected) {
+    var opt = document.createElement("option");
+    opt.innerHTML = name;
+    opt.value = name;
+    gui.__preset_select.appendChild(opt);
+    if (setSelected) {
+      gui.__preset_select.selectedIndex = gui.__preset_select.length - 1;
+    }
+  }
+  function showHideExplain(gui, explain) {
+    explain.style.display = gui.useLocalStorage ? "block" : "none";
+  }
+  function addSaveMenu(gui) {
+    var div = gui.__save_row = document.createElement("li");
+    dom.addClass(gui.domElement, "has-save");
+    gui.__ul.insertBefore(div, gui.__ul.firstChild);
+    dom.addClass(div, "save-row");
+    var gears = document.createElement("span");
+    gears.innerHTML = "&nbsp;";
+    dom.addClass(gears, "button gears");
+    var button = document.createElement("span");
+    button.innerHTML = "Save";
+    dom.addClass(button, "button");
+    dom.addClass(button, "save");
+    var button2 = document.createElement("span");
+    button2.innerHTML = "New";
+    dom.addClass(button2, "button");
+    dom.addClass(button2, "save-as");
+    var button3 = document.createElement("span");
+    button3.innerHTML = "Revert";
+    dom.addClass(button3, "button");
+    dom.addClass(button3, "revert");
+    var select = gui.__preset_select = document.createElement("select");
+    if (gui.load && gui.load.remembered) {
+      Common.each(gui.load.remembered, function(value, key) {
+        addPresetOption(gui, key, key === gui.preset);
+      });
+    } else {
+      addPresetOption(gui, DEFAULT_DEFAULT_PRESET_NAME, false);
+    }
+    dom.bind(select, "change", function() {
+      for (var index = 0; index < gui.__preset_select.length; index++) {
+        gui.__preset_select[index].innerHTML = gui.__preset_select[index].value;
+      }
+      gui.preset = this.value;
+    });
+    div.appendChild(select);
+    div.appendChild(gears);
+    div.appendChild(button);
+    div.appendChild(button2);
+    div.appendChild(button3);
+    if (SUPPORTS_LOCAL_STORAGE) {
+      var explain = document.getElementById("dg-local-explain");
+      var localStorageCheckBox = document.getElementById("dg-local-storage");
+      var saveLocally = document.getElementById("dg-save-locally");
+      saveLocally.style.display = "block";
+      if (localStorage.getItem(getLocalStorageHash(gui, "isLocal")) === "true") {
+        localStorageCheckBox.setAttribute("checked", "checked");
+      }
+      showHideExplain(gui, explain);
+      dom.bind(localStorageCheckBox, "change", function() {
+        gui.useLocalStorage = !gui.useLocalStorage;
+        showHideExplain(gui, explain);
+      });
+    }
+    var newConstructorTextArea = document.getElementById("dg-new-constructor");
+    dom.bind(newConstructorTextArea, "keydown", function(e2) {
+      if (e2.metaKey && (e2.which === 67 || e2.keyCode === 67)) {
+        SAVE_DIALOGUE.hide();
+      }
+    });
+    dom.bind(gears, "click", function() {
+      newConstructorTextArea.innerHTML = JSON.stringify(gui.getSaveObject(), void 0, 2);
+      SAVE_DIALOGUE.show();
+      newConstructorTextArea.focus();
+      newConstructorTextArea.select();
+    });
+    dom.bind(button, "click", function() {
+      gui.save();
+    });
+    dom.bind(button2, "click", function() {
+      var presetName = prompt("Enter a new preset name.");
+      if (presetName) {
+        gui.saveAs(presetName);
+      }
+    });
+    dom.bind(button3, "click", function() {
+      gui.revert();
+    });
+  }
+  function addResizeHandle(gui) {
+    var pmouseX = void 0;
+    gui.__resize_handle = document.createElement("div");
+    Common.extend(gui.__resize_handle.style, {
+      width: "6px",
+      marginLeft: "-3px",
+      height: "200px",
+      cursor: "ew-resize",
+      position: "absolute"
+    });
+    function drag(e2) {
+      e2.preventDefault();
+      gui.width += pmouseX - e2.clientX;
+      gui.onResize();
+      pmouseX = e2.clientX;
+      return false;
+    }
+    function dragStop() {
+      dom.removeClass(gui.__closeButton, GUI.CLASS_DRAG);
+      dom.unbind(window, "mousemove", drag);
+      dom.unbind(window, "mouseup", dragStop);
+    }
+    function dragStart(e2) {
+      e2.preventDefault();
+      pmouseX = e2.clientX;
+      dom.addClass(gui.__closeButton, GUI.CLASS_DRAG);
+      dom.bind(window, "mousemove", drag);
+      dom.bind(window, "mouseup", dragStop);
+      return false;
+    }
+    dom.bind(gui.__resize_handle, "mousedown", dragStart);
+    dom.bind(gui.__closeButton, "mousedown", dragStart);
+    gui.domElement.insertBefore(gui.__resize_handle, gui.domElement.firstElementChild);
+  }
+  function setWidth(gui, w2) {
+    gui.domElement.style.width = w2 + "px";
+    if (gui.__save_row && gui.autoPlace) {
+      gui.__save_row.style.width = w2 + "px";
+    }
+    if (gui.__closeButton) {
+      gui.__closeButton.style.width = w2 + "px";
+    }
+  }
+  function getCurrentPreset(gui, useInitialValues) {
+    var toReturn2 = {};
+    Common.each(gui.__rememberedObjects, function(val, index) {
+      var savedValues = {};
+      var controllerMap = gui.__rememberedObjectIndecesToControllers[index];
+      Common.each(controllerMap, function(controller, property) {
+        savedValues[property] = useInitialValues ? controller.initialValue : controller.getValue();
+      });
+      toReturn2[index] = savedValues;
+    });
+    return toReturn2;
+  }
+  function setPresetSelectIndex(gui) {
+    for (var index = 0; index < gui.__preset_select.length; index++) {
+      if (gui.__preset_select[index].value === gui.preset) {
+        gui.__preset_select.selectedIndex = index;
+      }
+    }
+  }
+  function updateDisplays(controllerArray) {
+    if (controllerArray.length !== 0) {
+      requestAnimationFrame$1.call(window, function() {
+        updateDisplays(controllerArray);
+      });
+    }
+    Common.each(controllerArray, function(c2) {
+      c2.updateDisplay();
+    });
+  }
+  var GUI$1 = GUI;
+
+  // node_modules/three/examples/jsm/effects/OutlineEffect.js
+  var OutlineEffect = class {
+    constructor(renderer, parameters = {}) {
+      this.enabled = true;
+      const defaultThickness = parameters.defaultThickness !== void 0 ? parameters.defaultThickness : 3e-3;
+      const defaultColor = new Color().fromArray(parameters.defaultColor !== void 0 ? parameters.defaultColor : [0, 0, 0]);
+      const defaultAlpha = parameters.defaultAlpha !== void 0 ? parameters.defaultAlpha : 1;
+      const defaultKeepAlive = parameters.defaultKeepAlive !== void 0 ? parameters.defaultKeepAlive : false;
+      const cache = {};
+      const removeThresholdCount = 60;
+      const originalMaterials = {};
+      const originalOnBeforeRenders = {};
+      const uniformsOutline = {
+        outlineThickness: { value: defaultThickness },
+        outlineColor: { value: defaultColor },
+        outlineAlpha: { value: defaultAlpha }
+      };
+      const vertexShader = [
+        "#include <common>",
+        "#include <uv_pars_vertex>",
+        "#include <displacementmap_pars_vertex>",
+        "#include <fog_pars_vertex>",
+        "#include <morphtarget_pars_vertex>",
+        "#include <skinning_pars_vertex>",
+        "#include <logdepthbuf_pars_vertex>",
+        "#include <clipping_planes_pars_vertex>",
+        "uniform float outlineThickness;",
+        "vec4 calculateOutline( vec4 pos, vec3 normal, vec4 skinned ) {",
+        "	float thickness = outlineThickness;",
+        "	const float ratio = 1.0;",
+        "	vec4 pos2 = projectionMatrix * modelViewMatrix * vec4( skinned.xyz + normal, 1.0 );",
+        "	vec4 norm = normalize( pos - pos2 );",
+        "	return pos + norm * thickness * pos.w * ratio;",
+        "}",
+        "void main() {",
+        "	#include <uv_vertex>",
+        "	#include <beginnormal_vertex>",
+        "	#include <morphnormal_vertex>",
+        "	#include <skinbase_vertex>",
+        "	#include <skinnormal_vertex>",
+        "	#include <begin_vertex>",
+        "	#include <morphtarget_vertex>",
+        "	#include <skinning_vertex>",
+        "	#include <displacementmap_vertex>",
+        "	#include <project_vertex>",
+        "	vec3 outlineNormal = - objectNormal;",
+        "	gl_Position = calculateOutline( gl_Position, outlineNormal, vec4( transformed, 1.0 ) );",
+        "	#include <logdepthbuf_vertex>",
+        "	#include <clipping_planes_vertex>",
+        "	#include <fog_vertex>",
+        "}"
+      ].join("\n");
+      const fragmentShader = [
+        "#include <common>",
+        "#include <fog_pars_fragment>",
+        "#include <logdepthbuf_pars_fragment>",
+        "#include <clipping_planes_pars_fragment>",
+        "uniform vec3 outlineColor;",
+        "uniform float outlineAlpha;",
+        "void main() {",
+        "	#include <clipping_planes_fragment>",
+        "	#include <logdepthbuf_fragment>",
+        "	gl_FragColor = vec4( outlineColor, outlineAlpha );",
+        "	#include <tonemapping_fragment>",
+        "	#include <encodings_fragment>",
+        "	#include <fog_fragment>",
+        "	#include <premultiplied_alpha_fragment>",
+        "}"
+      ].join("\n");
+      function createMaterial() {
+        return new ShaderMaterial({
+          type: "OutlineEffect",
+          uniforms: UniformsUtils.merge([
+            UniformsLib["fog"],
+            UniformsLib["displacementmap"],
+            uniformsOutline
+          ]),
+          vertexShader,
+          fragmentShader,
+          side: BackSide
+        });
+      }
+      function getOutlineMaterialFromCache(originalMaterial) {
+        let data = cache[originalMaterial.uuid];
+        if (data === void 0) {
+          data = {
+            material: createMaterial(),
+            used: true,
+            keepAlive: defaultKeepAlive,
+            count: 0
+          };
+          cache[originalMaterial.uuid] = data;
+        }
+        data.used = true;
+        return data.material;
+      }
+      function getOutlineMaterial(originalMaterial) {
+        const outlineMaterial = getOutlineMaterialFromCache(originalMaterial);
+        originalMaterials[outlineMaterial.uuid] = originalMaterial;
+        updateOutlineMaterial(outlineMaterial, originalMaterial);
+        return outlineMaterial;
+      }
+      function isCompatible(object) {
+        const geometry = object.geometry;
+        let hasNormals = false;
+        if (object.geometry !== void 0) {
+          if (geometry.isBufferGeometry) {
+            hasNormals = geometry.attributes.normal !== void 0;
+          } else {
+            hasNormals = true;
+          }
+        }
+        return object.isMesh === true && object.material !== void 0 && hasNormals === true;
+      }
+      function setOutlineMaterial(object) {
+        if (isCompatible(object) === false)
+          return;
+        if (Array.isArray(object.material)) {
+          for (let i2 = 0, il = object.material.length; i2 < il; i2++) {
+            object.material[i2] = getOutlineMaterial(object.material[i2]);
+          }
+        } else {
+          object.material = getOutlineMaterial(object.material);
+        }
+        originalOnBeforeRenders[object.uuid] = object.onBeforeRender;
+        object.onBeforeRender = onBeforeRender;
+      }
+      function restoreOriginalMaterial(object) {
+        if (isCompatible(object) === false)
+          return;
+        if (Array.isArray(object.material)) {
+          for (let i2 = 0, il = object.material.length; i2 < il; i2++) {
+            object.material[i2] = originalMaterials[object.material[i2].uuid];
+          }
+        } else {
+          object.material = originalMaterials[object.material.uuid];
+        }
+        object.onBeforeRender = originalOnBeforeRenders[object.uuid];
+      }
+      function onBeforeRender(renderer2, scene, camera, geometry, material) {
+        const originalMaterial = originalMaterials[material.uuid];
+        if (originalMaterial === void 0)
+          return;
+        updateUniforms(material, originalMaterial);
+      }
+      function updateUniforms(material, originalMaterial) {
+        const outlineParameters = originalMaterial.userData.outlineParameters;
+        material.uniforms.outlineAlpha.value = originalMaterial.opacity;
+        if (outlineParameters !== void 0) {
+          if (outlineParameters.thickness !== void 0)
+            material.uniforms.outlineThickness.value = outlineParameters.thickness;
+          if (outlineParameters.color !== void 0)
+            material.uniforms.outlineColor.value.fromArray(outlineParameters.color);
+          if (outlineParameters.alpha !== void 0)
+            material.uniforms.outlineAlpha.value = outlineParameters.alpha;
+        }
+        if (originalMaterial.displacementMap) {
+          material.uniforms.displacementMap.value = originalMaterial.displacementMap;
+          material.uniforms.displacementScale.value = originalMaterial.displacementScale;
+          material.uniforms.displacementBias.value = originalMaterial.displacementBias;
+        }
+      }
+      function updateOutlineMaterial(material, originalMaterial) {
+        if (material.name === "invisible")
+          return;
+        const outlineParameters = originalMaterial.userData.outlineParameters;
+        material.fog = originalMaterial.fog;
+        material.toneMapped = originalMaterial.toneMapped;
+        material.premultipliedAlpha = originalMaterial.premultipliedAlpha;
+        material.displacementMap = originalMaterial.displacementMap;
+        if (outlineParameters !== void 0) {
+          if (originalMaterial.visible === false) {
+            material.visible = false;
+          } else {
+            material.visible = outlineParameters.visible !== void 0 ? outlineParameters.visible : true;
+          }
+          material.transparent = outlineParameters.alpha !== void 0 && outlineParameters.alpha < 1 ? true : originalMaterial.transparent;
+          if (outlineParameters.keepAlive !== void 0)
+            cache[originalMaterial.uuid].keepAlive = outlineParameters.keepAlive;
+        } else {
+          material.transparent = originalMaterial.transparent;
+          material.visible = originalMaterial.visible;
+        }
+        if (originalMaterial.wireframe === true || originalMaterial.depthTest === false)
+          material.visible = false;
+        if (originalMaterial.clippingPlanes) {
+          material.clipping = true;
+          material.clippingPlanes = originalMaterial.clippingPlanes;
+          material.clipIntersection = originalMaterial.clipIntersection;
+          material.clipShadows = originalMaterial.clipShadows;
+        }
+        material.version = originalMaterial.version;
+      }
+      function cleanupCache() {
+        let keys;
+        keys = Object.keys(originalMaterials);
+        for (let i2 = 0, il = keys.length; i2 < il; i2++) {
+          originalMaterials[keys[i2]] = void 0;
+        }
+        keys = Object.keys(originalOnBeforeRenders);
+        for (let i2 = 0, il = keys.length; i2 < il; i2++) {
+          originalOnBeforeRenders[keys[i2]] = void 0;
+        }
+        keys = Object.keys(cache);
+        for (let i2 = 0, il = keys.length; i2 < il; i2++) {
+          const key = keys[i2];
+          if (cache[key].used === false) {
+            cache[key].count++;
+            if (cache[key].keepAlive === false && cache[key].count > removeThresholdCount) {
+              delete cache[key];
+            }
+          } else {
+            cache[key].used = false;
+            cache[key].count = 0;
+          }
+        }
+      }
+      this.render = function(scene, camera) {
+        if (this.enabled === false) {
+          renderer.render(scene, camera);
+          return;
+        }
+        const currentAutoClear = renderer.autoClear;
+        renderer.autoClear = this.autoClear;
+        renderer.render(scene, camera);
+        renderer.autoClear = currentAutoClear;
+        this.renderOutline(scene, camera);
+      };
+      this.renderOutline = function(scene, camera) {
+        const currentAutoClear = renderer.autoClear;
+        const currentSceneAutoUpdate = scene.matrixWorldAutoUpdate;
+        const currentSceneBackground = scene.background;
+        const currentShadowMapEnabled = renderer.shadowMap.enabled;
+        scene.matrixWorldAutoUpdate = false;
+        scene.background = null;
+        renderer.autoClear = false;
+        renderer.shadowMap.enabled = false;
+        scene.traverse(setOutlineMaterial);
+        renderer.render(scene, camera);
+        scene.traverse(restoreOriginalMaterial);
+        cleanupCache();
+        scene.matrixWorldAutoUpdate = currentSceneAutoUpdate;
+        scene.background = currentSceneBackground;
+        renderer.autoClear = currentAutoClear;
+        renderer.shadowMap.enabled = currentShadowMapEnabled;
+      };
+      this.autoClear = renderer.autoClear;
+      this.domElement = renderer.domElement;
+      this.shadowMap = renderer.shadowMap;
+      this.clear = function(color, depth, stencil) {
+        renderer.clear(color, depth, stencil);
+      };
+      this.getPixelRatio = function() {
+        return renderer.getPixelRatio();
+      };
+      this.setPixelRatio = function(value) {
+        renderer.setPixelRatio(value);
+      };
+      this.getSize = function(target) {
+        return renderer.getSize(target);
+      };
+      this.setSize = function(width, height, updateStyle) {
+        renderer.setSize(width, height, updateStyle);
+      };
+      this.setViewport = function(x2, y2, width, height) {
+        renderer.setViewport(x2, y2, width, height);
+      };
+      this.setScissor = function(x2, y2, width, height) {
+        renderer.setScissor(x2, y2, width, height);
+      };
+      this.setScissorTest = function(boolean) {
+        renderer.setScissorTest(boolean);
+      };
+      this.setRenderTarget = function(renderTarget) {
+        renderer.setRenderTarget(renderTarget);
+      };
+    }
+  };
+
   // src/HutaoProject/index.ts
   var ThreeProject = class {
     constructor() {
@@ -58893,8 +61646,38 @@ void RE_IndirectDiffuse_BlinnPhong( const in vec3 irradiance, const in Geometric
     }
     render() {
       loader_default.loadModels();
+      this.initControls();
       this.initLight();
-      this.callRenderer();
+      this.addGUIPanel();
+      this.initEffect();
+      this.animate();
+    }
+    initEffect() {
+      this.effect = new OutlineEffect(renderer_default.getRenderer());
+    }
+    addGUIPanel() {
+      const api = {
+        animation: true,
+        ik: true,
+        outline: true,
+        physics: true,
+        "show IK bones": false,
+        "show rigid bodies": false
+      };
+      const gui = new GUI$1();
+      const mmdFolder = gui.addFolder("MMD");
+      mmdFolder.add(api, "animation").onChange(() => {
+        !api.animation ? this.clock.stop() : this.clock.start();
+      });
+      mmdFolder.add(api, "physics").onChange(() => {
+        mmdHelper.enable("physics", api["physics"]);
+      });
+      mmdFolder.add(api, "outline").onChange(() => {
+        this.effect.enabled = api["outline"];
+      });
+      mmdFolder.add(api, "show IK bones").onChange(() => {
+        loader_default.getIKHelper().visible = api["show IK bones"];
+      });
     }
     initLight() {
       const ambientLight = new AmbientLight(16777215);
@@ -58908,14 +61691,16 @@ void RE_IndirectDiffuse_BlinnPhong( const in vec3 irradiance, const in Geometric
       controls.target = new Vector3(1.6, 14, -4);
       this.controls = controls;
     }
-    callRenderer() {
+    animate() {
       this.frameId = requestAnimationFrame(() => {
+        this.controls.update();
         if (loader_default.loaded()) {
           const time = this.clock.getDelta();
-          helper.update(time);
+          mmdHelper.update(time);
         }
         renderer_default.getRenderer().render(scene_default.getScene(), camera_default.getCamera());
-        this.callRenderer();
+        this.effect?.render(scene_default.getScene(), camera_default.getCamera());
+        this.animate();
       });
     }
   };
@@ -60156,7 +62941,8 @@ void RE_IndirectDiffuse_BlinnPhong( const in vec3 irradiance, const in Geometric
 `;
 
   // src/styled.ts
-  var GlobalStyle = We`/* http://meyerweb.com/eric/tools/css/reset/ 
+  var GlobalStyle = We`
+/* http://meyerweb.com/eric/tools/css/reset/ 
 v2.0 | 20110126
 License: none (public domain)
 */
@@ -60210,3 +62996,68 @@ border-spacing: 0;
     /* @__PURE__ */ React2.createElement(React2.Fragment, null, /* @__PURE__ */ React2.createElement(App, null), /* @__PURE__ */ React2.createElement(GlobalStyle, null))
   );
 })();
+/*! Bundled license information:
+
+react/cjs/react.development.js:
+  (**
+   * @license React
+   * react.development.js
+   *
+   * Copyright (c) Facebook, Inc. and its affiliates.
+   *
+   * This source code is licensed under the MIT license found in the
+   * LICENSE file in the root directory of this source tree.
+   *)
+
+scheduler/cjs/scheduler.development.js:
+  (**
+   * @license React
+   * scheduler.development.js
+   *
+   * Copyright (c) Facebook, Inc. and its affiliates.
+   *
+   * This source code is licensed under the MIT license found in the
+   * LICENSE file in the root directory of this source tree.
+   *)
+
+react-dom/cjs/react-dom.development.js:
+  (**
+   * @license React
+   * react-dom.development.js
+   *
+   * Copyright (c) Facebook, Inc. and its affiliates.
+   *
+   * This source code is licensed under the MIT license found in the
+   * LICENSE file in the root directory of this source tree.
+   *)
+  (**
+   * Checks if an event is supported in the current execution environment.
+   *
+   * NOTE: This will not work correctly for non-generic events such as `change`,
+   * `reset`, `load`, `error`, and `select`.
+   *
+   * Borrows from Modernizr.
+   *
+   * @param {string} eventNameSuffix Event name, e.g. "click".
+   * @return {boolean} True if the event is supported.
+   * @internal
+   * @license Modernizr 3.0.0pre (Custom Build) | MIT
+   *)
+
+react-is/cjs/react-is.development.js:
+  (** @license React v16.13.1
+   * react-is.development.js
+   *
+   * Copyright (c) Facebook, Inc. and its affiliates.
+   *
+   * This source code is licensed under the MIT license found in the
+   * LICENSE file in the root directory of this source tree.
+   *)
+
+three/build/three.module.js:
+  (**
+   * @license
+   * Copyright 2010-2022 Three.js Authors
+   * SPDX-License-Identifier: MIT
+   *)
+*/
