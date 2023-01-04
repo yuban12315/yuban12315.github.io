@@ -48,6 +48,7 @@ export class Loader {
         this.ikHelper = mmdHelper.objects
           .get(mmd.mesh)!
           .ikSolver.createHelper();
+        this.ikHelper.visible = false;
 
         scene.getScene().add(this.ikHelper);
       }

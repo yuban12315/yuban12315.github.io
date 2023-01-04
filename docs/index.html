@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>demo</title>
+  </head>
+
+  <body>
+    <div id="root" />
+    <script src="./public/ammo.js">
+      Ammo().then(function (AmmoLib) {
+        Ammo = AmmoLib;
+        init(); animate();
+      })
+    </script>
+    <script src="./bundle.js"></script>
+  </body>
+</html>
